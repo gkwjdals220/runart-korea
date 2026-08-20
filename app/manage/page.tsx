@@ -1,0 +1,7 @@
+import {redirect} from "next/navigation";import Link from "next/link";import Brand from "@/components/Brand";import {createClient} from "@/lib/supabase/server";
+export default async function Manage(){const sb=await createClient();const {data:{user}}=await sb.auth.getUser();if(!user)redirect("/login");
+ const {data:memberships}=await sb.from("runart_crew_members").select("crew_id,role,runart_crews(name,slug)").eq("user_id",user.id);
+ const admin=(memberships||[]).some(m=>["owner","admin"].includes(m.role));
+ const {data:pending}=admin?await sb.from("runart_courses").select("id,name,region,city,course_type,art_shape,distance_km,status,source_name").eq("status","pending").order("created_at",{ascending:false}):{data:[] as any[]};
+ return <main className="wrap"><header className="top"><Brand/><div className="nav"><Link className="btn ghost" href="/dashboard">대시보드</Link></div></header><div className="card"><h2>운영 센터</h2><p className="muted">현재 계정 권한: {memberships?.[0]?.role||"크루 미가입"}</p></div>
+ <section className="section"><div className="card"><h3>코스 승인 대기</h3>{!admin?<p className="muted">owner/admin 권한이 필요합니다.</p>:(pending||[]).length?(pending||[]).map(x=><div className="course" key={x.id}><b>{x.name}</b><p className="muted">{x.region} {x.city} · {x.distance_km}km · {x.course_type}{x.art_shape?` · ${x.art_shape}`:""}</p><span className="tag">pending</span></div>):<p className="muted">승인 대기 코스가 없습니다.</p>}<p className="muted">※ v5는 승인 목록 조회까지 연결했습니다. 승인/반려 버튼은 다음 운영 권한 전용 RPC와 함께 추가하면 안전합니다.</p></div></section></main>}

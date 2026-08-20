@@ -1,0 +1,4 @@
+import {redirect} from "next/navigation";import Link from "next/link";import Brand from "@/components/Brand";import CourseSubmit from "@/components/CourseSubmit";import {createClient} from "@/lib/supabase/server";
+export default async function Submit(){const sb=await createClient();const {data:{user}}=await sb.auth.getUser();if(!user)redirect("/login");
+ const {data:mine}=await sb.from("runart_courses").select("id,name,status,course_type,created_at").eq("created_by",user.id).order("created_at",{ascending:false});
+ return <main className="wrap"><header className="top"><Brand/><div className="nav"><Link className="btn ghost" href="/dashboard">대시보드</Link></div></header><div className="grid2"><CourseSubmit userId={user.id}/><div className="card"><h3>내 제보 현황</h3>{(mine||[]).map(x=><div className="course" key={x.id}><b>{x.name}</b><p className="muted">{x.course_type} · {x.status}</p></div>)}</div></div></main>}
