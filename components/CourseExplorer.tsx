@@ -20,7 +20,8 @@ export default function CourseExplorer({courses}:{courses:Course[]}){
  const [distance,setDistance]=useState("");
  const [night,setNight]=useState(false);
  const [lowSignals,setLowSignals]=useState(false);
- const [selected,setSelected]=useState<string|null>(null);\n const [mapReady,setMapReady]=useState(false);
+ const [selected,setSelected]=useState<string|null>(null);
+ const [mapReady,setMapReady]=useState(false);
 
  const regions=useMemo(()=>Array.from(new Set(courses.map(c=>c.region))).sort(),[courses]);
  const filtered=useMemo(()=>courses.filter(c=>{
@@ -46,7 +47,8 @@ export default function CourseExplorer({courses}:{courses:Course[]}){
      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
        maxZoom:19,attribution:"© OpenStreetMap"
      }).addTo(map);
-     mapRef.current=map;\n     setMapReady(true);
+     mapRef.current=map;
+     setMapReady(true);
    })();
    return()=>{cancelled=true};
  },[]);
