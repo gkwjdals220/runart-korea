@@ -7,12 +7,13 @@ export default async function Dashboard(){
  const membership=memberships?.[0];
  const crewId=ownedCrew?.id||membership?.crew_id;
  const role=ownedCrew?"owner":membership?.role;
+ if(!crewId)redirect("/join");
  let logs:any[]=[];if(crewId){const r=await sb.from("runart_course_logs").select("id,run_date,actual_distance_km,memo,photo_path,course_id,runart_courses(name,distance_km)").eq("crew_id",crewId).order("run_date",{ascending:false}).limit(50);logs=r.data||[]}
  const done=new Set(logs.map(l=>l.course_id));const km=logs.reduce((a,l)=>a+Number(l.actual_distance_km||l.runart_courses?.distance_km||0),0);
- return <main className="wrap"><header className="top"><Brand/><div className="nav"><Link className="btn ghost" href="/">코스 찾기</Link><Link className="btn ghost" href="/submit">코스 제보</Link><Link className="btn" href="/manage">운영</Link><LogoutButton/></div></header>
- <div className="card" style={{marginBottom:14}}><b>{ownedCrew?.name||"뛰뚠뛰뚠"}</b><span className="muted"> · 현재 권한: {role||"크루 미가입"}</span></div>
+ return <main className="wrap"><header className="top"><Brand/><div className="nav"><Link className="btn ghost" href="/">코스 찾기</Link><Link className="btn ghost" href="/submit">코스 제보</Link>{["owner","admin"].includes(role||"")&&<Link className="btn" href="/manage">운영</Link>}<LogoutButton/></div></header>
+ <div className="card" style={{marginBottom:14}}><b>{ownedCrew?.name||"뛰뚠뛰뚠"}</b><span className="muted"> · 현재 권한: {role||"member"}</span></div>
  <div className="stats"><div className="stat"><b>{logs.length}</b><span className="muted">수행 횟수</span></div><div className="stat"><b>{done.size}</b><span className="muted">완주 코스</span></div><div className="stat"><b>{km.toFixed(1)}</b><span className="muted">누적 km</span></div><div className="stat"><b>{(courses||[]).filter(c=>c.course_type==="art"&&done.has(c.id)).length}</b><span className="muted">GPS 아트 수집</span></div></div>
- <div className="grid2 section">{crewId?<RunLogForm userId={user.id} crewId={crewId} courses={(courses||[]).map(c=>({id:c.id,name:c.name,distance_km:Number(c.distance_km)}))}/>:<CrewManager userId={user.id}/>}
+ <div className="grid2 section"><RunLogForm userId={user.id} crewId={crewId} courses={(courses||[]).map(c=>({id:c.id,name:c.name,distance_km:Number(c.distance_km)}))}/>
  <div className="card"><h3>최근 수행</h3>{logs.length?logs.slice(0,12).map(l=><div className="course" key={l.id}><b>{l.run_date} · {l.runart_courses?.name}</b><p className="muted">{l.actual_distance_km||l.runart_courses?.distance_km}km · {l.memo||"메모 없음"}</p></div>):<p className="muted">아직 온라인 기록이 없습니다.</p>}</div></div>
  <section className="section"><h2>뛰뚠뛰뚠 완주 현황</h2><div className="grid">{(courses||[]).map(c=><div className="card" key={c.id}><h3>{c.name} {done.has(c.id)&&<span className="done">✓</span>}</h3><p className="muted">{c.region} {c.city} · {c.distance_km}km</p>{c.course_type==="art"&&<span className="tag">🎨 {c.art_shape}</span>}</div>)}</div></section>
  </main>
