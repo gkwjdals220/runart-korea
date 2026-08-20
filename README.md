@@ -1,38 +1,53 @@
-# RUNART KOREA · 뛰뚠뛰뚠 v5
+# RUNART KOREA · 뛰뚠뛰뚠 v6
 
-## 이번 버전
-- 임시 🦆 아이콘 제거
-- 사용자가 이전에 제공한 실제 뛰뚠뛰뚠 로고 이미지 적용
-- Supabase 로그인/회원가입
-- 크루 최초 생성
-- 공용 수행 기록 작성
-- 인증사진 Storage 업로드
-- 누적거리/완주 코스/GPS 아트 수집 현황
-- 사용자 코스 제보
-- GPX 파일 업로드
-- 코스 승인 대기 목록(운영자)
-- 기존 RUNART RLS 구조 유지
+전국 러닝 코스 + GPS 아트 + 크루 러닝 기록 플랫폼.
 
-## 실행
+## v6 핵심
+- OpenStreetMap + Leaflet 전국 코스 지도
+- 코스 폴리라인 표시
+- 지역 / 유형 / 거리 / 야간추천 / 신호 적은 코스 필터
+- 현재 위치로 지도 이동
+- 그리기 런(GPS ART) 전용 필터
+- 코스 상세 페이지
+- 로그인 사용자 즐겨찾기
+- 1~5점 별점 및 후기
+- 뛰뚠뛰뚠 크루 수행 기록
+- 코스 제보 / GPX 업로드
+- owner/admin 코스 승인·반려
+- 실제 뛰뚠뛰뚠 로고 적용
+
+## Supabase v6
+이미 연결된 프로젝트에 다음이 준비되어 있습니다.
+- runart_favorites
+- runart_reviews
+- runart_moderate_course(course_id, status) SECURITY INVOKER RPC\n- owner/admin 승인대기 SELECT/UPDATE RLS
+- 기존 RUNART RLS 정책
+
+## 로컬 실행
 ```bash
 npm install
 npm run dev
 ```
-http://localhost:3000
 
-## 환경변수
-`.env.local`
+## v5에서 업데이트하는 경우
+v6 ZIP을 별도 폴더에 풀어 실행하거나, 파일을 기존 Git 저장소에 덮어쓴 뒤:
+```bash
+npm install
+npm run dev
+```
+
+## GitHub 반영 권장
+로컬 동작 확인 후:
+```bash
+git status
+git add app components package.json package-lock.json README.md
+git commit -m "Upgrade RUNART KOREA to v6"
+git push
+```
+
+`.env.local`, `.next`, `node_modules`는 커밋하지 마세요.
+
+## Vercel
+GitHub 저장소를 Vercel에 Import하고 아래 환경변수 2개를 등록:
 - NEXT_PUBLIC_SUPABASE_URL
 - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
-
-publishable key만 프론트에서 사용합니다. service_role/secret key는 절대 넣지 마세요.
-
-## 현재 주의점
-`runart-media` Storage 정책은 `<crew_id>/...` 경로에 최적화되어 있습니다.
-수행 인증사진은 이 규칙대로 업로드됩니다.
-사용자 코스 제보 GPX는 현재 `submissions/...` 경로이므로 Storage RLS 정책상 업로드가 거절될 수 있습니다.
-v5 UI는 이 경우 코스 제보 자체는 정상 저장하고 GPX만 생략합니다.
-다음 버전에서 제보 전용 bucket 또는 별도 RLS를 추가하는 것이 안전합니다.
-
-## 배포
-GitHub 저장소 → Vercel Import Project → 위 환경변수 2개 등록.

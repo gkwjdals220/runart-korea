@@ -1,19 +1,25 @@
 {
-  "name":"runart-korea-v5",
-  "version":"5.0.0",
-  "private":true,
-  "scripts":{"dev":"next dev","build":"next build","start":"next start"},
-  "dependencies":{
-    "@supabase/ssr":"^0.7.0",
-    "@supabase/supabase-js":"^2.56.0",
-    "next":"^15.5.0",
-    "react":"^19.1.0",
-    "react-dom":"^19.1.0"
+  "name": "runart-korea-v6",
+  "version": "6.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
-  "devDependencies":{
-    "@types/node":"^24.0.0",
-    "@types/react":"^19.1.0",
-    "@types/react-dom":"^19.1.0",
-    "typescript":"^5.9.0"
+  "dependencies": {
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.56.0",
+    "next": "^15.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "^5.9.0",
+    "@types/leaflet": "^1.9.20"
   }
 }
