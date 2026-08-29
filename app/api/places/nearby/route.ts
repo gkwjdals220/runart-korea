@@ -20,12 +20,13 @@ export async function GET(req:Request){
   const curatedPlaces=(curated||[]).map((x:any)=>({...x.runart_places,distance_m:x.distance_m,walking_minutes:x.walking_minutes,editorial_note:x.editorial_note,curated:true}));
   const key=process.env.KAKAO_REST_API_KEY;const center=centerFromGeojson(course.route_geojson);
   if(!key||!center)return NextResponse.json({configured:!!key,center,curated:curatedPlaces,live:[]});
+  const fixedCenter={lng:center.lng,lat:center.lat};
   async function searchCategory(code:string){
     const endpoint=new URL("https://dapi.kakao.com/v2/local/search/category.json");
-    endpoint.searchParams.set("category_group_code",code);endpoint.searchParams.set("x",String(center.lng));endpoint.searchParams.set("y",String(center.lat));endpoint.searchParams.set("radius","2000");endpoint.searchParams.set("sort","distance");endpoint.searchParams.set("size","8");
+    endpoint.searchParams.set("category_group_code",code);endpoint.searchParams.set("x",String(fixedCenter.lng));endpoint.searchParams.set("y",String(fixedCenter.lat));endpoint.searchParams.set("radius","2000");endpoint.searchParams.set("sort","distance");endpoint.searchParams.set("size","8");
     const r=await fetch(endpoint,{headers:{Authorization:`KakaoAK ${key}`},next:{revalidate:3600}});if(!r.ok)return [];
     const j=await r.json();return (j.documents||[]).map((p:any)=>({id:`kakao:${p.id}`,name:p.place_name,category:code==="FD6"?"restaurant":"cafe",address:p.road_address_name||p.address_name,latitude:Number(p.y),longitude:Number(p.x),source_name:"Kakao Local",source_url:p.place_url,distance_m:Number(p.distance||0),curated:false}));
   }
   const [food,cafe]=await Promise.all([searchCategory("FD6"),searchCategory("CE7")]);
-  return NextResponse.json({configured:true,center,curated:curatedPlaces,live:[...food,...cafe]});
+  return NextResponse.json({configured:true,center:fixedCenter,curated:curatedPlaces,live:[...food,...cafe]});
 }
