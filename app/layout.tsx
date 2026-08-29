@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./discovery.css";
 import "leaflet/dist/leaflet.css";
 
 export const metadata={
