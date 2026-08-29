@@ -2,6 +2,7 @@
 
 import {useEffect,useMemo,useRef,useState} from "react";
 import Link from "next/link";
+import {createClient} from "@/lib/supabase/client";
 
 type Course={
  id:string;name:string;region:string;city:string|null;course_type:string;art_shape:string|null;
@@ -10,11 +11,11 @@ type Course={
  verified:boolean;start_name:string|null;elevation_gain_m:number|null;data_quality:string;
 };
 
-export default function CourseExplorer({courses}:{courses:Course[]}){
+export default function CourseExplorer({courses,userId,favoriteIds=[]}:{courses:Course[];userId?:string|null;favoriteIds?:string[]}){
  const mapEl=useRef<HTMLDivElement|null>(null);const mapRef=useRef<any>(null);const layersRef=useRef<any[]>([]);
  const [q,setQ]=useState("");const [region,setRegion]=useState("");const [type,setType]=useState("");const [distance,setDistance]=useState("");
  const [surface,setSurface]=useState("");const [loop,setLoop]=useState("");const [night,setNight]=useState(false);const [verified,setVerified]=useState(false);const [lowSignals,setLowSignals]=useState(false);
- const [selected,setSelected]=useState<string|null>(null);const [mapReady,setMapReady]=useState(false);
+ const [selected,setSelected]=useState<string|null>(null);const [mapReady,setMapReady]=useState(false);const [favorites,setFavorites]=useState(new Set(favoriteIds));const [msg,setMsg]=useState("");
  const regions=useMemo(()=>Array.from(new Set(courses.map(c=>c.region))).sort(),[courses]);
  const surfaces=useMemo(()=>Array.from(new Set(courses.map(c=>c.surface).filter(Boolean) as string[])).sort(),[courses]);
  const filtered=useMemo(()=>courses.filter(c=>{
@@ -26,14 +27,21 @@ export default function CourseExplorer({courses}:{courses:Course[]}){
  useEffect(()=>{let cancelled=false;(async()=>{if(!mapEl.current||mapRef.current)return;const L=await import("leaflet");if(cancelled||!mapEl.current)return;const map=L.map(mapEl.current,{zoomControl:true}).setView([36.55,127.85],7);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);mapRef.current=map;setMapReady(true)})();return()=>{cancelled=true}},[]);
  useEffect(()=>{(async()=>{const map=mapRef.current;if(!map)return;const L=await import("leaflet");layersRef.current.forEach(x=>map.removeLayer(x));layersRef.current=[];const bounds:any[]=[];filtered.forEach(c=>{const coords=(c.route_geojson?.coordinates||[]).map((x:number[])=>[x[1],x[0]]);if(!coords.length)return;const line=L.polyline(coords,{weight:selected===c.id?7:4,opacity:selected===c.id?1:.72}).addTo(map);line.bindTooltip(`${c.name} · ${Number(c.distance_km).toFixed(1)}km`);line.on("click",()=>setSelected(c.id));layersRef.current.push(line);coords.forEach((x:any)=>bounds.push(x))});if(bounds.length&&filtered.length<=8)map.fitBounds(bounds,{padding:[25,25],maxZoom:14})})()},[filtered,selected,mapReady]);
  function locateMe(){const map=mapRef.current;if(!map||!navigator.geolocation)return alert("현재 위치 기능을 사용할 수 없습니다.");navigator.geolocation.getCurrentPosition(pos=>map.setView([pos.coords.latitude,pos.coords.longitude],14),()=>alert("위치 권한을 확인해주세요."))}
- return <div className="explorer"><div className="filterbar">
-  <input value={q} onChange={e=>setQ(e.target.value)} placeholder="코스명·지역·태그·그림 검색"/>
+ async function toggleFavorite(courseId:string){
+  if(!userId){setMsg("찜하기는 로그인 후 사용할 수 있습니다.");return}
+  const sb=createClient();const next=new Set(favorites);
+  if(next.has(courseId)){const {error}=await sb.from("runart_favorites").delete().eq("user_id",userId).eq("course_id",courseId);if(error)return setMsg(error.message);next.delete(courseId)}
+  else{const {error}=await sb.from("runart_favorites").insert({user_id:userId,course_id:courseId});if(error)return setMsg(error.message);next.add(courseId)}
+  setFavorites(next);setMsg("");
+ }
+ return <div className="explorer" id="explore"><div className="exploreTitle"><div><span className="eyebrow">EXPLORE</span><h2>내 취향대로 코스 찾기</h2></div><span className="muted">검색 · 필터 · 지도</span></div><div className="filterbar">
+  <input value={q} onChange={e=>setQ(e.target.value)} placeholder="지역, 코스명, 태그로 검색해보세요"/>
   <select value={region} onChange={e=>setRegion(e.target.value)}><option value="">전국</option>{regions.map(r=><option key={r}>{r}</option>)}</select>
   <select value={type} onChange={e=>setType(e.target.value)}><option value="">전체 유형</option><option value="normal">일반</option><option value="art">그리기 런 🎨</option><option value="theme">테마런</option></select>
   <select value={distance} onChange={e=>setDistance(e.target.value)}><option value="">거리 전체</option><option value="5">약 5K</option><option value="10">약 10K</option><option value="long">12K+</option></select>
   <select value={surface} onChange={e=>setSurface(e.target.value)}><option value="">노면 전체</option>{surfaces.map(x=><option key={x}>{x}</option>)}</select>
   <select value={loop} onChange={e=>setLoop(e.target.value)}><option value="">형태 전체</option><option value="loop">순환</option><option value="out_back">왕복</option><option value="point_to_point">편도</option></select>
-  <button className={`chip ${verified?"on":""}`} onClick={()=>setVerified(v=>!v)}>✓ 검증 코스</button><button className={`chip ${night?"on":""}`} onClick={()=>setNight(v=>!v)}>🌙 야간추천</button><button className={`chip ${lowSignals?"on":""}`} onClick={()=>setLowSignals(v=>!v)}>🚦 신호 적음</button><button className="chip" onClick={locateMe}>◎ 내 위치</button>
- </div><div className="mapLayout"><div className="mapPanel"><div ref={mapEl} className="courseMap"/></div><div className="courseList"><div className="listHead"><b>{filtered.length}개 코스</b><span className="muted">전국 코스 카탈로그 v7</span></div>
- {filtered.map(c=><article key={c.id} className={`courseCard ${selected===c.id?"selected":""}`} onClick={()=>setSelected(c.id)}><div className="courseTop"><div><h3>{c.name} {c.verified&&<span className="done">✓</span>}</h3><p className="muted">{c.region} {c.city||""}{c.start_name?` · ${c.start_name}`:""}</p></div><b>{Number(c.distance_km).toFixed(1)}K</b></div><div className="metaRow">{c.course_type==="art"&&<span className="tag">🎨 {c.art_shape||"GPS ART"}</span>}<span>난이도 {"★".repeat(c.difficulty||2)}</span>{c.surface&&<span>노면 {c.surface}</span>}{c.elevation_gain_m!=null&&<span>↗ {c.elevation_gain_m}m</span>}<span>🚦 {c.traffic_lights??"-"}</span>{c.night_recommended&&<span>🌙</span>}</div><div className="metaRow">{(c.tags||[]).slice(0,4).map(t=><span className="tag" key={t}>#{t}</span>)}</div><Link href={`/courses/${c.id}`} className="textLink" onClick={e=>e.stopPropagation()}>코스 상세 →</Link></article>)}{!filtered.length&&<div className="empty">조건에 맞는 코스가 없습니다.</div>}</div></div></div>
+  <button className={`chip ${verified?"on":""}`} onClick={()=>setVerified(v=>!v)}>✓ 검증</button><button className={`chip ${night?"on":""}`} onClick={()=>setNight(v=>!v)}>🌙 야간</button><button className={`chip ${lowSignals?"on":""}`} onClick={()=>setLowSignals(v=>!v)}>🚦 신호 적음</button><button className="chip" onClick={locateMe}>◎ 내 위치</button>
+ </div>{msg&&<p className="muted">{msg}</p>}<div className="mapLayout"><div className="mapPanel"><div ref={mapEl} className="courseMap"/></div><div className="courseList"><div className="listHead"><b>{filtered.length}개 코스</b><span className="muted">RUNART Discovery</span></div>
+ {filtered.map(c=><article key={c.id} className={`courseCard ${selected===c.id?"selected":""}`} onClick={()=>setSelected(c.id)}><div className="courseTop"><div><h3>{c.name} {c.verified&&<span className="done">✓</span>}</h3><p className="muted">{c.region} {c.city||""}{c.start_name?` · ${c.start_name}`:""}</p></div><div className="courseCardActions"><b>{Number(c.distance_km).toFixed(1)}K</b><button aria-label="찜하기" className={`iconHeart ${favorites.has(c.id)?"saved":""}`} onClick={e=>{e.stopPropagation();toggleFavorite(c.id)}}>{favorites.has(c.id)?"♥":"♡"}</button></div></div><div className="metaRow">{c.course_type==="art"&&<span className="tag">🎨 {c.art_shape||"GPS ART"}</span>}<span>난이도 {"★".repeat(c.difficulty||2)}</span>{c.surface&&<span>노면 {c.surface}</span>}{c.elevation_gain_m!=null&&<span>↗ {c.elevation_gain_m}m</span>}<span>🚦 {c.traffic_lights??"-"}</span>{c.night_recommended&&<span>🌙</span>}</div><div className="metaRow">{(c.tags||[]).slice(0,4).map(t=><span className="tag" key={t}>#{t}</span>)}</div><Link href={`/courses/${c.id}`} className="textLink" onClick={e=>e.stopPropagation()}>코스 상세 · 주변 맛집 →</Link></article>)}{!filtered.length&&<div className="empty">조건에 맞는 코스가 없습니다.</div>}</div></div></div>
 }
