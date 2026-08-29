@@ -1,6 +1,7 @@
 import "./globals.css";
 import "./discovery.css";
 import "leaflet/dist/leaflet.css";
+import MobileBottomNav from "@/components/MobileBottomNav";
 
 export const metadata={
   title:"RUNART KOREA · 뛰뚠뛰뚠",
@@ -8,5 +9,5 @@ export const metadata={
 };
 
 export default function Layout({children}:{children:React.ReactNode}){
-  return <html lang="ko"><body>{children}</body></html>;
+  return <html lang="ko"><body>{children}<MobileBottomNav/></body></html>;
 }
