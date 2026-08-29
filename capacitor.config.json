@@ -1,0 +1,20 @@
+{
+  "appId": "com.runart.korea",
+  "appName": "RUNART KOREA",
+  "webDir": "out",
+  "server": {
+    "url": "https://runart-korea.vercel.app",
+    "cleartext": false,
+    "allowNavigation": [
+      "runart-korea.vercel.app"
+    ]
+  },
+  "ios": {
+    "contentInset": "automatic",
+    "scrollEnabled": true
+  },
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#fffaf2"
+  }
+}
