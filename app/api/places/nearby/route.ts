@@ -24,9 +24,13 @@ export async function GET(req:Request){
   async function searchCategory(code:string){
     const endpoint=new URL("https://dapi.kakao.com/v2/local/search/category.json");
     endpoint.searchParams.set("category_group_code",code);endpoint.searchParams.set("x",String(fixedCenter.lng));endpoint.searchParams.set("y",String(fixedCenter.lat));endpoint.searchParams.set("radius","2000");endpoint.searchParams.set("sort","distance");endpoint.searchParams.set("size","8");
-    const r=await fetch(endpoint,{headers:{Authorization:`KakaoAK ${key}`},next:{revalidate:3600}});if(!r.ok)return [];
-    const j=await r.json();return (j.documents||[]).map((p:any)=>({id:`kakao:${p.id}`,name:p.place_name,category:code==="FD6"?"restaurant":"cafe",address:p.road_address_name||p.address_name,latitude:Number(p.y),longitude:Number(p.x),source_name:"Kakao Local",source_url:p.place_url,distance_m:Number(p.distance||0),curated:false}));
+    const r=await fetch(endpoint,{headers:{Authorization:`KakaoAK ${key}`},cache:"no-store"});
+    let j:any={};try{j=await r.json();}catch{}
+    if(!r.ok)return {places:[],error:{category:code,status:r.status,code:j?.code??null,message:j?.msg||"Kakao Local request failed"}};
+    const places=(j.documents||[]).map((p:any)=>({id:`kakao:${p.id}`,name:p.place_name,category:code==="FD6"?"restaurant":"cafe",address:p.road_address_name||p.address_name,latitude:Number(p.y),longitude:Number(p.x),source_name:"Kakao Local",source_url:p.place_url,distance_m:Number(p.distance||0),curated:false}));
+    return {places,error:null};
   }
   const [food,cafe]=await Promise.all([searchCategory("FD6"),searchCategory("CE7")]);
-  return NextResponse.json({configured:true,center:fixedCenter,curated:curatedPlaces,live:[...food,...cafe]});
+  const errors=[food.error,cafe.error].filter(Boolean);
+  return NextResponse.json({configured:true,center:fixedCenter,curated:curatedPlaces,live:[...food.places,...cafe.places],kakao:errors.length?{ok:false,errors}:{ok:true}});
 }
