@@ -1,0 +1,9 @@
+"use client";
+import {useEffect,useState} from "react";
+
+type Summary={parking:number;nearestParking?:string;toilets:number;restaurants:number;cafes:number};
+export default function RunnerReadySummary({courseId,fallbackToilets}:{courseId:string;fallbackToilets?:number|null}){
+ const [s,setS]=useState<Summary|null>(null);
+ useEffect(()=>{let cancelled=false;(async()=>{try{const [p,t,a]=await Promise.all([fetch(`/api/parking/nearby?courseId=${courseId}`).then(r=>r.json()),fetch(`/api/toilets?courseId=${courseId}`).then(r=>r.json()),fetch(`/api/places/nearby?courseId=${courseId}`).then(r=>r.json())]);if(cancelled)return;const live=[...(a.curated||[]),...(a.live||[])];setS({parking:(p.parking||[]).length,nearestParking:p.parking?.[0]?.name,toilets:(t.toilets||[]).length||Number(fallbackToilets||0),restaurants:live.filter((x:any)=>x.category==="restaurant").length,cafes:live.filter((x:any)=>x.category==="cafe").length})}catch{if(!cancelled)setS({parking:0,toilets:Number(fallbackToilets||0),restaurants:0,cafes:0})}})();return()=>{cancelled=true}},[courseId,fallbackToilets]);
+ return <section className="section"><div className="sectionHead"><div><span className="eyebrow">RUN READY</span><h2>러닝 준비 정보</h2><p className="muted">주차부터 화장실, 러닝 후 식사까지 한 번에 확인하세요.</p></div></div><div className="stats">{!s?<div className="card muted">준비 정보를 확인하는 중...</div>:<><a className="stat" href="#parking"><b>{s.parking}</b><span className="muted">🚗 추천 주차장</span></a><a className="stat" href={`/?course=${courseId}#explore`}><b>{s.toilets}</b><span className="muted">🚻 주변 화장실</span></a><a className="stat" href="#after-run"><b>{s.restaurants}</b><span className="muted">🍚 주변 맛집</span></a><a className="stat" href="#after-run"><b>{s.cafes}</b><span className="muted">☕ 주변 카페</span></a></>}</div>{s?.nearestParking&&<p className="muted" style={{marginTop:10}}>가장 가까운 추천 주차장: {s.nearestParking}</p>}</section>
+}
