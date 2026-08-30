@@ -28,7 +28,7 @@ export default async function Home(){
  <section className="simpleIntro"><span className="introPill">RUN · DISCOVER · EAT</span><h1>러닝은 여행이 되고,<br className="mobileBreak"/> 도시는 놀이터가 된다!</h1><p>코스를 고르고, 달리고, 주변 장소까지 한 번에 이어보세요.</p><div className="heroActions"><a className="btn" href="#explore">🔎 코스 찾기</a><a className="btn ghost" href="#recommend">✨ 추천부터 보기</a></div></section>
  <div className="homeQuickNav" aria-label="빠른 이동"><a href="#recommend">✨ 추천</a><a href="#waterfront">🌊 수변</a><a href="#easy-runs">🏃 6K 이하</a><a href="#challenge-runs">💪 7~12K</a><a href="#night-runs">🌙 야간</a><a href="#art-runs">🎨 GPS 아트</a><a href="#run-eat">🍴 RUN + EAT</a></div>
  <InteractiveRunBoard/>
- <section className="journeySteps"><a href="#explore"><b>🗺️ 1. 코스 선택</b><span>검색·필터·지도로 골라요</span></a><a href="#run-eat"><b>🚗 2. 출발 준비</b><span>주차·화장실을 확인해요</span></a><Link href="/run"><b>🏃 3. 러닝 시작</b><span>라이브 러닝 모드로 달려요</span></Link><Link href="/favorites"><b>♥ 4. 저장 & 다시보기</b><span>기록과 RUN + EAT을 남겨요</span></Link></section>
+ <section className="journeySteps"><a href="#explore"><b>🗺️ 1. 코스 선택</b><span>검색·필터·지도로 골라요</span></a><a href="#explore"><b>🚗 2. 출발 준비</b><span>코스 상세에서 주차·화장실을 확인해요</span></a><a href="#explore"><b>🏃 3. 러닝 시작</b><span>코스를 고른 뒤 라이브 러닝 모드로 달려요</span></a><Link href="/favorites"><b>♥ 4. 저장 & 다시보기</b><span>기록과 RUN + EAT을 남겨요</span></Link></section>
  <CourseRail id="recommend" title="오늘의 추천 코스" subtitle="검증·난이도·코스 특성을 반영한 추천" courses={recommended}/>
  <CourseRail id="waterfront" title="🌊 호수·하천 수변 러닝" subtitle="서울·경기의 호수와 하천을 따라 달리는 코스" courses={waterfront}/>
  <CourseRail id="easy-runs" title="가볍게 6K 이하" subtitle="부담 없이 시작하기 좋은 짧은 러닝" courses={easyRuns}/>
