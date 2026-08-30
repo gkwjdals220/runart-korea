@@ -1,5 +1,6 @@
 import "./globals.css";
 import "./discovery.css";
+import "./ux-refresh.css";
 import "./toilets.css";
 import "leaflet/dist/leaflet.css";
 import MobileBottomNav from "@/components/MobileBottomNav";
@@ -10,5 +11,5 @@ export const metadata={
 };
 
 export default function Layout({children}:{children:React.ReactNode}){
-  return <html lang="ko"><body>{children}<MobileBottomNav/></body></html>;
+  return <html lang="ko"><body><div id="top"/>{children}<MobileBottomNav/></body></html>;
 }
