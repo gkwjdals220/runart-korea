@@ -5,7 +5,7 @@ import {createClient} from "@/lib/supabase/server";
 
 function CourseRail({title,courses,subtitle}:{title:string;courses:any[];subtitle?:string}){
  if(!courses.length)return null;
- return <section className="simpleHomeSection"><div className="simpleSectionHead"><div><h2>{title}</h2>{subtitle&&<p>{subtitle}</p>}</div><a href="#explore">전체 코스 보기 ›</a></div><div className="simpleRail">{courses.slice(0,12).map((c,i)=><Link href={`/courses/${c.id}`} className="simpleCourseCard" key={c.id}><div className={`simpleCoursePhoto photo${i%4}`}><span>{c.course_type==="art"?"🎨":c.night_recommended?"🌙":Number(c.distance_km)<=6?"🏃":"🗺️"}</span><b>{c.verified?"검증":"추천"}</b></div><div><h3>{c.name}</h3><p>{c.region} {c.city||""} · {Number(c.distance_km).toFixed(1)}km</p><small>난이도 {"★".repeat(c.difficulty||2)}{c.toilets!=null?` · 🚻 ${c.toilets}`:""}</small></div></Link>)}</div></section>
+ return <section className="simpleHomeSection"><div className="simpleSectionHead"><div><h2>{title}</h2>{subtitle&&<p>{subtitle}</p>}</div><a href="#explore">전체 코스 보기 ›</a></div><div className="simpleRail">{courses.slice(0,12).map((c,i)=><Link href={`/courses/${c.id}`} className="simpleCourseCard" key={c.id}><div className={`simpleCoursePhoto photo${i%4}`}><span>{(c.tags||[]).some((t:string)=>["수변","호수","하천"].includes(t))?"🌊":c.course_type==="art"?"🎨":c.night_recommended?"🌙":Number(c.distance_km)<=6?"🏃":"🗺️"}</span><b>{c.verified?"검증":"추천"}</b></div><div><h3>{c.name}</h3><p>{c.region} {c.city||""} · {Number(c.distance_km).toFixed(1)}km</p><small>난이도 {"★".repeat(c.difficulty||2)}{c.toilets!=null?` · 🚻 ${c.toilets}`:""}</small></div></Link>)}</div></section>
 }
 
 function BoardGame(){
@@ -24,6 +24,7 @@ export default async function Home(){
  let favoriteIds:string[]=[];
  if(user){const {data:favs}=await sb.from("runart_favorites").select("course_id").eq("user_id",user.id);favoriteIds=(favs||[]).map((x:any)=>x.course_id)}
  const recommended=[...normalized].sort((a,b)=>Number(b.verified)-Number(a.verified)||Number(b.night_recommended)-Number(a.night_recommended)||a.difficulty-b.difficulty||a.distance_km-b.distance_km).slice(0,18);
+ const waterfront=normalized.filter(c=>(c.tags||[]).some((t:string)=>["수변","호수","하천"].includes(t))).sort((a,b)=>Number(b.verified)-Number(a.verified)||a.distance_km-b.distance_km).slice(0,24);
  const easyRuns=normalized.filter(c=>c.distance_km<=6).sort((a,b)=>a.difficulty-b.difficulty||a.distance_km-b.distance_km).slice(0,18);
  const tenK=normalized.filter(c=>c.distance_km>6&&c.distance_km<=12).sort((a,b)=>Math.abs(a.distance_km-10)-Math.abs(b.distance_km-10)||a.difficulty-b.difficulty).slice(0,18);
  const nightRuns=normalized.filter(c=>c.night_recommended).sort((a,b)=>a.difficulty-b.difficulty||a.distance_km-b.distance_km).slice(0,18);
@@ -34,6 +35,7 @@ export default async function Home(){
  <BoardGame/>
  <section className="journeySteps"><Link href="#explore"><b>🗺️ 1. 코스 선택</b><span>보드에서 코스를 골라요</span></Link><Link href="#explore"><b>🏃 2. 러닝 시작</b><span>아트포인트를 만나보세요</span></Link><Link href="#explore"><b>🍴 3. 맛집/카페 발견</b><span>주변 장소를 찾아요</span></Link><Link href="/favorites"><b>♥ 4. RUN + EAT 저장</b><span>나만의 여행을 저장해요</span></Link></section>
  <CourseRail title="오늘의 추천 코스" subtitle="검증·난이도·코스 특성을 반영한 추천" courses={recommended}/>
+ <CourseRail title="🌊 호수·하천 수변 러닝" subtitle="서울·경기의 호수와 하천을 따라 달리는 코스" courses={waterfront}/>
  <CourseRail title="가볍게 6K 이하" subtitle="부담 없이 시작하기 좋은 짧은 러닝" courses={easyRuns}/>
  <CourseRail title="7~12K 도전 코스" subtitle="조금 더 달리고 싶은 날" courses={tenK}/>
  <CourseRail title="야간 러닝 추천" subtitle="저녁 러닝에 어울리는 코스" courses={nightRuns}/>
