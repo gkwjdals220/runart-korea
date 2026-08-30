@@ -40,7 +40,7 @@ export default function CourseExplorer({courses,userId,favoriteIds=[]}:{courses:
  const selectedCourse=useMemo(()=>courses.find(c=>c.id===selected)||null,[courses,selected]);
  const selectedLocation=selected?courseLocations[selected]||null:null;
 
- useEffect(()=>{let cancelled=false;(async()=>{try{const r=await fetch("/api/course-locations");const data=await r.json();if(!cancelled)setCourseLocations(data.locations||{});}catch{}finally{if(!cancelled)setLocationsLoading(false)}})();return()=>{cancelled=true}},[]);
+ useEffect(()=>{let cancelled=false;(async()=>{try{const r=await fetch("/api/course-locations",{cache:"no-store"});const data=await r.json();if(!cancelled)setCourseLocations(data.locations||{});}catch{}finally{if(!cancelled)setLocationsLoading(false)}})();return()=>{cancelled=true}},[]);
  const distanceMap=useMemo(()=>{const m=new Map<string,number>();if(!userPos)return m;courses.forEach(c=>{const cc=courseCenter(c)||courseLocations[c.id];if(cc)m.set(c.id,haversineKm(userPos,cc))});return m},[courses,userPos,courseLocations]);
  const filtered=useMemo(()=>{
   const rows=courses.filter(c=>{
@@ -54,9 +54,11 @@ export default function CourseExplorer({courses,userId,favoriteIds=[]}:{courses:
   return rows;
  },[courses,q,region,type,distance,surface,loop,night,verified,lowSignals,nearMode,userPos,distanceMap]);
 
- useEffect(()=>{let cancelled=false;(async()=>{if(!mapEl.current||mapRef.current)return;const L=await import("leaflet");if(cancelled||!mapEl.current)return;const map=L.map(mapEl.current,{zoomControl:true}).setView([36.55,127.85],7);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);mapRef.current=map;setMapReady(true)})();return()=>{cancelled=true}},[]);
+ useEffect(()=>{let cancelled=false;(async()=>{if(!mapEl.current||mapRef.current)return;const L=await import("leaflet");if(cancelled||!mapEl.current)return;const map=L.map(mapEl.current,{zoomControl:true,preferCanvas:true}).setView([36.55,127.85],7);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);mapRef.current=map;setMapReady(true);requestAnimationFrame(()=>map.invalidateSize(true));setTimeout(()=>map.invalidateSize(true),180)})();return()=>{cancelled=true}},[]);
 
- useEffect(()=>{(async()=>{const map=mapRef.current;if(!map)return;const L=await import("leaflet");layersRef.current.forEach(x=>map.removeLayer(x));layersRef.current=[];const bounds:any[]=[];
+ useEffect(()=>{if(!mapReady||!mapEl.current)return;const map=mapRef.current;if(!map)return;const observer=new ResizeObserver(()=>{requestAnimationFrame(()=>map.invalidateSize(false))});observer.observe(mapEl.current);const onVisibility=()=>{if(!document.hidden)setTimeout(()=>map.invalidateSize(true),30)};document.addEventListener("visibilitychange",onVisibility);window.addEventListener("resize",onVisibility);return()=>{observer.disconnect();document.removeEventListener("visibilitychange",onVisibility);window.removeEventListener("resize",onVisibility)}},[mapReady]);
+
+ useEffect(()=>{let cancelled=false;(async()=>{const map=mapRef.current;if(!map||!mapReady)return;requestAnimationFrame(()=>map.invalidateSize(false));const L=await import("leaflet");if(cancelled)return;layersRef.current.forEach(x=>map.removeLayer(x));layersRef.current=[];const bounds:any[]=[];
    filtered.forEach(c=>{
     const coords=(c.route_geojson?.coordinates||[]).map((x:number[])=>[x[1],x[0]]).filter((x:any)=>Number.isFinite(x[0])&&Number.isFinite(x[1]));
     if(coords.length){
@@ -67,15 +69,16 @@ export default function CourseExplorer({courses,userId,favoriteIds=[]}:{courses:
       const marker=L.circleMarker(point,{radius:selected===c.id?10:7,weight:3,fillOpacity:.92}).addTo(map).bindTooltip(`📍 ${c.name}<br/>${c.start_name||loc.label||"출발점"}`);marker.on("click",()=>setSelected(c.id));layersRef.current.push(marker);bounds.push(point);
     }
    });
-   if(selected){const loc=courseLocations[selected];if(loc)map.setView([loc.lat,loc.lng],14);}
-   else if(bounds.length&&filtered.length<=12)map.fitBounds(bounds,{padding:[25,25],maxZoom:13});
-  })()},[filtered,selected,mapReady,courseLocations]);
+   if(selected){const c=courses.find(x=>x.id===selected);const route=(c?.route_geojson?.coordinates||[]).filter((x:any)=>Array.isArray(x)&&x.length>=2);if(route.length){const latlngs=route.map((x:number[])=>[x[1],x[0]]);map.fitBounds(latlngs,{padding:[35,35],maxZoom:15,animate:false})}else{const loc=courseLocations[selected];if(loc)map.setView([loc.lat,loc.lng],14,{animate:false});}}
+   else if(bounds.length){map.fitBounds(bounds,{padding:[25,25],maxZoom:filtered.length<=12?13:10,animate:false});}
+   requestAnimationFrame(()=>map.invalidateSize(false));setTimeout(()=>{if(!cancelled)map.invalidateSize(false)},80);
+  })();return()=>{cancelled=true}},[filtered,selected,mapReady,courseLocations,courses]);
 
- useEffect(()=>{let cancelled=false;(async()=>{const map=mapRef.current;if(!map)return;toiletLayersRef.current.forEach(x=>map.removeLayer(x));toiletLayersRef.current=[];setToiletCount(0);if(!showToilets||!selected)return;setToiletLoading(true);try{const r=await fetch(`/api/toilets?courseId=${encodeURIComponent(selected)}`);const data=await r.json();if(cancelled)return;const toilets=(data.toilets||[]) as Toilet[];const L=await import("leaflet");const icon=L.divIcon({className:"toiletMarker",html:"<span>🚻</span>",iconSize:[30,30],iconAnchor:[15,15]});toilets.forEach(t=>{const details=[t.opening_hours?`운영 ${t.opening_hours}`:null,t.fee?`요금 ${t.fee}`:null,t.wheelchair?`휠체어 ${t.wheelchair}`:null].filter(Boolean).join(" · ");const marker=L.marker([t.lat,t.lng],{icon}).addTo(map).bindPopup(`<b>${t.name}</b>${details?`<br/><small>${details}</small>`:""}<br/><small>OpenStreetMap 기반</small>`);toiletLayersRef.current.push(marker)});setToiletCount(toilets.length);if(data.warning)setMsg(data.warning)}catch{if(!cancelled)setMsg("화장실 위치를 불러오지 못했습니다.")}finally{if(!cancelled)setToiletLoading(false)}})();return()=>{cancelled=true}},[selected,showToilets,mapReady]);
+ useEffect(()=>{let cancelled=false;(async()=>{const map=mapRef.current;if(!map)return;toiletLayersRef.current.forEach(x=>map.removeLayer(x));toiletLayersRef.current=[];setToiletCount(0);if(!showToilets||!selected)return;setToiletLoading(true);try{const r=await fetch(`/api/toilets?courseId=${encodeURIComponent(selected)}`,{cache:"no-store"});const data=await r.json();if(cancelled)return;const toilets=(data.toilets||[]) as Toilet[];const L=await import("leaflet");const icon=L.divIcon({className:"toiletMarker",html:"<span>🚻</span>",iconSize:[30,30],iconAnchor:[15,15]});toilets.forEach(t=>{const details=[t.opening_hours?`운영 ${t.opening_hours}`:null,t.fee?`요금 ${t.fee}`:null,t.wheelchair?`휠체어 ${t.wheelchair}`:null].filter(Boolean).join(" · ");const marker=L.marker([t.lat,t.lng],{icon}).addTo(map).bindPopup(`<b>${t.name}</b>${details?`<br/><small>${details}</small>`:""}<br/><small>OpenStreetMap 기반</small>`);toiletLayersRef.current.push(marker)});setToiletCount(toilets.length);requestAnimationFrame(()=>map.invalidateSize(false));if(data.warning)setMsg(data.warning)}catch{if(!cancelled)setMsg("화장실 위치를 불러오지 못했습니다.")}finally{if(!cancelled)setToiletLoading(false)}})();return()=>{cancelled=true}},[selected,showToilets,mapReady]);
 
  function locateMe(){
   const map=mapRef.current;if(!navigator.geolocation)return setMsg("현재 위치 기능을 사용할 수 없습니다.");setLocating(true);
-  navigator.geolocation.getCurrentPosition(pos=>{const p={lat:pos.coords.latitude,lng:pos.coords.longitude};setUserPos(p);setNearMode(true);setLocating(false);setMsg("현재 위치에서 25km 이내 코스를 가까운 순으로 보여드려요.");if(map)map.setView([p.lat,p.lng],11)},()=>{setLocating(false);setMsg("위치 권한을 허용하면 내 주변 코스를 추천할 수 있습니다.")},{enableHighAccuracy:false,timeout:8000,maximumAge:300000});
+  navigator.geolocation.getCurrentPosition(pos=>{const p={lat:pos.coords.latitude,lng:pos.coords.longitude};setUserPos(p);setNearMode(true);setLocating(false);setMsg("현재 위치에서 25km 이내 코스를 가까운 순으로 보여드려요.");if(map){map.invalidateSize(false);map.setView([p.lat,p.lng],11,{animate:false})}},()=>{setLocating(false);setMsg("위치 권한을 허용하면 내 주변 코스를 추천할 수 있습니다.")},{enableHighAccuracy:false,timeout:8000,maximumAge:300000});
  }
  async function toggleFavorite(courseId:string){
   if(!userId){setMsg("찜하기는 로그인 후 사용할 수 있습니다.");return}
