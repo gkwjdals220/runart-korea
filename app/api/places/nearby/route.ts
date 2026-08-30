@@ -5,7 +5,16 @@ function centerFromGeojson(geo:any){
   const coords:Array<[number,number]>=(geo?.coordinates||[]).filter((x:any)=>Array.isArray(x)&&x.length>=2);
   if(!coords.length)return null;
   const sum=coords.reduce((a,[lng,lat])=>({lng:a.lng+Number(lng),lat:a.lat+Number(lat)}),{lng:0,lat:0});
-  return {lng:sum.lng/coords.length,lat:sum.lat/coords.length};
+  return {lng:sum.lng/coords.length,lat:sum.lat/coords.length,source:"route" as const};
+}
+async function geocodeStart(key:string,course:any){
+  const query=[course.region,course.city,course.start_name||course.name].filter(Boolean).join(" ");
+  if(!query)return null;
+  const endpoint=new URL("https://dapi.kakao.com/v2/local/search/keyword.json");
+  endpoint.searchParams.set("query",query);endpoint.searchParams.set("size","1");
+  const r=await fetch(endpoint,{headers:{Authorization:`KakaoAK ${key}`},cache:"no-store"});
+  if(!r.ok)return null;const j:any=await r.json().catch(()=>({}));const p=j?.documents?.[0];if(!p)return null;
+  const lat=Number(p.y),lng=Number(p.x);return Number.isFinite(lat)&&Number.isFinite(lng)?{lat,lng,source:"start" as const,label:p.place_name||course.start_name||course.name}:null;
 }
 function cleanText(v:string){return String(v||"").replace(/<[^>]+>/g,"").replace(/&quot;/g,'"').replace(/&amp;/g,"&").trim();}
 function areaHint(address?:string|null){const parts=String(address||"").split(/\s+/).filter(Boolean);return parts.slice(0,3).join(" ");}
@@ -30,8 +39,10 @@ export async function GET(req:Request){
   const {data:popularity}=await sb.rpc("runart_place_popularity");
   const popularityMap=new Map((popularity||[]).map((x:any)=>[String(x.place_id),{favorite_count:Number(x.favorite_count||0),plan_count:Number(x.plan_count||0)}]));
   const curatedPlaces=(curated||[]).map((x:any)=>{const p=x.runart_places;const pop=popularityMap.get(String(p.id))||{favorite_count:0,plan_count:0};return {...p,distance_m:x.distance_m,walking_minutes:x.walking_minutes,editorial_note:x.editorial_note,curated:true,review_signal:null,review_samples:[],...pop}});
-  const key=process.env.KAKAO_REST_API_KEY;const center=centerFromGeojson(course.route_geojson);
-  if(!key||!center){const decorated=curatedPlaces.map((p:any)=>({...p,runner_score:runnerScore(p)}));return NextResponse.json({configured:!!key,center,curated:decorated,live:[],radius_m:5000});}
+  const key=process.env.KAKAO_REST_API_KEY;
+  if(!key){const decorated=curatedPlaces.map((p:any)=>({...p,runner_score:runnerScore(p)}));return NextResponse.json({configured:false,center:null,curated:decorated,live:[],radius_m:5000});}
+  const center=centerFromGeojson(course.route_geojson)||await geocodeStart(key,course);
+  if(!center){const decorated=curatedPlaces.map((p:any)=>({...p,runner_score:runnerScore(p)}));return NextResponse.json({configured:true,center:null,curated:decorated,live:[],radius_m:5000});}
   const fixedCenter={lng:center.lng,lat:center.lat};
   const {data:savedPlaces}=await sb.from("runart_places").select("id,name,address,source_url,verified");
   const savedByUrl=new Map((savedPlaces||[]).filter((p:any)=>p.source_url).map((p:any)=>[String(p.source_url),p]));
@@ -63,5 +74,5 @@ export async function GET(req:Request){
   const rank=(a:any,b:any)=>Number(b.runner_score||0)-Number(a.runner_score||0)||Number(b.review_signal||0)-Number(a.review_signal||0)||Number(a.distance_m||99999)-Number(b.distance_m||99999);
   const live=[...foodEnriched.sort(rank),...cafeEnriched.sort(rank)];
   const errors=[food.error,cafe.error].filter(Boolean);
-  return NextResponse.json({configured:true,center:fixedCenter,curated:curatedDecorated,live,radius_m:5000,ranking:"runner_score",review_signal_note:"블로그 후기 검색량은 실제 이용자 경험을 반영하기 위한 참고 신호이며 공식 평점이 아닙니다.",runner_score_note:"RUNART 러너 점수는 RUNART PICK, 찜 수, RUN + EAT 저장 수, 후기 신호, 거리를 합산한 추천 지표입니다.",kakao:errors.length?{ok:false,errors}:{ok:true}});
+  return NextResponse.json({configured:true,center:fixedCenter,center_source:center.source,center_label:(center as any).label||null,curated:curatedDecorated,live,radius_m:5000,ranking:"runner_score",review_signal_note:"블로그 후기 검색량은 실제 이용자 경험을 반영하기 위한 참고 신호이며 공식 평점이 아닙니다.",runner_score_note:"RUNART 러너 점수는 RUNART PICK, 찜 수, RUN + EAT 저장 수, 후기 신호, 거리를 합산한 추천 지표입니다.",kakao:errors.length?{ok:false,errors}:{ok:true}});
 }
