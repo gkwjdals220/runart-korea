@@ -16,6 +16,7 @@ export async function GET(req:Request){
   const sb=await createClient();
   const {data:course}=await sb.from("runart_courses").select("id,name,region,city,start_name,route_geojson").eq("id",courseId).maybeSingle();
   if(!course)return NextResponse.json({error:"course not found"},{status:404});
+  const courseRegion=course.region||"",courseCity=course.city||"";
   const {data:curated}=await sb.from("runart_course_places")
     .select("distance_m,walking_minutes,editorial_note,recommended_after_run,runart_places(id,name,category,address,latitude,longitude,tags,price_level,source_name,source_url,verified)")
     .eq("course_id",courseId).order("sort_order");
@@ -34,7 +35,7 @@ export async function GET(req:Request){
   }
   async function reviewSignal(place:any){
     const endpoint=new URL("https://dapi.kakao.com/v2/search/blog");
-    const hint=areaHint(place.address)||[course.region,course.city].filter(Boolean).join(" ");
+    const hint=areaHint(place.address)||[courseRegion,courseCity].filter(Boolean).join(" ");
     endpoint.searchParams.set("query",`${hint} ${place.name} 맛집 후기`);endpoint.searchParams.set("size","3");endpoint.searchParams.set("sort","recency");
     const r=await fetch(endpoint,{headers:{Authorization:`KakaoAK ${key}`},cache:"no-store"});
     if(!r.ok)return place;
@@ -45,11 +46,7 @@ export async function GET(req:Request){
   const [food,cafe]=await Promise.all([searchCategory("FD6"),searchCategory("CE7")]);
   const foodTop=food.places.slice(0,10);const cafeTop=cafe.places.slice(0,6);
   const [foodEnriched,cafeEnriched]=await Promise.all([Promise.all(foodTop.map(reviewSignal)),Promise.all(cafeTop.map(reviewSignal))]);
-  const rank=(a:any,b:any)=>{
-    const ar=Number(a.review_signal||0),br=Number(b.review_signal||0);
-    if(ar!==br)return br-ar;
-    return Number(a.distance_m||99999)-Number(b.distance_m||99999);
-  };
+  const rank=(a:any,b:any)=>{const ar=Number(a.review_signal||0),br=Number(b.review_signal||0);if(ar!==br)return br-ar;return Number(a.distance_m||99999)-Number(b.distance_m||99999)};
   const live=[...foodEnriched.sort(rank),...cafeEnriched.sort(rank)];
   const errors=[food.error,cafe.error].filter(Boolean);
   return NextResponse.json({configured:true,center:fixedCenter,curated:curatedPlaces,live,radius_m:5000,ranking:"review_signal_then_distance",review_signal_note:"블로그 후기 검색량은 실제 이용자 경험을 반영하기 위한 참고 신호이며 공식 평점이 아닙니다.",kakao:errors.length?{ok:false,errors}:{ok:true}});
