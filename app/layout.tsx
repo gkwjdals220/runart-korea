@@ -3,6 +3,7 @@ import "./discovery.css";
 import "./ux-refresh.css";
 import "./flow-polish.css";
 import "./explorer-polish.css";
+import "./journey-flow.css";
 import "./toilets.css";
 import "leaflet/dist/leaflet.css";
 import MobileBottomNav from "@/components/MobileBottomNav";
