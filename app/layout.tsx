@@ -1,5 +1,6 @@
 import "./globals.css";
 import "./discovery.css";
+import "./toilets.css";
 import "leaflet/dist/leaflet.css";
 import MobileBottomNav from "@/components/MobileBottomNav";
 
