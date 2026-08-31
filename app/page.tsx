@@ -2,6 +2,7 @@ import Link from "next/link";
 import Brand from "@/components/Brand";
 import CourseExplorer from "@/components/CourseExplorer";
 import InteractiveRunBoard from "@/components/InteractiveRunBoard";
+import ExplorerPresetButtons from "@/components/ExplorerPresetButtons";
 import {createClient} from "@/lib/supabase/server";
 
 function CourseRail({id,title,courses,subtitle}:{id:string;title:string;courses:any[];subtitle?:string}){
@@ -31,6 +32,6 @@ export default async function Home(){
  <CourseRail id="art-runs" title="🎨 GPS 아트 & 테마런" subtitle="달리는 과정 자체가 콘텐츠가 되는 코스" courses={artRuns}/>
  <CourseRail id="run-eat" title="🍴 RUN + EAT 추천" subtitle="러닝 후 주변 맛집과 카페까지 이어지는 코스" courses={runEat}/>
  <section className="activitySummary"><div className="simpleSectionHead"><h2>내 활동 요약</h2><Link href="/my">MY ›</Link></div><div className="activityGrid"><Link href="/run/free"><span>🏃</span><small>자유 러닝</small><b>START</b></Link><div><span>👟</span><small>등록 코스</small><b>{normalized.length}<em>개</em></b></div><Link href="/favorites"><span>📍</span><small>찜한 코스</small><b>{favoriteIds.length}<em>개</em></b></Link><Link href="/my"><span>♥</span><small>내 기록</small><b>→</b></Link></div></section>
- <section className="exploreReveal" id="explore"><div className="simpleSectionHead"><div><h2>코스 탐색</h2><p>원하는 조건으로 찾고, 코스를 선택하면 지도에서 바로 확인할 수 있어요.</p></div><a href="#top">맨 위로 ↑</a></div><CourseExplorer courses={normalized as any} userId={user?.id||null} favoriteIds={favoriteIds}/></section>
+ <section className="exploreReveal" id="explore"><div className="simpleSectionHead"><div><h2>코스 탐색</h2><p>원하는 조건으로 찾고, 코스를 선택하면 지도에서 바로 확인할 수 있어요.</p></div><a href="#top">맨 위로 ↑</a></div><ExplorerPresetButtons/><CourseExplorer courses={normalized as any} userId={user?.id||null} favoriteIds={favoriteIds}/></section>
  </main>
 }
