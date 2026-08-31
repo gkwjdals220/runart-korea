@@ -1,6 +1,6 @@
 {
-  "appId": "com.runart.korea",
-  "appName": "RUNART KOREA",
+  "appId": "com.ttwittun.korea",
+  "appName": "TTWITTUN",
   "webDir": "out",
   "server": {
     "url": "https://runart-korea.vercel.app",
