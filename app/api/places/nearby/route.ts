@@ -32,6 +32,7 @@ export async function GET(req:Request){
   const sb=await createClient();
   const {data:course}=await sb.from("runart_courses").select("id,name,region,city,start_name,route_geojson").eq("id",courseId).maybeSingle();
   if(!course)return NextResponse.json({error:"course not found"},{status:404});
+  // Capture narrowed fields before nested async helpers so production TypeScript keeps the null check.
   const courseRegion=course.region||"",courseCity=course.city||"";
   const {data:curated}=await sb.from("runart_course_places")
     .select("distance_m,walking_minutes,editorial_note,recommended_after_run,runart_places(id,name,category,address,latitude,longitude,tags,price_level,source_name,source_url,verified)")
