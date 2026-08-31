@@ -1,6 +1,8 @@
 import {NextResponse} from "next/server";
 import {createClient} from "@/lib/supabase/server";
 
+type PlacePopularity={favorite_count:number;plan_count:number};
+
 function centerFromGeojson(geo:any){
   const coords:Array<[number,number]>=(geo?.coordinates||[]).filter((x:any)=>Array.isArray(x)&&x.length>=2);
   if(!coords.length)return null;
@@ -32,14 +34,13 @@ export async function GET(req:Request){
   const sb=await createClient();
   const {data:course}=await sb.from("runart_courses").select("id,name,region,city,start_name,route_geojson").eq("id",courseId).maybeSingle();
   if(!course)return NextResponse.json({error:"course not found"},{status:404});
-  // Capture narrowed fields before nested async helpers so production TypeScript keeps the null check.
   const courseRegion=course.region||"",courseCity=course.city||"";
   const {data:curated}=await sb.from("runart_course_places")
     .select("distance_m,walking_minutes,editorial_note,recommended_after_run,runart_places(id,name,category,address,latitude,longitude,tags,price_level,source_name,source_url,verified)")
     .eq("course_id",courseId).order("sort_order");
   const {data:popularity}=await sb.rpc("runart_place_popularity");
-  const popularityMap=new Map((popularity||[]).map((x:any)=>[String(x.place_id),{favorite_count:Number(x.favorite_count||0),plan_count:Number(x.plan_count||0)}]));
-  const curatedPlaces=(curated||[]).map((x:any)=>{const p=x.runart_places;const pop=popularityMap.get(String(p.id))||{favorite_count:0,plan_count:0};return {...p,distance_m:x.distance_m,walking_minutes:x.walking_minutes,editorial_note:x.editorial_note,curated:true,review_signal:null,review_samples:[],...pop}});
+  const popularityMap:Map<string,PlacePopularity>=new Map((popularity||[]).map((x:any)=>[String(x.place_id),{favorite_count:Number(x.favorite_count||0),plan_count:Number(x.plan_count||0)}]));
+  const curatedPlaces=(curated||[]).map((x:any)=>{const p=x.runart_places;const pop:PlacePopularity=popularityMap.get(String(p.id))||{favorite_count:0,plan_count:0};return {...p,distance_m:x.distance_m,walking_minutes:x.walking_minutes,editorial_note:x.editorial_note,curated:true,review_signal:null,review_samples:[],...pop}});
   const key=process.env.KAKAO_REST_API_KEY;
   if(!key){const decorated=curatedPlaces.map((p:any)=>({...p,runner_score:runnerScore(p)}));return NextResponse.json({configured:false,center:null,curated:decorated,live:[],radius_m:5000});}
   const center=centerFromGeojson(course.route_geojson)||await geocodeStart(key,course);
@@ -54,7 +55,7 @@ export async function GET(req:Request){
     const r=await fetch(endpoint,{headers:{Authorization:`KakaoAK ${key}`},cache:"no-store"});
     let j:any={};try{j=await r.json();}catch{}
     if(!r.ok)return {places:[],error:{category:code,status:r.status,code:j?.code??null,message:j?.msg||"Kakao Local request failed"}};
-    const places=(j.documents||[]).map((p:any)=>{const address=p.road_address_name||p.address_name;const saved=savedByUrl.get(String(p.place_url))||savedByKey.get(`${p.place_name}|${address||""}`);const pop=saved?popularityMap.get(String(saved.id)):{favorite_count:0,plan_count:0};return {id:`kakao:${p.id}`,saved_place_id:saved?.id||null,name:p.place_name,category:code==="FD6"?"restaurant":"cafe",address,latitude:Number(p.y),longitude:Number(p.x),source_name:"Kakao Local",source_url:p.place_url,distance_m:Number(p.distance||0),curated:false,verified:!!saved?.verified,review_signal:null,review_samples:[],favorite_count:Number(pop?.favorite_count||0),plan_count:Number(pop?.plan_count||0)}});
+    const places=(j.documents||[]).map((p:any)=>{const address=p.road_address_name||p.address_name;const saved:any=savedByUrl.get(String(p.place_url))||savedByKey.get(`${p.place_name}|${address||""}`);const pop:PlacePopularity=saved?(popularityMap.get(String(saved.id))||{favorite_count:0,plan_count:0}):{favorite_count:0,plan_count:0};return {id:`kakao:${p.id}`,saved_place_id:saved?.id||null,name:p.place_name,category:code==="FD6"?"restaurant":"cafe",address,latitude:Number(p.y),longitude:Number(p.x),source_name:"Kakao Local",source_url:p.place_url,distance_m:Number(p.distance||0),curated:false,verified:!!saved?.verified,review_signal:null,review_samples:[],favorite_count:Number(pop.favorite_count||0),plan_count:Number(pop.plan_count||0)}});
     return {places,error:null};
   }
   async function reviewSignal(place:any){
