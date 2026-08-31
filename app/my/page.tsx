@@ -11,6 +11,16 @@ function pbText(flags:any){
  if(!Array.isArray(flags)||!flags.length)return null;
  return flags.map((x:any)=>String(x)==="LONGEST"?"최장":String(x)).join("·");
 }
+function trackPb(rows:any[]){
+ let best400:number|null=null,best800:number|null=null;
+ for(const r of rows){
+  if(r.run_mode!=="track"||!Array.isArray(r.splits))continue;
+  const laps=r.splits.map((s:any)=>({sec:Number(s?.lapSeconds||0),m:Number(s?.distanceM||400)})).filter((s:any)=>s.sec>0&&s.m>=350&&s.m<=450);
+  for(const lap of laps){if(lap.sec>=45&&lap.sec<=600&&(best400==null||lap.sec<best400))best400=lap.sec;}
+  for(let i=0;i+1<laps.length;i++){const sec=laps[i].sec+laps[i+1].sec;if(sec>=90&&sec<=1200&&(best800==null||sec<best800))best800=sec;}
+ }
+ return {best400,best800};
+}
 
 export default async function MyPage(){
  const sb=await createClient();
@@ -28,7 +38,7 @@ export default async function MyPage(){
  const bestPaces=rows.map((r:any)=>Number(r.best_pace_sec_per_km||0)).filter((v:number)=>v>0),bestPace=bestPaces.length?Math.min(...bestPaces):null;
  const pbMin=(field:string)=>{const vals=rows.map((r:any)=>Number(r[field]||0)).filter((v:number)=>v>0);return vals.length?Math.min(...vals):null;};
  const pb1=pbMin("pb_1k_sec"),pb3=pbMin("pb_3k_sec"),pb5=pbMin("pb_5k_sec"),pb10=pbMin("pb_10k_sec");
- const trackCount=rows.filter((r:any)=>r.run_mode==="track").length;
+ const trackCount=rows.filter((r:any)=>r.run_mode==="track").length,{best400,best800}=trackPb(rows);
 
  return <main className="wrap myPage">
   <header className="top myTop"><Brand/><div className="nav"><Link className="btn ghost" href="/#explore">코스 찾기</Link><Link className="btn ghost" href="/favorites">♡ 찜</Link><Link className="btn ghost" href="/run/track">🏟️ 트랙런</Link><Link className="btn" href="/run/free">🏃 자유 러닝</Link></div></header>
@@ -56,11 +66,17 @@ export default async function MyPage(){
     <div><small>Best 5K</small><b>{pb5?fmt(pb5):"--:--"}<em>5km</em></b></div>
     <div><small>Best 10K</small><b>{pb10?fmt(pb10):"--:--"}<em>10km</em></b></div>
    </div>
+   <div className="mySummaryGrid" style={{marginTop:10}}>
+    <div><small>🏟️ Track 400m</small><b>{best400?fmt(best400):"--:--"}<em>{best400?"400m PB":"트랙 기록 없음"}</em></b></div>
+    <div><small>🏟️ Track 800m</small><b>{best800?fmt(best800):"--:--"}<em>{best800?"800m PB":"트랙 기록 없음"}</em></b></div>
+    <div><small>트랙런 횟수</small><b>{trackCount}<em>회</em></b></div>
+    <div><small>다음 훈련</small><b><Link href="/run/track">START</Link><em>인터벌</em></b></div>
+   </div>
   </section>
 
   <section className="myQuickGrid">
    <Link className="card myQuickCard" href="/run/free"><span>🏃</span><div><b>자유 러닝</b><small>코스 없이 바로 GPS 기록</small></div><em>→</em></Link>
-   <Link className="card myQuickCard" href="/run/track"><span>🏟️</span><div><b>트랙런</b><small>400m 자동랩 · 랩 페이스</small></div><em>→</em></Link>
+   <Link className="card myQuickCard" href="/run/track"><span>🏟️</span><div><b>트랙런</b><small>400m 자동랩 · 인터벌 · 휴식 타이머</small></div><em>→</em></Link>
    <Link className="card myQuickCard" href="/favorites"><span>♡</span><div><b>내 찜 {favCount||0}</b><small>코스·맛집·RUN + EAT</small></div><em>→</em></Link>
    <Link className="card myQuickCard" href="/dashboard"><span>◉</span><div><b>크루 기록</b><small>출석·활동·러닝 로그</small></div><em>→</em></Link>
    <Link className="card myQuickCard" href="/races"><span>🏁</span><div><b>대회 일정</b><small>참가 현황과 신청 관리</small></div><em>→</em></Link>
