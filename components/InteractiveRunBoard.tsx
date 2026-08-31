@@ -16,7 +16,7 @@ const tiles:Tile[]=[
  {label:"내 기록",icon:"📊",href:"/my",hint:"거리·페이스·스플릿 기록을 확인해요.",tone:"blue"},
  {label:"GOAL",icon:"🏆",href:"/run/free",hint:"오늘도 TTWITTUN으로 기록을 남겨보세요.",tone:"goal"},
  {label:"공원",icon:"🌿",href:"#explore",hint:"탐색에서 공원 코스를 찾아보세요.",tone:"green"},
- {label:"카페",icon:"🥤",href:"#run-eat",hint:"러닝 후 쉬어갈 장소를 찾아보세요.",tone:"yellow"},
+ {label:"트랙런",icon:"🏟️",href:"/run/track",hint:"400m 자동랩과 랩 페이스로 트랙 훈련을 기록해요.",tone:"yellow"},
  {label:"둘레길",icon:"⛰️",href:"#explore",hint:"탐색에서 거리와 코스 형태를 골라보세요.",tone:"earth"},
  {label:"랜드마크",icon:"🗼",href:"#recommend",hint:"도시를 여행하듯 달리는 코스예요.",tone:"purple"},
  {label:"CHANCE",icon:"❓",href:"#recommend",hint:"한 번 더 굴려 새로운 코스를 만나보세요.",tone:"pink"},
