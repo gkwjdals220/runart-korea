@@ -26,6 +26,28 @@ async function geocodeStart(course:any){
   }catch{return null;}
 }
 
+async function fetchOverpass(query:string){
+  const endpoints=[
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter",
+    "https://overpass.nchc.org.tw/api/interpreter"
+  ];
+  let lastError="Overpass unavailable";
+  for(const endpoint of endpoints){
+    try{
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),9000);
+      const r=await fetch(endpoint,{method:"POST",headers:{"content-type":"application/x-www-form-urlencoded","user-agent":"RUNART-KOREA/1.0"},body:new URLSearchParams({data:query}),cache:"no-store",signal:controller.signal});
+      clearTimeout(timer);
+      if(!r.ok){lastError=`${endpoint} ${r.status}`;continue}
+      const json=await r.json();
+      if(Array.isArray(json?.elements))return {json,endpoint};
+      lastError=`${endpoint} invalid response`;
+    }catch(e:any){lastError=e?.name==="AbortError"?`${endpoint} timeout`:String(e?.message||e)}
+  }
+  throw new Error(lastError);
+}
+
 export async function GET(req:NextRequest){
   const courseId=req.nextUrl.searchParams.get("courseId");
   if(!courseId)return NextResponse.json({error:"courseId is required"},{status:400});
@@ -41,11 +63,9 @@ export async function GET(req:NextRequest){
   }
   const b=bbox(coords);
   if(!b)return NextResponse.json({toilets:[],source:"OpenStreetMap",warning:"코스 또는 출발점 좌표를 확인하지 못했습니다."});
-  const q=`[out:json][timeout:12];(node["amenity"="toilets"](${b.south},${b.west},${b.north},${b.east});way["amenity"="toilets"](${b.south},${b.west},${b.north},${b.east});relation["amenity"="toilets"](${b.south},${b.west},${b.north},${b.east}););out center tags;`;
+  const q=`[out:json][timeout:8];(node["amenity"="toilets"](${b.south},${b.west},${b.north},${b.east});way["amenity"="toilets"](${b.south},${b.west},${b.north},${b.east});relation["amenity"="toilets"](${b.south},${b.west},${b.north},${b.east}););out center tags;`;
   try{
-    const r=await fetch("https://overpass-api.de/api/interpreter",{method:"POST",headers:{"content-type":"application/x-www-form-urlencoded","user-agent":"RUNART-KOREA/1.0"},body:new URLSearchParams({data:q}),next:{revalidate:3600}});
-    if(!r.ok)throw new Error(`Overpass ${r.status}`);
-    const json=await r.json();
+    const {json,endpoint}=await fetchOverpass(q);
     const toilets=(json.elements||[]).map((e:any)=>({
       id:`osm:${e.type}:${e.id}`,
       name:e.tags?.name||e.tags?.["name:ko"]||"공중화장실",
@@ -53,7 +73,7 @@ export async function GET(req:NextRequest){
       access:e.tags?.access||null,wheelchair:e.tags?.wheelchair||null,
       opening_hours:e.tags?.opening_hours||null,fee:e.tags?.fee||null,source:"OpenStreetMap"
     })).filter((x:any)=>Number.isFinite(x.lat)&&Number.isFinite(x.lng));
-    return NextResponse.json({toilets,source:"OpenStreetMap",locationSource,updatedAt:new Date().toISOString()});
+    return NextResponse.json({toilets,source:"OpenStreetMap",locationSource,provider:endpoint,updatedAt:new Date().toISOString()});
   }catch{
     return NextResponse.json({toilets:[],source:"OpenStreetMap",locationSource,warning:"화장실 데이터를 불러오지 못했습니다."},{status:200});
   }
