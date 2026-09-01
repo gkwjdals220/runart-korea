@@ -1,6 +1,6 @@
 "use client";
 
-import {useState} from "react";
+import {useEffect,useState} from "react";
 import {usePathname} from "next/navigation";
 
 type FacilityType="toilet"|"parking"|"water"|"convenience";
@@ -21,6 +21,8 @@ function distanceText(m:number){return m<1000?`${m}m`:`${(m/1000).toFixed(1)}km`
 export default function UrgentFacilityNav(){
   const pathname=usePathname(),inLiveRun=pathname.startsWith("/run/");
   const[open,setOpen]=useState(false),[loading,setLoading]=useState<FacilityType|null>(null),[origin,setOrigin]=useState<UserPos|null>(null),[facilities,setFacilities]=useState<Facility[]>([]),[error,setError]=useState("");
+
+  useEffect(()=>{setOpen(false);setLoading(null);setOrigin(null);setFacilities([]);setError("");},[pathname]);
 
   function find(type:FacilityType){
     if(!navigator.geolocation){setError("현재 위치 기능을 사용할 수 없습니다.");setOpen(true);return;}
