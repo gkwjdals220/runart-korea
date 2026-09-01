@@ -23,6 +23,7 @@ export default function UrgentFacilityNav(){
   const[open,setOpen]=useState(false),[loading,setLoading]=useState<FacilityType|null>(null),[origin,setOrigin]=useState<UserPos|null>(null),[facilities,setFacilities]=useState<Facility[]>([]),[error,setError]=useState("");
 
   useEffect(()=>{setOpen(false);setLoading(null);setOrigin(null);setFacilities([]);setError("");},[pathname]);
+  useEffect(()=>{const onFacility=(event:Event)=>{const type=(event as CustomEvent<{type?:FacilityType}>).detail?.type;if(type==="water"||type==="convenience")find(type)};window.addEventListener("runart:facility",onFacility);return()=>window.removeEventListener("runart:facility",onFacility)},[]);
 
   function find(type:FacilityType){
     if(!navigator.geolocation){setError("현재 위치 기능을 사용할 수 없습니다.");setOpen(true);return;}
