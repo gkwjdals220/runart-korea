@@ -12,6 +12,10 @@ const items=[
 
 export default function MobileBottomNav(){
  const pathname=usePathname();
+ // Live-run pages have their own fixed control dock. Showing both fixed bars
+ // blocks the stop/pause controls on small screens, so keep navigation out of
+ // the active tracking experience.
+ if(pathname.startsWith("/run/")) return null;
  return <nav className="mobileBottomNav" aria-label="모바일 주요 메뉴">
   {items.map(item=>{
    const on=item.match(pathname);
