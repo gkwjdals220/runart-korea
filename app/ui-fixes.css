@@ -49,6 +49,15 @@ html{scroll-padding-top:156px}
   .filterbar.explorerFilters,.explorerFilters{position:relative!important;top:auto!important;z-index:1!important;max-height:none!important;overflow:visible!important}
   .explorerCourseList{max-height:none!important;overflow:visible!important}
 
+  /* On phones the old map tab hid the matched course list completely.
+     Keep the map first, then expose the matching results directly below it.
+     The dedicated list tab still hides the map for list-only browsing. */
+  .explorerLayout.view-map .explorerCourseList{display:block!important;margin-top:10px!important}
+  .explorerLayout.view-list .explorerCourseList{display:block!important}
+  .explorerLayout.view-list .explorerMapPanel{display:none!important}
+  .explorerLayout.view-map .explorerMapPanel{display:block!important}
+  .explorerLayout.view-map .explorerCourseList::before{content:"검색 결과";display:block;padding:10px 10px 7px;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.04em}
+
   /* The course-list guide must sit BELOW the sticky map/list tabs, never on top of them. */
   .explorerCourseList .listHead{position:sticky!important;top:calc(var(--runart-mobile-header-h) + var(--runart-mobile-quick-h) + var(--runart-mobile-tabs-h))!important;z-index:18!important;background:rgba(20,25,31,.98)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);max-width:100%}
 
