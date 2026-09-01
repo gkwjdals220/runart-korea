@@ -9,6 +9,7 @@ import "./toilets.css";
 import "./ui-fixes.css";
 import "leaflet/dist/leaflet.css";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import UrgentFacilityNav from "@/components/UrgentFacilityNav";
 
 export const metadata={
   title:"TTWITTUN · 러닝 코스 & 개인 기록",
@@ -16,5 +17,5 @@ export const metadata={
 };
 
 export default function Layout({children}:{children:React.ReactNode}){
-  return <html lang="ko"><body><div id="top"/>{children}<MobileBottomNav/></body></html>;
+  return <html lang="ko"><body><div id="top"/>{children}<UrgentFacilityNav/><MobileBottomNav/></body></html>;
 }
