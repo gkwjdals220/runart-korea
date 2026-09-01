@@ -1,0 +1,48 @@
+/* RUNART global UI stability fixes */
+html{scroll-padding-top:156px}
+.simpleTop{top:0!important;z-index:1000!important}
+.homeQuickNav{top:76px!important;z-index:940!important}
+
+/* Keep the course-list guide attached to its own scroll container.
+   The previous page-level top offset made it float over course cards. */
+.explorerCourseList{position:relative}
+.explorerCourseList .listHead{position:sticky!important;top:0!important;z-index:12!important;background:var(--panel)!important;padding:10px 4px 12px!important;margin:0 0 8px!important;border-bottom:1px solid var(--line)}
+
+/* Do not let nested sticky layers cover each other. */
+.explorerFilters{z-index:900!important}
+.mobileExplorerTabs{z-index:920!important}
+
+/* Safer anchor jumps under stacked navigation. */
+#explore,.explorerV2,.simpleHomeSection,.activitySummary{scroll-margin-top:156px!important}
+
+/* Horizontal menus should scroll instead of clipping labels. */
+.homeQuickNav,.explorerQuickChips,.simpleRail,.runnerFlowStrip{overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch}
+
+/* Prevent Leaflet controls and bottom sheets from escaping above global navigation. */
+.explorerMapPanel{isolation:isolate}
+.explorerMapPanel .leaflet-control-container{position:relative;z-index:400}
+
+@media(max-width:900px){
+  html{scroll-padding-top:132px}
+  #explore,.explorerV2,.simpleHomeSection,.activitySummary{scroll-margin-top:132px!important}
+  .explorerCourseList .listHead{top:0!important}
+}
+
+@media(max-width:700px){
+  .simpleTop{top:0!important}
+  .homeQuickNav{top:66px!important;z-index:940!important}
+  .mobileExplorerTabs{top:116px!important;z-index:930!important}
+  /* Search/filter controls scroll naturally below the view tabs.
+     Three simultaneous sticky bars were overlapping on small screens. */
+  .filterbar.explorerFilters,.explorerFilters{position:relative!important;top:auto!important;z-index:1!important;max-height:none!important;overflow:visible!important}
+  .explorerCourseList{max-height:none!important;overflow:visible!important}
+  .explorerCourseList .listHead{position:sticky!important;top:116px!important;z-index:18!important;background:rgba(20,25,31,.98)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  .courseMap{scroll-margin-top:132px!important}
+}
+
+@media(max-width:420px){
+  .homeQuickNav{top:64px!important}
+  .mobileExplorerTabs{top:114px!important}
+  .explorerCourseList .listHead{top:114px!important}
+  .simpleHome{padding-left:8px!important;padding-right:8px!important}
+}
