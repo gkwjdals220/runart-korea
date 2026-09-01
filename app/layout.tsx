@@ -6,6 +6,7 @@ import "./explorer-polish.css";
 import "./journey-flow.css";
 import "./places-polish.css";
 import "./toilets.css";
+import "./ui-fixes.css";
 import "leaflet/dist/leaflet.css";
 import MobileBottomNav from "@/components/MobileBottomNav";
 
