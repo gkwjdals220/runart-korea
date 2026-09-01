@@ -17,8 +17,8 @@ function naverDirections(origin:UserPos,f:Facility){
 
 export default function UrgentFacilityNav(){
   const pathname=usePathname();
+  const inLiveRun=pathname.startsWith("/run/");
   const[open,setOpen]=useState(false),[loading,setLoading]=useState<"toilet"|"parking"|null>(null),[origin,setOrigin]=useState<UserPos|null>(null),[facility,setFacility]=useState<Facility|null>(null),[error,setError]=useState("");
-  if(pathname.startsWith("/run/"))return null;
 
   function find(type:"toilet"|"parking"){
     if(!navigator.geolocation){setError("현재 위치 기능을 사용할 수 없습니다.");setOpen(true);return;}
@@ -36,14 +36,16 @@ export default function UrgentFacilityNav(){
     },()=>{setLoading(null);setError("위치 권한을 허용해야 현재 위치 기준으로 찾을 수 있어요.");},{enableHighAccuracy:true,timeout:9000,maximumAge:30000});
   }
 
+  const dockBottom=inLiveRun?168:82;
+  const panelBottom=inLiveRun?220:136;
   return <>
-    <div style={{position:"fixed",right:14,bottom:82,zIndex:1350,display:"flex",gap:8,flexWrap:"wrap",justifyContent:"flex-end",maxWidth:"calc(100vw - 28px)"}} aria-label="긴급 주변 시설">
-      <button type="button" onClick={()=>find("toilet")} style={{border:"1px solid rgba(255,255,255,.18)",borderRadius:999,padding:"10px 13px",fontWeight:800,background:"rgba(28,36,48,.94)",color:"white",boxShadow:"0 8px 24px rgba(0,0,0,.24)",backdropFilter:"blur(10px)"}}>{loading==="toilet"?"🚻 찾는 중…":"🚻 급한 화장실"}</button>
-      <button type="button" onClick={()=>find("parking")} style={{border:"1px solid rgba(255,255,255,.18)",borderRadius:999,padding:"10px 13px",fontWeight:800,background:"rgba(28,36,48,.94)",color:"white",boxShadow:"0 8px 24px rgba(0,0,0,.24)",backdropFilter:"blur(10px)"}}>{loading==="parking"?"🚗 찾는 중…":"🚗 가까운 주차"}</button>
+    <div style={{position:"fixed",right:14,bottom:dockBottom,zIndex:1350,display:"flex",gap:8,flexWrap:"wrap",justifyContent:"flex-end",maxWidth:"calc(100vw - 28px)"}} aria-label="긴급 주변 시설">
+      <button type="button" onClick={()=>find("toilet")} style={{border:"1px solid rgba(255,255,255,.18)",borderRadius:999,padding:"10px 13px",fontWeight:800,background:"rgba(28,36,48,.94)",color:"white",boxShadow:"0 8px 24px rgba(0,0,0,.24)",backdropFilter:"blur(10px)"}}>{loading==="toilet"?"🚻 찾는 중…":inLiveRun?"🚻 화장실 SOS":"🚻 급한 화장실"}</button>
+      {!inLiveRun&&<button type="button" onClick={()=>find("parking")} style={{border:"1px solid rgba(255,255,255,.18)",borderRadius:999,padding:"10px 13px",fontWeight:800,background:"rgba(28,36,48,.94)",color:"white",boxShadow:"0 8px 24px rgba(0,0,0,.24)",backdropFilter:"blur(10px)"}}>{loading==="parking"?"🚗 찾는 중…":"🚗 가까운 주차"}</button>}
     </div>
-    {open&&<div role="dialog" aria-modal="false" aria-label="주변 시설 길찾기" style={{position:"fixed",right:14,bottom:136,zIndex:1360,width:"min(360px,calc(100vw - 28px))",border:"1px solid rgba(255,255,255,.14)",borderRadius:18,padding:14,background:"rgba(18,24,32,.97)",color:"white",boxShadow:"0 18px 50px rgba(0,0,0,.35)",backdropFilter:"blur(14px)"}}>
+    {open&&<div role="dialog" aria-modal="false" aria-label="주변 시설 길찾기" style={{position:"fixed",right:14,bottom:panelBottom,zIndex:1360,width:"min(360px,calc(100vw - 28px))",border:"1px solid rgba(255,255,255,.14)",borderRadius:18,padding:14,background:"rgba(18,24,32,.97)",color:"white",boxShadow:"0 18px 50px rgba(0,0,0,.35)",backdropFilter:"blur(14px)"}}>
       <button type="button" aria-label="닫기" onClick={()=>setOpen(false)} style={{position:"absolute",right:10,top:8,border:0,background:"transparent",color:"white",fontSize:24,cursor:"pointer"}}>×</button>
-      <small style={{opacity:.72}}>현재 위치 기준</small>
+      <small style={{opacity:.72}}>현재 위치 기준 · {inLiveRun?"러닝 중 긴급 길찾기":"가장 가까운 시설"}</small>
       {loading&&<p style={{margin:"8px 0 2px",fontWeight:800}}>가장 가까운 시설을 찾고 있어요…</p>}
       {error&&<p style={{margin:"8px 24px 2px 0",lineHeight:1.45}}>{error}</p>}
       {facility&&<div>
