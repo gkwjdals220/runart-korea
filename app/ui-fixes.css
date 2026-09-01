@@ -5,7 +5,7 @@ html{scroll-padding-top:156px}
 
 /* Keep the course-list guide attached to its own scroll container.
    The previous page-level top offset made it float over course cards. */
-.explorerCourseList{position:relative}
+.explorerCourseList{position:relative;min-width:0}
 .explorerCourseList .listHead{position:sticky!important;top:0!important;z-index:12!important;background:var(--panel)!important;padding:10px 4px 12px!important;margin:0 0 8px!important;border-bottom:1px solid var(--line)}
 
 /* Do not let nested sticky layers cover each other. */
@@ -16,7 +16,14 @@ html{scroll-padding-top:156px}
 #explore,.explorerV2,.simpleHomeSection,.activitySummary{scroll-margin-top:156px!important}
 
 /* Horizontal menus should scroll instead of clipping labels. */
-.homeQuickNav,.explorerQuickChips,.simpleRail,.runnerFlowStrip{overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch}
+.homeQuickNav,.explorerQuickChips,.simpleRail,.runnerFlowStrip,.mobileExplorerTabs{overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.homeQuickNav::-webkit-scrollbar,.explorerQuickChips::-webkit-scrollbar,.simpleRail::-webkit-scrollbar,.runnerFlowStrip::-webkit-scrollbar,.mobileExplorerTabs::-webkit-scrollbar{display:none}
+
+/* Prevent long labels and controls from forcing horizontal page overflow. */
+.simpleHome,.explorerV2,.mapLayout,.mapPanel,.explorerMapPanel,.courseList,.explorerCourseList{min-width:0}
+.filterbar>*{max-width:100%}
+.courseCard,.listHead,.simpleSectionHead{min-width:0}
+.courseTop h3,.listHead>*{min-width:0;overflow-wrap:anywhere}
 
 /* Prevent Leaflet controls and bottom sheets from escaping above global navigation. */
 .explorerMapPanel{isolation:isolate}
@@ -26,23 +33,43 @@ html{scroll-padding-top:156px}
   html{scroll-padding-top:132px}
   #explore,.explorerV2,.simpleHomeSection,.activitySummary{scroll-margin-top:132px!important}
   .explorerCourseList .listHead{top:0!important}
+  .mapLayout{min-width:0}
 }
 
 @media(max-width:700px){
-  .simpleTop{top:0!important}
-  .homeQuickNav{top:66px!important;z-index:940!important}
-  .mobileExplorerTabs{top:116px!important;z-index:930!important}
+  :root{--runart-mobile-header-h:64px;--runart-mobile-quick-h:50px;--runart-mobile-tabs-h:48px}
+  html{scroll-padding-top:calc(var(--runart-mobile-header-h) + var(--runart-mobile-quick-h) + 18px)}
+  body{overflow-x:hidden}
+  .simpleTop{top:0!important;min-height:var(--runart-mobile-header-h);z-index:1000!important}
+  .homeQuickNav{top:var(--runart-mobile-header-h)!important;z-index:940!important;min-height:var(--runart-mobile-quick-h);align-items:center}
+  .mobileExplorerTabs{top:calc(var(--runart-mobile-header-h) + var(--runart-mobile-quick-h))!important;z-index:930!important;min-height:var(--runart-mobile-tabs-h)}
+
   /* Search/filter controls scroll naturally below the view tabs.
      Three simultaneous sticky bars were overlapping on small screens. */
   .filterbar.explorerFilters,.explorerFilters{position:relative!important;top:auto!important;z-index:1!important;max-height:none!important;overflow:visible!important}
   .explorerCourseList{max-height:none!important;overflow:visible!important}
-  .explorerCourseList .listHead{position:sticky!important;top:116px!important;z-index:18!important;background:rgba(20,25,31,.98)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-  .courseMap{scroll-margin-top:132px!important}
+
+  /* The course-list guide must sit BELOW the sticky map/list tabs, never on top of them. */
+  .explorerCourseList .listHead{position:sticky!important;top:calc(var(--runart-mobile-header-h) + var(--runart-mobile-quick-h) + var(--runart-mobile-tabs-h))!important;z-index:18!important;background:rgba(20,25,31,.98)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);max-width:100%}
+
+  #explore,.explorerV2,.simpleHomeSection,.activitySummary,.courseMap{scroll-margin-top:calc(var(--runart-mobile-header-h) + var(--runart-mobile-quick-h) + 18px)!important}
+  .filterbar input,.filterbar select,.filterbar button{min-height:44px}
+  .mobileExplorerTabs button,.mobileExplorerTabs a{min-height:44px}
+  .mapCourseInfo{max-width:calc(100% - 16px)}
 }
 
 @media(max-width:420px){
-  .homeQuickNav{top:64px!important}
-  .mobileExplorerTabs{top:114px!important}
-  .explorerCourseList .listHead{top:114px!important}
+  :root{--runart-mobile-header-h:62px;--runart-mobile-quick-h:50px;--runart-mobile-tabs-h:48px}
   .simpleHome{padding-left:8px!important;padding-right:8px!important}
+  .homeQuickNav{gap:5px;padding-left:8px;padding-right:8px}
+  .homeQuickNav a{padding-left:9px;padding-right:9px}
+  .explorerCourseList .listHead{padding-left:8px!important;padding-right:8px!important}
+}
+
+@media(max-width:360px){
+  .simpleHome{padding-left:6px!important;padding-right:6px!important}
+  .homeQuickNav a{font-size:10px}
+  .filterbar{padding-left:8px!important;padding-right:8px!important}
+  .courseCard{padding-left:11px!important;padding-right:11px!important}
+  .mobileBottomNav{left:6px!important;right:6px!important}
 }
