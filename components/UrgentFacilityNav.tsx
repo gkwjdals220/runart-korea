@@ -20,11 +20,20 @@ function distanceText(m:number){return m<1000?`${m}m`:`${(m/1000).toFixed(1)}km`
 
 export default function UrgentFacilityNav(){
   const pathname=usePathname(),inLiveRun=pathname.startsWith("/run/");
-  const[open,setOpen]=useState(false),[loading,setLoading]=useState<FacilityType|null>(null),[origin,setOrigin]=useState<UserPos|null>(null),[facilities,setFacilities]=useState<Facility[]>([]),[error,setError]=useState("");
+  const[liveStarted,setLiveStarted]=useState(false),[menuOpen,setMenuOpen]=useState(false),[open,setOpen]=useState(false),[loading,setLoading]=useState<FacilityType|null>(null),[origin,setOrigin]=useState<UserPos|null>(null),[facilities,setFacilities]=useState<Facility[]>([]),[error,setError]=useState("");
 
-  useEffect(()=>{setOpen(false);setLoading(null);setOrigin(null);setFacilities([]);setError("");},[pathname]);
+  useEffect(()=>{setMenuOpen(false);setOpen(false);setLoading(null);setOrigin(null);setFacilities([]);setError("");setLiveStarted(false);},[pathname]);
+  useEffect(()=>{
+    if(!inLiveRun){setLiveStarted(false);return;}
+    const sync=()=>setLiveStarted(!!document.querySelector(".runLivePill"));
+    sync();
+    const observer=new MutationObserver(sync);
+    observer.observe(document.body,{childList:true,subtree:true,attributes:true});
+    return()=>observer.disconnect();
+  },[inLiveRun]);
 
   function find(type:FacilityType){
+    setMenuOpen(false);
     if(!navigator.geolocation){setError("현재 위치 기능을 사용할 수 없습니다.");setOpen(true);return;}
     setLoading(type);setError("");setFacilities([]);setOpen(true);
     navigator.geolocation.getCurrentPosition(async pos=>{
@@ -41,31 +50,27 @@ export default function UrgentFacilityNav(){
     },()=>{setLoading(null);setError("위치 권한을 허용해야 현재 위치 기준으로 찾을 수 있어요.");},{enableHighAccuracy:true,timeout:9000,maximumAge:30000});
   }
 
-  if(!inLiveRun)return null;
-
-  const dockBottom=168,panelBottom=220;
-  const buttonStyle={border:"1px solid rgba(255,255,255,.18)",borderRadius:999,padding:"10px 13px",fontWeight:800,background:"rgba(28,36,48,.94)",color:"white",boxShadow:"0 8px 24px rgba(0,0,0,.24)",backdropFilter:"blur(10px)"} as const;
+  if(!inLiveRun||!liveStarted)return null;
   return <>
-    <div style={{position:"fixed",right:14,bottom:dockBottom,zIndex:1350,display:"flex",gap:8,flexWrap:"wrap",justifyContent:"flex-end",maxWidth:"calc(100vw - 28px)"}} aria-label="러닝 중 주변 시설">
-      <button type="button" onClick={()=>find("toilet")} style={buttonStyle}>{loading==="toilet"?"🚻 찾는 중…":"🚻 화장실 SOS"}</button>
-      <button type="button" onClick={()=>find("water")} style={buttonStyle}>{loading==="water"?"💧 찾는 중…":"💧 물 SOS"}</button>
-      <button type="button" onClick={()=>find("convenience")} style={buttonStyle}>{loading==="convenience"?"🏪 찾는 중…":"🏪 편의점"}</button>
-      <button type="button" onClick={()=>find("parking")} style={buttonStyle}>{loading==="parking"?"🚗 찾는 중…":"🚗 주차"}</button>
+    <div className="urgentRunDock" aria-label="러닝 중 긴급 시설">
+      <button className={`urgentRunFab ${menuOpen?"active":""}`} type="button" onClick={()=>{setMenuOpen(v=>!v);setOpen(false)}} aria-expanded={menuOpen}>SOS</button>
+      {menuOpen&&<div className="urgentRunMenu">
+        {(["toilet","water","convenience","parking"] as FacilityType[]).map(type=><button key={type} type="button" onClick={()=>find(type)}>{loading===type?"…":META[type].icon}<span>{META[type].label}</span></button>)}
+      </div>}
     </div>
-    {open&&<div role="dialog" aria-modal="false" aria-label="주변 시설 길찾기" style={{position:"fixed",right:14,bottom:panelBottom,zIndex:1360,width:"min(380px,calc(100vw - 28px))",maxHeight:"min(66vh,520px)",overflowY:"auto",border:"1px solid rgba(255,255,255,.14)",borderRadius:18,padding:14,background:"rgba(18,24,32,.97)",color:"white",boxShadow:"0 18px 50px rgba(0,0,0,.35)",backdropFilter:"blur(14px)"}}>
-      <button type="button" aria-label="닫기" onClick={()=>setOpen(false)} style={{position:"absolute",right:10,top:8,border:0,background:"transparent",color:"white",fontSize:24,cursor:"pointer"}}>×</button>
-      <small style={{opacity:.72}}>현재 위치 기준 · 러닝 중 빠른 길찾기</small>
-      {loading&&<p style={{margin:"8px 0 2px",fontWeight:800}}>{META[loading].icon} 가까운 {META[loading].label} 정보를 찾고 있어요…</p>}
-      {error&&<p style={{margin:"8px 24px 2px 0",lineHeight:1.45}}>{error}</p>}
-      {facilities.map((f,i)=><div key={f.id} style={{marginTop:10,paddingTop:i?12:2,borderTop:i?"1px solid rgba(255,255,255,.1)":"none"}}>
-        <h3 style={{margin:"4px 24px 4px 0",fontSize:16}}>{i+1}. {META[f.type].icon} {f.name}</h3>
-        <p style={{margin:"0 0 8px",opacity:.8,fontSize:13}}>직선거리 약 {distanceText(f.distance_m)}{f.address?` · ${f.address}`:""}</p>
-        {f.opening_hours&&<p style={{margin:"0 0 8px",fontSize:12,opacity:.72}}>운영시간 {f.opening_hours}</p>}
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:7}}>
-          <a href={kakaoDirections(f)} target="_blank" rel="noreferrer" style={{textAlign:"center",padding:"9px 7px",borderRadius:10,textDecoration:"none",fontWeight:900,background:"#fee500",color:"#111"}}>카카오 길찾기</a>
-          {origin&&<a href={naverDirections(origin,f)} target="_blank" rel="noreferrer" style={{textAlign:"center",padding:"9px 7px",borderRadius:10,textDecoration:"none",fontWeight:900,background:"#03c75a",color:"white"}}>네이버 도보</a>}
-        </div>
+    {open&&<div className="urgentRunPanel" role="dialog" aria-modal="false" aria-label="주변 시설 길찾기">
+      <button className="urgentRunClose" type="button" aria-label="닫기" onClick={()=>setOpen(false)}>×</button>
+      <small>러닝 중 · 현재 위치 기준</small>
+      {loading&&<p className="urgentRunLoading">{META[loading].icon} 가까운 {META[loading].label} 정보를 찾고 있어요…</p>}
+      {error&&<p className="urgentRunError">{error}</p>}
+      {facilities.map((f,i)=><div className="urgentFacilityItem" key={f.id}>
+        <h3>{i+1}. {META[f.type].icon} {f.name}</h3>
+        <p>직선거리 약 {distanceText(f.distance_m)}{f.address?` · ${f.address}`:""}</p>
+        {f.opening_hours&&<small>운영시간 {f.opening_hours}</small>}
+        {f.type==="water"&&i===0&&<small>현장 상태와 실제 이용 가능 여부는 시설 표기를 확인해주세요.</small>}
+        <div><a href={kakaoDirections(f)} target="_blank" rel="noreferrer">카카오</a>{origin&&<a href={naverDirections(origin,f)} target="_blank" rel="noreferrer">네이버</a>}</div>
       </div>)}
+      {!!facilities.length&&<p className="urgentRunNote">표시 거리는 직선거리입니다. 실제 이동거리·운영 여부는 지도 앱 또는 현장에서 확인해주세요.</p>}
     </div>}
   </>;
 }
