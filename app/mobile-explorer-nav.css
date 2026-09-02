@@ -1,0 +1,144 @@
+/* Mobile search results: compact vertical list under the map. */
+@media(max-width:700px){
+  .explorerLayout.view-map .explorerCourseList{
+    display:block!important;
+    margin-top:8px!important;
+    padding:0!important;
+    max-height:248px!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    scroll-snap-type:none!important;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:var(--panel);
+  }
+  .explorerLayout.view-map .explorerCourseList::before{
+    content:"검색 결과";
+    position:sticky;
+    top:0;
+    z-index:14;
+    display:block!important;
+    padding:9px 12px 5px!important;
+    background:var(--panel);
+    color:var(--muted);
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.04em;
+  }
+  .explorerLayout.view-map .explorerCourseList .listHead{
+    position:sticky!important;
+    top:24px!important;
+    z-index:13!important;
+    display:flex!important;
+    padding:5px 12px 8px!important;
+    margin:0!important;
+    border:0!important;
+    border-bottom:1px solid var(--line)!important;
+    border-radius:0!important;
+    background:var(--panel)!important;
+  }
+  .explorerLayout.view-map .explorerCourseList .listHead span{display:none!important}
+  .explorerLayout.view-map .explorerCourseCard{
+    display:block!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:10px 12px!important;
+    border:0!important;
+    border-bottom:1px solid var(--line)!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+  }
+  .explorerLayout.view-map .explorerCourseCard:last-child{border-bottom:0!important}
+  .explorerLayout.view-map .explorerCourseCard.selected{background:rgba(217,243,95,.08)!important;box-shadow:inset 3px 0 0 var(--lime)!important}
+  .explorerLayout.view-map .explorerCourseCard .courseTop{align-items:center!important;gap:8px!important}
+  .explorerLayout.view-map .explorerCourseCard .courseTop h3{
+    margin:0 0 3px!important;
+    font-size:14px!important;
+    line-height:1.25!important;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .explorerLayout.view-map .explorerCourseCard .courseTop p{
+    margin:0!important;
+    font-size:10px!important;
+    line-height:1.3!important;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .explorerLayout.view-map .explorerCourseCard .courseCardActions{display:flex!important;align-items:center!important;gap:5px!important;flex:0 0 auto}
+  .explorerLayout.view-map .explorerCourseCard .courseCardActions>b{font-size:13px!important}
+  .explorerLayout.view-map .explorerCourseCard .iconHeart{width:30px!important;height:30px!important;min-width:30px!important}
+  .explorerLayout.view-map .explorerCourseCard .metaRow{
+    display:flex!important;
+    gap:5px!important;
+    margin:5px 0 0!important;
+    overflow:hidden!important;
+    white-space:nowrap!important;
+    font-size:9px!important;
+  }
+  .explorerLayout.view-map .explorerCourseCard .metaRow>*:nth-child(n+4){display:none!important}
+  .explorerLayout.view-map .explorerCourseCard .tagRow,.explorerLayout.view-map .courseListActions{display:none!important}
+  .explorerLayout.view-map .explorerEmpty{padding:22px 14px!important}
+  .explorerLayout.view-map .explorerMapPanel .courseMap{height:42vh!important;min-height:292px!important;max-height:420px!important}
+  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerMapPanel .courseMap{height:31vh!important;min-height:225px!important;max-height:295px!important}
+
+  /* Bottom navigation follows a flat Instagram-like tab bar: five equal destinations, no floating center action. */
+  body{padding-bottom:76px!important}
+  .mobileBottomNavV2{display:none!important}
+  .mobileBottomNavV3{
+    position:fixed!important;
+    left:0!important;
+    right:0!important;
+    bottom:0!important;
+    z-index:1300!important;
+    height:64px!important;
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    padding:3px 8px calc(3px + env(safe-area-inset-bottom))!important;
+    border:0!important;
+    border-top:1px solid rgba(127,127,127,.2)!important;
+    border-radius:0!important;
+    background:rgba(14,18,22,.97)!important;
+    box-shadow:0 -8px 24px rgba(0,0,0,.14)!important;
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+  }
+  .mobileBottomNavV3>a{
+    position:relative;
+    display:flex!important;
+    min-width:0!important;
+    height:100%!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:1px!important;
+    padding:4px 2px!important;
+    border-radius:0!important;
+    background:transparent!important;
+    color:var(--muted)!important;
+    text-decoration:none!important;
+    transform:none!important;
+  }
+  .mobileBottomNavV3 .mobileNavIcon{font-size:22px!important;line-height:1!important;font-weight:500!important;transition:transform .14s ease,color .14s ease}
+  .mobileBottomNavV3>a b{font-size:9px!important;line-height:1.1!important;font-weight:700!important;margin-top:2px!important}
+  .mobileBottomNavV3>a.active{color:var(--text)!important}
+  .mobileBottomNavV3>a.active .mobileNavIcon{transform:scale(1.08);font-weight:950!important}
+  .mobileBottomNavV3 .mobileNavActiveDot{position:absolute;bottom:2px;width:3px;height:3px;border-radius:50%;background:transparent}
+  .mobileBottomNavV3>a.active .mobileNavActiveDot{background:var(--lime)}
+}
+
+@media(max-width:390px){
+  .explorerLayout.view-map .explorerCourseList{max-height:224px!important}
+  .explorerLayout.view-map .explorerCourseCard{padding:9px 10px!important}
+  .explorerLayout.view-map .explorerCourseCard .metaRow>*:nth-child(n+3){display:none!important}
+  .mobileBottomNavV3{height:61px!important;padding-left:4px!important;padding-right:4px!important}
+  .mobileBottomNavV3 .mobileNavIcon{font-size:21px!important}
+  .mobileBottomNavV3>a b{font-size:8px!important}
+}
