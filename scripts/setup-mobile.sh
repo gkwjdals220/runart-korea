@@ -15,6 +15,7 @@ if [ ! -d android ]; then
   npx cap add android
 fi
 
+node scripts/configure-native.mjs
 npx cap sync
 npx cap doctor || true
 
