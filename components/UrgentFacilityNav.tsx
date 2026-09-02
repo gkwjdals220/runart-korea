@@ -32,6 +32,8 @@ export default function UrgentFacilityNav(){
     return()=>observer.disconnect();
   },[inLiveRun]);
 
+  useEffect(()=>{if(!menuOpen&&!open)return;const close=(event:Event)=>{event.preventDefault();setMenuOpen(false);setOpen(false)};const key=(event:KeyboardEvent)=>{if(event.key==="Escape")close(event)};window.addEventListener("ttwittun:native-back",close);window.addEventListener("keydown",key);return()=>{window.removeEventListener("ttwittun:native-back",close);window.removeEventListener("keydown",key)}},[menuOpen,open]);
+
   function find(type:FacilityType){
     setMenuOpen(false);
     if(!navigator.geolocation){setError("현재 위치 기능을 사용할 수 없습니다.");setOpen(true);return;}
@@ -52,13 +54,14 @@ export default function UrgentFacilityNav(){
 
   if(!inLiveRun||!liveStarted)return null;
   return <>
+    {(menuOpen||open)&&<button className="urgentRunBackdrop" type="button" aria-label="긴급 시설 메뉴 닫기" onClick={()=>{setMenuOpen(false);setOpen(false)}}/>}
     <div className="urgentRunDock" aria-label="러닝 중 긴급 시설">
       <button className={`urgentRunFab ${menuOpen?"active":""}`} type="button" onClick={()=>{setMenuOpen(v=>!v);setOpen(false)}} aria-expanded={menuOpen}>SOS</button>
       {menuOpen&&<div className="urgentRunMenu">
         {(["toilet","water","convenience","parking"] as FacilityType[]).map(type=><button key={type} type="button" onClick={()=>find(type)}>{loading===type?"…":META[type].icon}<span>{META[type].label}</span></button>)}
       </div>}
     </div>
-    {open&&<div className="urgentRunPanel" role="dialog" aria-modal="false" aria-label="주변 시설 길찾기">
+    {open&&<div className="urgentRunPanel" role="dialog" aria-modal="true" aria-label="주변 시설 길찾기">
       <button className="urgentRunClose" type="button" aria-label="닫기" onClick={()=>setOpen(false)}>×</button>
       <small>러닝 중 · 현재 위치 기준</small>
       {loading&&<p className="urgentRunLoading">{META[loading].icon} 가까운 {META[loading].label} 정보를 찾고 있어요…</p>}

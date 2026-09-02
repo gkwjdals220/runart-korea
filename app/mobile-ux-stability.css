@@ -1,0 +1,60 @@
+/* Final mobile shell contract. Keep this import last in app/layout.tsx. */
+:root{--z-header:900;--z-run-dock:1200;--z-sheet-mask:1210;--z-sheet:1250;--z-bottom-nav:1300;--z-urgent-mask:1390;--z-urgent:1400}
+
+@media(max-width:700px){
+  html,body{max-width:100%;overflow-x:hidden}
+  body{padding-bottom:76px!important}
+  .nativeApp body{padding-top:env(safe-area-inset-top)!important;padding-bottom:calc(76px + env(safe-area-inset-bottom))!important}
+  .nativeApp .simpleTop{height:var(--runart-mobile-header-h)!important;min-height:var(--runart-mobile-header-h)!important;padding-top:7px!important}
+  .simpleTop,.compactPageTop,.detailTop,.myTop,.dashboardTop,.racePage>.top{z-index:var(--z-header)!important}
+
+  .mobileBottomNavV3{z-index:var(--z-bottom-nav)!important;transition:transform .2s ease,opacity .18s ease!important}
+  body:has(input:focus,textarea:focus,select:focus) .mobileBottomNavV3{
+    transform:translateY(calc(100% + env(safe-area-inset-bottom)))!important;
+    opacity:0!important;pointer-events:none!important
+  }
+
+  .explorerLayout.view-map .explorerMapPanel{display:block!important}
+  .explorerLayout.view-map .explorerCourseList{
+    display:block!important;max-height:224px!important;overflow-y:auto!important;overflow-x:hidden!important
+  }
+  .explorerLayout.view-list .explorerMapPanel{display:none!important}
+  .explorerLayout.view-list .explorerCourseList{display:block!important;max-height:none!important;overflow:visible!important}
+  .explorerLayout.view-map .explorerMapPanel .courseMap{
+    height:clamp(292px,42dvh,420px)!important;min-height:292px!important;max-height:420px!important
+  }
+  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerMapPanel .courseMap{
+    height:clamp(225px,31dvh,295px)!important;min-height:225px!important;max-height:295px!important
+  }
+
+  .explorerMapPanel:has(.mapCourseInfo)::after{z-index:var(--z-sheet-mask)!important}
+  .explorerMapPanel .mapCourseInfo{
+    z-index:var(--z-sheet)!important;
+    overscroll-behavior-y:contain!important;
+    scrollbar-gutter:auto!important
+  }
+  .explorerMapPanel .mapCourseInfo.sheet-half{max-height:min(62dvh,610px)!important}
+  .explorerMapPanel .mapCourseInfo.sheet-full{
+    top:max(8px,env(safe-area-inset-top))!important;
+    bottom:calc(70px + env(safe-area-inset-bottom))!important;
+    height:auto!important;max-height:none!important
+  }
+  .explorerMapPanel .sheetHandle{touch-action:none!important}
+  .explorerMapPanel .explorerMapActions{z-index:5!important}
+
+  .runControlDock{z-index:var(--z-run-dock)!important}
+  .urgentRunBackdrop{
+    position:fixed;inset:0;z-index:var(--z-urgent-mask);border:0;padding:0;
+    background:rgba(3,6,9,.42);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)
+  }
+  .urgentRunDock,.urgentRunPanel{z-index:var(--z-urgent)!important}
+  .urgentRunPanel{max-height:min(56dvh,520px)!important;overscroll-behavior:contain}
+}
+@media(max-width:390px){
+  .explorerLayout.view-map .explorerMapPanel .courseMap{
+    height:clamp(270px,39dvh,350px)!important;min-height:270px!important;max-height:350px!important
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .mobileBottomNavV3,.explorerMapPanel .mapCourseInfo{transition:none!important}
+}

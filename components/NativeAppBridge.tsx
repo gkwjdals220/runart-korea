@@ -30,6 +30,8 @@ export default function NativeAppBridge(){
   });
 
   const back=App.addListener("backButton",({canGoBack})=>{
+   const overlayBack=new CustomEvent("ttwittun:native-back",{cancelable:true});
+   if(!window.dispatchEvent(overlayBack))return;
    if(canGoBack&&window.location.pathname!=="/")window.history.back();
    else void App.minimizeApp();
   });

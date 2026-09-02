@@ -20,6 +20,7 @@ import "./run-tools.css";
 import "./run-shoe-picker.css";
 import "./shoe-guide.css";
 import "./run-club-refresh.css";
+import "./mobile-ux-stability.css";
 import "leaflet/dist/leaflet.css";
 import { Noto_Sans_KR } from "next/font/google";
 import MobileBottomNav from "@/components/MobileBottomNav";
