@@ -1,7 +1,7 @@
 {
   "appId": "com.ttwittun.korea",
   "appName": "TTWITTUN",
-  "webDir": "out",
+  "webDir": "native-web",
   "server": {
     "url": "https://runart-korea.vercel.app",
     "cleartext": false,
