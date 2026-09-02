@@ -14,9 +14,9 @@ export default async function Join(){
  const {data:member}=await sb.from("runart_crew_members").select("role").eq("crew_id",crew.id).eq("user_id",user.id).maybeSingle();
  if(member)redirect("/dashboard");
  const {data:req}=await sb.from("runart_crew_join_requests").select("status").eq("crew_id",crew.id).eq("user_id",user.id).maybeSingle();
- return <main className="wrap">
-  <header className="top"><Brand/><div className="nav"><Link className="btn ghost" href="/">지도</Link><LogoutButton/></div></header>
-  <section className="hero compact"><h1>뛰뚠뛰뚠 크루 가입</h1><p className="muted">가입 신청 후 owner 승인이 완료되면 수행 일지와 크루 기록 기능을 사용할 수 있습니다.</p></section>
+ return <main className="wrap authJoinPage">
+  <header className="top compactPageTop"><Brand/><div className="nav"><Link className="btn ghost" href="/">홈</Link><LogoutButton/></div></header>
+  <section className="compactPageHero"><span className="eyebrow">JOIN CREW</span><h1>뛰뚠뛰뚠 크루 가입</h1><p className="muted">신청 후 승인되면 크루 기록과 대회 관리 기능을 사용할 수 있어요.</p></section>
   <div style={{maxWidth:620}}><JoinCrewForm userId={user.id} crewId={crew.id} initialStatus={req?.status||null}/></div>
  </main>;
 }
