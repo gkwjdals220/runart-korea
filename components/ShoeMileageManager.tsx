@@ -15,19 +15,21 @@ type Shoe = {
 export default function ShoeMileageManager({
   userId,
   initial,
+  preset,
 }: {
   userId: string;
   initial: Shoe[];
+  preset?: { brand: string; model: string; target: string } | null;
 }) {
   const [shoes, setShoes] = useState(initial),
-    [open, setOpen] = useState(false),
+    [open, setOpen] = useState(Boolean(preset?.brand && preset?.model)),
     [busy, setBusy] = useState(false),
     [form, setForm] = useState({
-      brand: "",
-      model: "",
+      brand: preset?.brand || "",
+      model: preset?.model || "",
       nickname: "",
       initial: "0",
-      target: "500",
+      target: preset?.target || "500",
     });
   async function refresh() {
     const sb = createClient();
@@ -127,6 +129,9 @@ export default function ShoeMileageManager({
           ＋ 신발 추가
         </button>
       </div>
+      {preset?.brand && preset?.model && open && (
+        <p className="shoePresetNotice">추천 가이드에서 <b>{preset.brand} {preset.model}</b>을 가져왔어요. 현재 거리와 별명만 확인한 뒤 등록하세요.</p>
+      )}
       {open && (
         <section className="card shoeForm">
           <label>

@@ -3,7 +3,9 @@ import { redirect } from "next/navigation";
 import Brand from "@/components/Brand";
 import ShoeMileageManager from "@/components/ShoeMileageManager";
 import { createClient } from "@/lib/supabase/server";
-export default async function ShoesPage() {
+export default async function ShoesPage({ searchParams }: { searchParams: Promise<{ brand?: string; model?: string; target?: string }> }) {
+  const query = await searchParams;
+  const preset = query.brand && query.model ? { brand: query.brand.slice(0, 60), model: query.model.slice(0, 100), target: query.target === "600" ? "600" : "500" } : null;
   const sb = await createClient(),
     {
       data: { user },
@@ -42,7 +44,7 @@ export default async function ShoesPage() {
           </Link>
         </div>
       </header>
-      <ShoeMileageManager userId={user.id} initial={rows} />
+      <ShoeMileageManager userId={user.id} initial={rows} preset={preset} />
     </main>
   );
 }
