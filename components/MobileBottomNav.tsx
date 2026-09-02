@@ -17,13 +17,10 @@ const items=[
  {href:"/explore",label:"코스",icon:"search" as IconName,match:(p:string)=>p.startsWith("/explore")||p.startsWith("/courses")||p.startsWith("/art")||p.startsWith("/favorites")||p.startsWith("/plans")},
  {href:"/run/free",label:"RUN",icon:"plus" as IconName,match:(p:string)=>p.startsWith("/run/")},
  {href:"/dashboard",label:"크루",icon:"crew" as IconName,match:(p:string)=>p.startsWith("/dashboard")||p.startsWith("/manage")||p.startsWith("/races/crew")},
- {href:"/my",label:"MY",icon:"profile" as IconName,match:(p:string)=>p.startsWith("/my")||p.startsWith("/login")||p.startsWith("/join")}
+ {href:"/my",label:"MY",icon:"profile" as IconName,match:(p:string)=>p.startsWith("/my")||p.startsWith("/login")||p.startsWith("/join")||p.startsWith("/races/my")}
 ];
 
 export default function MobileBottomNav(){
- const pathname=usePathname();
- if(pathname.startsWith("/run/"))return null;
- return <nav className="mobileBottomNav mobileBottomNavV3" aria-label="모바일 주요 메뉴">
-  {items.map(item=>{const on=item.match(pathname);return <Link key={item.label} href={item.href} className={on?"active":""} aria-label={item.label} aria-current={on?"page":undefined}><span className="mobileNavIcon"><NavIcon name={item.icon} active={on}/></span><b>{item.label}</b><i className="mobileNavActiveDot" aria-hidden="true"/></Link>})}
- </nav>;
+ const pathname=usePathname();if(pathname.startsWith("/run/"))return null;
+ return <nav className="mobileBottomNav mobileBottomNavV3" aria-label="모바일 주요 메뉴">{items.map(item=>{const on=item.match(pathname);return <Link key={item.label} href={item.href} className={on?"active":""} aria-label={item.label} aria-current={on?"page":undefined}><span className="mobileNavIcon"><NavIcon name={item.icon} active={on}/></span><b>{item.label}</b><i className="mobileNavActiveDot" aria-hidden="true"/></Link>})}</nav>;
 }
