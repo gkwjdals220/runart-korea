@@ -1,0 +1,41 @@
+/* Detail pages share the friendly, high-contrast visual language used by the image-led home. */
+.ttwittunDetailPage{--detail-lime:#d6ff2f;--detail-ink:#101417;--detail-card:#151b20;--detail-line:#303943;padding-bottom:120px}
+.ttwittunDetailPage .detailTop{border:1px solid var(--detail-line);border-radius:20px;background:rgba(16,20,23,.94);box-shadow:0 12px 34px rgba(0,0,0,.2)}
+.ttwittunDetailPage .detailHero{position:relative;isolation:isolate;overflow:hidden;min-height:240px;padding:34px;border:1px solid #3c4751;border-radius:28px;background:radial-gradient(circle at 78% 22%,rgba(214,255,47,.24),transparent 25%),radial-gradient(circle at 58% 92%,rgba(119,211,185,.17),transparent 30%),linear-gradient(145deg,#182027,#0e1317);box-shadow:0 20px 48px rgba(0,0,0,.25)}
+.ttwittunDetailPage .detailHero::before{content:"";position:absolute;z-index:-1;right:-55px;bottom:-75px;width:250px;height:250px;border-radius:50%;background:linear-gradient(145deg,#d6ff2f,#9ddf4e);opacity:.92}
+.ttwittunDetailPage .detailHero::after{content:"🦆";position:absolute;z-index:-1;right:35px;bottom:18px;font-size:84px;line-height:1;filter:drop-shadow(0 8px 8px rgba(0,0,0,.2));transform:rotate(-6deg)}
+.ttwittunDetailPage .detailHero>div:first-child{position:relative;z-index:1;max-width:min(72%,720px)}
+.ttwittunDetailPage .detailHero h1{margin:8px 0 10px;font-size:clamp(30px,4vw,48px);line-height:1.08;letter-spacing:-.05em}
+.ttwittunDetailPage .detailHero .score{position:relative;z-index:2;align-self:flex-start;border:1px solid rgba(255,255,255,.15);border-radius:18px;background:rgba(10,14,17,.78);backdrop-filter:blur(10px)}
+.ttwittunDetailPage .eyebrow{color:var(--detail-lime);font-weight:950;letter-spacing:.12em}
+.ttwittunDetailPage .tag{border:0!important;background:var(--detail-lime)!important;color:#101417!important;font-weight:950!important}
+.ttwittunDetailPage .card{border-color:var(--detail-line);border-radius:22px;background:linear-gradient(145deg,var(--detail-card),#101519);box-shadow:0 10px 28px rgba(0,0,0,.14)}
+.ttwittunDetailPage .detailStats{gap:9px}
+.ttwittunDetailPage .detailStats .stat{border:1px solid var(--detail-line);border-radius:18px;background:#151b20}
+.ttwittunDetailPage .detailStats .stat b{color:var(--detail-lime);font-variant-numeric:tabular-nums}
+.ttwittunDetailPage .detailQuickNav{border:1px solid var(--detail-line);background:rgba(16,20,23,.92);box-shadow:0 10px 25px rgba(0,0,0,.15)}
+.ttwittunDetailPage .detailQuickNav a,.ttwittunDetailPage .journeyBreadcrumb span{border-radius:999px}
+.ttwittunDetailPage .detailSecondaryGrid>.card,.ttwittunDetailPage .section.card,.ttwittunDetailPage .reviewGrid>.card{padding:22px}
+.ttwittunDetailPage .btn:not(.ghost){border-color:var(--detail-lime);background:var(--detail-lime);color:#101417;font-weight:950}
+.ttwittunDetailPage .btn.ghost{border-color:#3b4650;background:#20262b;color:#f6f8fa}
+.ttwittunDetailPage .textLink{color:var(--detail-lime);font-weight:900}
+.ttwittunDetailPage .miniStats span{border-radius:14px;background:#0c1115}
+.ttwittunDetailPage .detailFormWrap{max-width:760px;padding:20px;border:1px solid var(--detail-line);border-radius:24px;background:#151b20;box-shadow:0 14px 36px rgba(0,0,0,.16)}
+.planDetailPage>.section.grid2>article:first-child{background:linear-gradient(145deg,#18272a,#101619)}
+.planDetailPage>.section.grid2>article:nth-child(2){background:linear-gradient(145deg,#2b211c,#151311)}
+
+@media(max-width:700px){
+ .ttwittunDetailPage{padding-left:10px!important;padding-right:10px!important;padding-bottom:104px}
+ .ttwittunDetailPage .detailTop{border-radius:0 0 17px 17px}
+ .ttwittunDetailPage .detailHero{min-height:220px;padding:25px 20px 24px;border-radius:23px}
+ .ttwittunDetailPage .detailHero::before{right:-70px;bottom:-80px;width:210px;height:210px}
+ .ttwittunDetailPage .detailHero::after{right:17px;bottom:16px;font-size:64px}
+ .ttwittunDetailPage .detailHero>div:first-child{max-width:78%}
+ .ttwittunDetailPage .detailHero h1{font-size:29px}
+ .ttwittunDetailPage .detailHero .score{position:absolute;right:17px;top:17px;padding:9px 11px}
+ .ttwittunDetailPage .detailHeroActions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+ .ttwittunDetailPage .detailHeroActions .btn:first-child{grid-column:1/-1}
+ .ttwittunDetailPage .detailStats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ttwittunDetailPage .detailSecondaryGrid>.card,.ttwittunDetailPage .section.card,.ttwittunDetailPage .reviewGrid>.card{padding:17px}
+ .ttwittunDetailPage .detailFormWrap{padding:14px;border-radius:20px}
+}

@@ -25,7 +25,7 @@ export default async function CoursePage({params}:{params:Promise<{id:string}>})
    const {data:pf}=await sb.from("runart_place_favorites").select("place_id").eq("user_id",user.id);placeFavoriteIds=(pf||[]).map((x:any)=>x.place_id);
  }
  const avg=(reviews||[]).length ? (reviews||[]).reduce((a,r)=>a+r.rating,0)/(reviews||[]).length : 0;
- return <main className="wrap detailPage">
+ return <main className="wrap detailPage ttwittunDetailPage courseDetailPage">
    <header className="top detailTop"><Brand/><div className="nav"><Link className="btn ghost" href="/explore">← 코스 탐색</Link><Link className="btn ghost" href="/favorites">♡ 찜</Link><Link className="btn" href="/run/free">🏃 자유 러닝</Link></div></header>
    <nav className="detailQuickNav" aria-label="코스 상세 빠른 이동"><a href="#overview">요약</a><a href="#run-start">🏁 출발 준비</a><a href="#ready">편의정보</a><a href="#after-run">🍚 러닝 후</a><a href="#reviews">후기</a></nav>
    <div className="journeyBreadcrumb" aria-label="러닝 진행 단계"><span className="done">1 코스 선택</span><span className="active">2 출발 준비</span><span>3 라이브 러닝</span><span>4 개인 기록</span></div>
