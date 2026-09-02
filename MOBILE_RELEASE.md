@@ -36,10 +36,16 @@ The app icon source files are committed in `assets/`:
 - `assets/icon-only.png`: 1024 x 1024 full icon master
 - `assets/icon-foreground.png`: Android adaptive-icon foreground
 - `assets/icon-background.png`: Android adaptive-icon cream background
+- `assets/splash.png`: light launch screen master, 2732 x 2732
+- `assets/splash-dark.png`: dark launch screen master, 2732 x 2732
 
 Run `npm run mobile:assets` after creating the native `ios/` and `android/`
 projects. This regenerates the iOS AppIcon set and Android launcher/adaptive
 icon resources from the same approved master artwork.
+
+The setup script also detects incomplete native project folders. It moves an
+incomplete folder to a timestamped backup before recreating the platform, so a
+partial `cap add` or stashed project cannot silently skip native generation.
 
 ## 2. iOS
 

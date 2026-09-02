@@ -7,11 +7,21 @@ echo "[TTWITTUN] Installing dependencies..."
 npm install
 
 echo "[TTWITTUN] Preparing Capacitor native projects..."
-if [ ! -d ios ]; then
+if [ ! -f ios/App/Podfile ]; then
+  if [ -d ios ]; then
+    backup_dir="ios_incomplete_$(date +%Y%m%d_%H%M%S)"
+    mv ios "$backup_dir"
+    echo "[TTWITTUN] Incomplete iOS project moved to $backup_dir"
+  fi
   npx cap add ios
 fi
 
-if [ ! -d android ]; then
+if [ ! -f android/app/src/main/AndroidManifest.xml ]; then
+  if [ -d android ]; then
+    backup_dir="android_incomplete_$(date +%Y%m%d_%H%M%S)"
+    mv android "$backup_dir"
+    echo "[TTWITTUN] Incomplete Android project moved to $backup_dir"
+  fi
   npx cap add android
 fi
 
