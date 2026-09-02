@@ -28,6 +28,7 @@ html{scroll-padding-top:156px}
 /* Prevent Leaflet controls and bottom sheets from escaping above global navigation. */
 .explorerMapPanel{isolation:isolate}
 .explorerMapPanel .leaflet-control-container{position:relative;z-index:400}
+.mobilePrimaryActions{display:none}
 
 @media(max-width:900px){
   html{scroll-padding-top:132px}
@@ -37,57 +38,100 @@ html{scroll-padding-top:156px}
 }
 
 @media(max-width:700px){
-  :root{--runart-mobile-header-h:64px;--runart-mobile-quick-h:50px;--runart-mobile-tabs-h:48px}
-  html{scroll-padding-top:calc(var(--runart-mobile-header-h) + var(--runart-mobile-quick-h) + 18px)}
-  body{overflow-x:hidden}
-  .simpleTop{top:0!important;min-height:var(--runart-mobile-header-h);z-index:1000!important}
-  .homeQuickNav{top:var(--runart-mobile-header-h)!important;z-index:940!important;min-height:var(--runart-mobile-quick-h);align-items:center}
-  .mobileExplorerTabs{top:calc(var(--runart-mobile-header-h) + var(--runart-mobile-quick-h))!important;z-index:930!important;min-height:var(--runart-mobile-tabs-h)}
+  :root{--runart-mobile-header-h:58px;--runart-mobile-tabs-h:46px}
+  html{scroll-padding-top:76px}
+  body{overflow-x:hidden;padding-bottom:88px}
+  .simpleHome{padding:0 10px 24px!important}
+  .simpleTop{top:0!important;min-height:var(--runart-mobile-header-h);height:var(--runart-mobile-header-h);z-index:1000!important;padding:7px 2px!important;background:rgba(12,15,18,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .simpleTop .homeDesktopNav{display:none!important}
+  .simpleTop .nav .btn.ghost{display:none!important}
+  .simpleTop .nav .btn{padding:9px 11px!important;border-radius:12px!important;font-size:11px!important}
 
-  /* Search/filter controls scroll naturally below the view tabs.
-     Three simultaneous sticky bars were overlapping on small screens. */
-  .filterbar.explorerFilters,.explorerFilters{position:relative!important;top:auto!important;z-index:1!important;max-height:none!important;overflow:visible!important}
+  /* Mobile starts with four core jobs instead of multiple navigation layers. */
+  .simpleIntro{padding:20px 4px 12px!important}
+  .simpleIntro .introPill{font-size:10px!important}
+  .simpleIntro h1{font-size:30px!important;line-height:1.08!important;margin:8px 0 9px!important}
+  .simpleIntro>p{font-size:13px!important;line-height:1.5!important;margin:0 0 12px!important;max-width:34em}
+  .simpleIntro .heroActions{display:none!important}
+  .mobilePrimaryActions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:4px 0 14px}
+  .mobilePrimaryActions>a{min-width:0;min-height:76px;padding:10px 5px 8px;border:1px solid var(--line);border-radius:16px;background:var(--panel);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px;box-shadow:0 8px 22px rgba(0,0,0,.1)}
+  .mobilePrimaryActions>a.primary{background:var(--lime);color:#111;border-color:var(--lime)}
+  .mobilePrimaryActions span{font-size:20px;line-height:1}
+  .mobilePrimaryActions b{font-size:12px;white-space:nowrap}
+  .mobilePrimaryActions small{font-size:9px;opacity:.65;white-space:nowrap}
+
+  /* Remove duplicate horizontal and step navigation on phones. */
+  .homeQuickNav,.serviceFlowBar{display:none!important}
+  .simpleHomeSection,.activitySummary,.exploreReveal{margin-top:22px!important}
+  .simpleSectionHead{margin-bottom:9px!important}
+  .simpleSectionHead h2{font-size:19px!important}
+  .simpleSectionHead p{font-size:11px!important;margin-top:3px!important}
+  .simpleSectionHead>a{font-size:10px!important}
+
+  /* Search is the primary home task, so keep it high in the page and remove sticky filter stacks. */
+  #explore,.explorerV2,.simpleHomeSection,.activitySummary,.courseMap{scroll-margin-top:72px!important}
+  .mobileExplorerTabs{position:relative!important;top:auto!important;z-index:20!important;min-height:var(--runart-mobile-tabs-h);margin:6px 0!important}
+  .filterbar.explorerFilters,.explorerFilters{position:relative!important;top:auto!important;z-index:1!important;max-height:none!important;overflow:visible!important;padding:7px!important}
+  .explorerSearchRow{gap:5px!important}
+  .explorerSearchRow input{min-height:46px!important;border-radius:13px!important;padding-left:13px!important}
+  .explorerSearchRow .filterToggle{min-height:46px!important}
+  .explorerQuickChips{margin-top:6px!important;padding-bottom:1px!important}
+  .explorerQuickChips .chip{min-height:38px!important;padding:7px 10px!important;font-size:11px!important}
   .explorerCourseList{max-height:none!important;overflow:visible!important}
 
-  /* Keep matched results visible in map mode so a second tab tap is not required. */
-  .explorerLayout.view-map .explorerCourseList{display:block!important;margin-top:8px!important}
+  /* Map mode = map + compact result carousel. List mode = full cards. */
+  .explorerLayout.view-map .explorerCourseList{display:block!important;margin-top:7px!important;overflow:hidden!important}
   .explorerLayout.view-list .explorerCourseList{display:block!important}
   .explorerLayout.view-list .explorerMapPanel{display:none!important}
   .explorerLayout.view-map .explorerMapPanel{display:block!important}
-  .explorerLayout.view-map .explorerCourseList::before{content:"지도 검색 결과";display:block;padding:9px 10px 6px;color:var(--muted);font-size:11px;font-weight:900;letter-spacing:.04em}
+  .explorerLayout.view-map .explorerCourseList::before{content:"검색 결과";display:block;padding:6px 4px;color:var(--muted);font-size:10px;font-weight:900;letter-spacing:.04em}
+  .explorerLayout.view-map .explorerCourseList .listHead{position:relative!important;top:auto!important;padding:7px 8px!important;margin:0 0 6px!important;border-radius:12px!important}
+  .explorerLayout.view-map .explorerCourseList{display:flex!important;gap:8px!important;overflow-x:auto!important;scroll-snap-type:x proximity;padding-bottom:5px!important;-webkit-overflow-scrolling:touch}
+  .explorerLayout.view-map .explorerCourseList::before,.explorerLayout.view-map .explorerCourseList .listHead{flex:0 0 100%}
+  .explorerLayout.view-map .explorerCourseCard{flex:0 0 min(82vw,310px)!important;margin:0!important;padding:11px!important;scroll-snap-align:start}
+  .explorerLayout.view-map .explorerCourseCard .tagRow{display:none!important}
+  .explorerLayout.view-map .explorerCourseCard .metaRow{margin:6px 0!important;font-size:10px!important}
+  .explorerLayout.view-map .courseListActions{margin-top:7px!important}
+  .explorerLayout.view-map .courseListActions a,.explorerLayout.view-map .courseListActions button{min-height:36px!important;padding:7px 8px!important;font-size:10px!important}
+  .explorerLayout.view-list .explorerCourseList .listHead{position:relative!important;top:auto!important}
 
-  /* While text is entered, shrink the map enough that the first matched cards are
-     visible in the same viewport. This avoids Map -> List -> back navigation. */
-  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerMapPanel .courseMap{height:34vh!important;min-height:270px!important;max-height:340px!important}
+  /* Keep enough map to understand the route while exposing results in the same viewport. */
+  .explorerLayout.view-map .explorerMapPanel .courseMap{height:43vh!important;min-height:310px!important;max-height:440px!important}
+  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerMapPanel .courseMap{height:34vh!important;min-height:255px!important;max-height:320px!important}
   .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerMapPanel .mapCourseInfo{max-height:42%!important}
-  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerCourseList{margin-top:6px!important}
-  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerCourseList .listHead{position:relative!important;top:auto!important;padding:8px 8px 7px!important;margin-bottom:6px!important;border-radius:12px 12px 0 0}
-  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerCourseCard{padding:11px!important;margin:0 6px 7px!important}
-  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerCourseCard .metaRow{margin:6px 0!important}
-  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .courseListActions{margin-top:7px!important}
 
-  /* The course-list guide must sit BELOW the sticky map/list tabs, never on top of them. */
-  .explorerCourseList .listHead{position:sticky!important;top:calc(var(--runart-mobile-header-h) + var(--runart-mobile-quick-h) + var(--runart-mobile-tabs-h))!important;z-index:18!important;background:rgba(20,25,31,.98)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);max-width:100%}
-
-  #explore,.explorerV2,.simpleHomeSection,.activitySummary,.courseMap{scroll-margin-top:calc(var(--runart-mobile-header-h) + var(--runart-mobile-quick-h) + 18px)!important}
-  .filterbar input,.filterbar select,.filterbar button{min-height:44px}
-  .mobileExplorerTabs button,.mobileExplorerTabs a{min-height:44px}
+  .filterbar input,.filterbar select,.filterbar button{min-height:42px}
+  .mobileExplorerTabs button,.mobileExplorerTabs a{min-height:42px}
   .mapCourseInfo{max-width:calc(100% - 16px)}
+
+  /* Compact, thumb-first bottom navigation with RUN as the primary action. */
+  .mobileBottomNavV2{left:10px!important;right:10px!important;bottom:8px!important;height:66px!important;padding:5px 6px calc(5px + env(safe-area-inset-bottom))!important;border-radius:22px!important;background:rgba(20,25,31,.96)!important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 12px 34px rgba(0,0,0,.34)!important}
+  .mobileBottomNavV2>a{position:relative;min-width:0!important;gap:1px!important;font-size:9px!important}
+  .mobileBottomNavV2 .mobileNavIcon{font-size:18px!important;line-height:1!important}
+  .mobileBottomNavV2>a.primary{transform:translateY(-11px);background:var(--lime)!important;color:#111!important;border-radius:18px!important;min-height:56px!important;box-shadow:0 7px 20px rgba(0,0,0,.28)}
+  .mobileBottomNavV2>a.primary .mobileNavIcon{font-size:20px!important}
+
+  /* Recommendation rails stay browseable but lighter than the search experience. */
+  .simpleRail{gap:8px!important}
+  .simpleCourseCard{min-width:min(76vw,285px)!important}
 }
 
 @media(max-width:420px){
-  :root{--runart-mobile-header-h:62px;--runart-mobile-quick-h:50px;--runart-mobile-tabs-h:48px}
+  :root{--runart-mobile-header-h:56px;--runart-mobile-tabs-h:44px}
   .simpleHome{padding-left:8px!important;padding-right:8px!important}
-  .homeQuickNav{gap:5px;padding-left:8px;padding-right:8px}
-  .homeQuickNav a{padding-left:9px;padding-right:9px}
-  .explorerCourseList .listHead{padding-left:8px!important;padding-right:8px!important}
-  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerMapPanel .courseMap{height:31vh!important;min-height:245px!important}
+  .simpleIntro h1{font-size:27px!important}
+  .mobilePrimaryActions{gap:5px}
+  .mobilePrimaryActions>a{min-height:72px;border-radius:14px;padding-left:3px;padding-right:3px}
+  .mobilePrimaryActions b{font-size:11px}
+  .mobilePrimaryActions small{font-size:8px}
+  .explorerLayout.view-map .explorerCourseCard{flex-basis:86vw!important}
+  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerMapPanel .courseMap{height:31vh!important;min-height:235px!important}
 }
 
 @media(max-width:360px){
   .simpleHome{padding-left:6px!important;padding-right:6px!important}
-  .homeQuickNav a{font-size:10px}
-  .filterbar{padding-left:8px!important;padding-right:8px!important}
-  .courseCard{padding-left:11px!important;padding-right:11px!important}
-  .mobileBottomNav{left:6px!important;right:6px!important}
+  .filterbar{padding-left:7px!important;padding-right:7px!important}
+  .courseCard{padding-left:10px!important;padding-right:10px!important}
+  .mobileBottomNavV2{left:6px!important;right:6px!important}
+  .mobilePrimaryActions small{display:none}
 }
