@@ -1,0 +1,15 @@
+@media(max-width:700px){
+  /* Two compact view controls instead of a second full-width navigation bar. */
+  .mobileExplorerTabs{display:flex!important;position:relative!important;top:auto!important;width:max-content!important;max-width:100%!important;margin:7px 0 5px auto!important;padding:3px!important;gap:2px!important;border-radius:12px!important;box-shadow:none!important;background:var(--panel)!important;border:1px solid var(--line)!important}
+  .mobileExplorerTabs button{min-height:34px!important;padding:6px 11px!important;border-radius:9px!important;font-size:10px!important;color:var(--muted)!important}
+  .mobileExplorerTabs button.on{background:var(--panel2)!important;color:var(--text)!important;box-shadow:inset 0 0 0 1px var(--line)!important}
+  .mobileExplorerTabs span{font-size:9px!important}
+
+  .mobileBottomNavV3 .mobileNavIcon{width:25px!important;height:25px!important;display:grid!important;place-items:center!important}
+  .mobileBottomNavV3 .mobileNavIcon svg{display:block;width:25px;height:25px}
+  .mobileBottomNavV3>a.active .mobileNavIcon{transform:scale(1.04)!important}
+
+  /* Make the selected search row easier to track after tapping a route on the map. */
+  .explorerLayout.view-map .explorerCourseCard.selected{background:rgba(217,243,95,.1)!important;box-shadow:inset 3px 0 0 var(--lime)!important}
+  .explorerLayout.view-map .explorerCourseCard.selected .courseTop h3{color:var(--text)!important;font-weight:950!important}
+}
