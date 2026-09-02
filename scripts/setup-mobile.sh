@@ -3,10 +3,10 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-echo "[RUNART] Installing Capacitor packages..."
-npm install --save-dev @capacitor/cli@^7.0.0
-npm install @capacitor/core@^7.0.0 @capacitor/ios@^7.0.0 @capacitor/android@^7.0.0
+echo "[TTWITTUN] Installing dependencies..."
+npm install
 
+echo "[TTWITTUN] Preparing Capacitor native projects..."
 if [ ! -d ios ]; then
   npx cap add ios
 fi
@@ -16,8 +16,11 @@ if [ ! -d android ]; then
 fi
 
 npx cap sync
+npx cap doctor || true
 
 echo ""
-echo "RUNART KOREA mobile projects are ready."
-echo "iOS:     npx cap open ios"
-echo "Android: npx cap open android"
+echo "TTWITTUN mobile projects are ready."
+echo "Bundle / Application ID: com.ttwittun.korea"
+echo "iOS:     npm run mobile:ios"
+echo "Android: npm run mobile:android"
+echo "Sync:    npm run mobile:sync"
