@@ -4,6 +4,7 @@ import {useEffect} from "react";
 import {Capacitor} from "@capacitor/core";
 import {App} from "@capacitor/app";
 import {Browser} from "@capacitor/browser";
+import {SplashScreen} from "@capacitor/splash-screen";
 
 const INTERNAL_HOSTS=new Set(["runart-korea.vercel.app"]);
 
@@ -13,9 +14,19 @@ export default function NativeAppBridge(){
 
   document.documentElement.classList.add("nativeApp");
   document.body.classList.add(`native-${Capacitor.getPlatform()}`);
+  void SplashScreen.hide().catch(()=>{});
 
   const appState=App.addListener("appStateChange",({isActive})=>{
    window.dispatchEvent(new CustomEvent("ttwittun:app-state",{detail:{isActive}}));
+  });
+
+  const appUrl=App.addListener("appUrlOpen",({url})=>{
+   try{
+    const next=new URL(url);
+    if(INTERNAL_HOSTS.has(next.host)){
+     window.location.assign(`${next.pathname}${next.search}${next.hash}`||"/");
+    }
+   }catch{}
   });
 
   const back=App.addListener("backButton",({canGoBack})=>{
@@ -42,6 +53,7 @@ export default function NativeAppBridge(){
   return ()=>{
    document.removeEventListener("click",onClick,true);
    void appState.then(h=>h.remove());
+   void appUrl.then(h=>h.remove());
    void back.then(h=>h.remove());
    document.documentElement.classList.remove("nativeApp");
   };
