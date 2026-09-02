@@ -30,6 +30,11 @@ html{scroll-padding-top:156px}
 .explorerMapPanel .leaflet-control-container{position:relative;z-index:400}
 .mobilePrimaryActions{display:none}
 
+/* Immediate visual feedback while Next.js streams the next route. */
+.routeLoadingSpinner{width:30px;height:30px;border:3px solid var(--line);border-top-color:var(--lime);border-radius:50%;animation:routeLoadingSpin .72s linear infinite}
+@keyframes routeLoadingSpin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.routeLoadingSpinner{animation:none}}
+
 @media(max-width:900px){
   html{scroll-padding-top:132px}
   #explore,.explorerV2,.simpleHomeSection,.activitySummary{scroll-margin-top:132px!important}
