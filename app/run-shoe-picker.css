@@ -1,0 +1,3 @@
+.runShoePicker{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.runShoePicker h3{margin:3px 0}
+.runShoePicker select{max-width:52%;padding:11px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink)}
