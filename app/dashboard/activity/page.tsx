@@ -1,0 +1,11 @@
+import Link from "next/link";
+import {redirect} from "next/navigation";
+import Brand from "@/components/Brand";
+import {createClient} from "@/lib/supabase/server";
+
+export default async function CrewActivityPage(){
+ const sb=await createClient();const {data:{user}}=await sb.auth.getUser();if(!user)redirect("/login");
+ const {data:owned}=await sb.from("runart_crews").select("id").eq("owner_id",user.id).maybeSingle();const {data:memberships}=await sb.from("runart_crew_members").select("crew_id,role").eq("user_id",user.id);const membership=memberships?.[0],crewId=owned?.id||membership?.crew_id,role=owned?"owner":membership?.role||"member";if(!crewId)redirect("/join");const canManage=["owner","admin"].includes(role);
+ const {data:logs}=await sb.from("runart_course_logs").select("id,run_date,actual_distance_km,memo,created_by,runart_courses(name,distance_km)").eq("crew_id",crewId).order("run_date",{ascending:false}).limit(100);const logIds=(logs||[]).map((l:any)=>l.id);const {data:parts}=logIds.length?await sb.from("runart_log_participants").select("log_id,user_id").in("log_id",logIds):{data:[] as any[]};const counts=new Map<string,number>();(parts||[]).forEach((p:any)=>counts.set(p.log_id,(counts.get(p.log_id)||0)+1));
+ return <main className="wrap mobileSubPage"><header className="top compactPageTop"><Brand/><div className="nav"><Link className="btn ghost" href="/dashboard">← 크루</Link><Link className="btn" href="/dashboard/add">＋ 기록</Link></div></header><section className="compactPageHero"><span className="eyebrow">CREW ACTIVITY</span><h1>최근 러닝</h1><p className="muted">최근 크루 활동과 참여 인원을 확인합니다.</p></section><div className="mobileCardList">{(logs||[]).map((l:any)=><article className="card mobileListCard mobileListAction" key={l.id}><div><small>{l.run_date}</small><h3>{l.runart_courses?.name||"러닝 기록"}</h3><p>{Number(l.actual_distance_km||l.runart_courses?.distance_km||0).toFixed(1)}km · 👥 {counts.get(l.id)||0}명</p>{l.memo&&<small>{l.memo}</small>}</div>{(canManage||l.created_by===user.id)&&<Link className="btn ghost" href={`/logs/${l.id}`}>편집</Link>}</article>)}{!(logs||[]).length&&<div className="card emptyState"><b>아직 크루 러닝 기록이 없습니다.</b><Link className="btn" href="/dashboard/add">첫 기록 추가</Link></div>}</div></main>
+}
