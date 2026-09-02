@@ -22,6 +22,7 @@ import "./shoe-guide.css";
 import "./run-club-refresh.css";
 import "./mobile-ux-stability.css";
 import "./detail-theme.css";
+import "./app-theme.css";
 import "leaflet/dist/leaflet.css";
 import { Noto_Sans_KR } from "next/font/google";
 import MobileBottomNav from "@/components/MobileBottomNav";
