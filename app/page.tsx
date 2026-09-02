@@ -6,13 +6,23 @@ import {createClient} from "@/lib/supabase/server";
 function raceDday(date:string){const target=new Date(`${date}T00:00:00+09:00`).getTime(),now=new Date();now.setHours(0,0,0,0);const d=Math.ceil((target-now.getTime())/86400000);return d===0?"D-DAY":d>0?`D-${d}`:"종료"}
 
 export default async function Home(){
- const sb=await createClient();const {data:{user}}=await sb.auth.getUser();
- const {count:courseCount}=await sb.from("runart_courses").select("id",{count:"exact",head:true}).eq("status","approved");
+ const sb=await createClient();
+ const [{data:{user}},{count:courseCount}]=await Promise.all([
+  sb.auth.getUser(),
+  sb.from("runart_courses").select("id",{count:"exact",head:true}).eq("status","approved")
+ ]);
  let favoriteCount=0,weekKm=0,nextRace:any=null;
  if(user){
-  const {count}=await sb.from("runart_favorites").select("course_id",{count:"exact",head:true}).eq("user_id",user.id);favoriteCount=count||0;
-  const weekAgo=new Date(Date.now()-7*86400000).toISOString();const {data:runs}=await sb.from("runart_live_runs").select("distance_km").eq("user_id",user.id).gte("finished_at",weekAgo);weekKm=(runs||[]).reduce((s:number,r:any)=>s+Number(r.distance_km||0),0);
-  const today=new Date().toISOString().slice(0,10);const {data:races}=await sb.from("runart_public_race_participation").select("race_name,race_date,status,distance").eq("user_id",user.id).in("status",["applied","going"]).gte("race_date",today).order("race_date",{ascending:true}).limit(1);nextRace=races?.[0]||null;
+  const weekAgo=new Date(Date.now()-7*86400000).toISOString();
+  const today=new Date().toISOString().slice(0,10);
+  const [favoriteResult,runsResult,racesResult]=await Promise.all([
+   sb.from("runart_favorites").select("course_id",{count:"exact",head:true}).eq("user_id",user.id),
+   sb.from("runart_live_runs").select("distance_km").eq("user_id",user.id).gte("finished_at",weekAgo),
+   sb.from("runart_public_race_participation").select("race_name,race_date,status,distance").eq("user_id",user.id).in("status",["applied","going"]).gte("race_date",today).order("race_date",{ascending:true}).limit(1)
+  ]);
+  favoriteCount=favoriteResult.count||0;
+  weekKm=(runsResult.data||[]).reduce((s:number,r:any)=>s+Number(r.distance_km||0),0);
+  nextRace=racesResult.data?.[0]||null;
  }
  const promos=[
   user&&weekKm>0?{href:"/my/history",eyebrow:"YOUR WEEK",title:`이번 주 ${weekKm.toFixed(1)}km`,description:"최근 러닝 흐름을 확인하고 다음 기록을 이어가세요.",cta:"내 기록 보기",icon:"◷",className:"promoRun"}:{href:"/run/free",eyebrow:"START NOW",title:"오늘의 러닝, 바로 시작해요.",description:"GPS 기록을 켜고 달리기만 하면 돼요.",cta:"RUN 시작",icon:"🏃",className:"promoRun"},
