@@ -601,12 +601,13 @@ export default function RunModeV2({
         </div>
         {!running && (
           <Link
-            className="btn ghost"
+            className="btn ghost runExitButton"
             href={
               mode === "course" && courseId ? `/courses/${courseId}` : "/my"
             }
           >
-            ← 나가기
+            <span aria-hidden="true">×</span>
+            <b>나가기</b>
           </Link>
         )}
       </header>
