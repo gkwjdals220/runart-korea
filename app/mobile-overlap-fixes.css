@@ -1,0 +1,32 @@
+/* Mobile interaction hardening: keep controls tappable without overlap. */
+@media(max-width:700px){
+  .top,.compactPageTop,.runModeTop{min-width:0}
+  .top>.brand,.compactPageTop>.brand{flex:0 1 auto;min-width:0}
+  .top .nav,.compactPageTop .nav{display:flex;align-items:center;justify-content:flex-end;gap:5px;min-width:0;max-width:58vw;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .top .nav::-webkit-scrollbar,.compactPageTop .nav::-webkit-scrollbar{display:none}
+  .top .nav>a,.top .nav>button,.compactPageTop .nav>a,.compactPageTop .nav>button{flex:0 0 auto;white-space:nowrap}
+  .pageHubGrid,.mobileCardList,.pbPageGrid,.myHubSummary{min-width:0}
+  .hubTile,.mobileListCard,.pbPageCard,.myHubSummary>div{min-width:0;overflow:hidden}
+  .hubTile>div,.mobileListCard>div{min-width:0}
+  .hubTile h2,.hubTile p,.mobileListCard h3,.mobileListCard p,.mobileListCard small{overflow-wrap:anywhere}
+  .mobileListAction>.btn,.mobileListAction>button{width:100%;justify-content:center}
+  .pageBottomActions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .pageBottomActions>.btn,.pageBottomActions>button{width:100%;min-width:0;text-align:center;justify-content:center}
+  .profileEditorWrap form,.profileEditorWrap .card{min-width:0;max-width:100%}
+  .profileEditorWrap input,.profileEditorWrap select,.profileEditorWrap textarea,.profileEditorWrap button{max-width:100%;box-sizing:border-box}
+  .runControlDock>*{min-width:0!important;white-space:normal!important;text-align:center}
+  .urgentRunDock{z-index:1450}
+  .urgentRunPanel{z-index:1460}
+}
+@media(max-width:420px){
+  .compactPageTop .nav,.top .nav{max-width:54vw}
+  .compactPageTop .nav .btn,.top .nav .btn{min-height:36px!important;padding:7px 8px!important}
+  .pageBottomActions{grid-template-columns:1fr}
+  .hubTile{grid-template-columns:28px minmax(0,1fr) 14px!important;gap:10px!important}
+  .mobileListCard{gap:9px!important}
+}
+@media(max-width:360px){
+  .compactPageTop .nav,.top .nav{max-width:50vw}
+  .hubTile p{display:none}
+  .myHubSummary b{font-size:17px!important}
+}
