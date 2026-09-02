@@ -1,7 +1,7 @@
 /* Detail pages share the friendly, high-contrast visual language used by the image-led home. */
 .ttwittunDetailPage{--detail-lime:#d6ff2f;--detail-ink:#101417;--detail-card:#151b20;--detail-line:#303943;padding-bottom:120px}
 .ttwittunDetailPage .detailTop{border:1px solid var(--detail-line);border-radius:20px;background:rgba(16,20,23,.94);box-shadow:0 12px 34px rgba(0,0,0,.2)}
-.ttwittunDetailPage .detailHero{position:relative;isolation:isolate;overflow:hidden;min-height:240px;padding:34px;border:1px solid #3c4751;border-radius:28px;background:radial-gradient(circle at 78% 22%,rgba(214,255,47,.24),transparent 25%),radial-gradient(circle at 58% 92%,rgba(119,211,185,.17),transparent 30%),linear-gradient(145deg,#182027,#0e1317);box-shadow:0 20px 48px rgba(0,0,0,.25)}
+.ttwittunDetailPage .detailHero.card{position:relative;isolation:isolate;overflow:hidden;min-height:240px;padding:34px;border:1px solid #3c4751;border-radius:28px;background:radial-gradient(circle at 78% 22%,rgba(214,255,47,.24),transparent 25%),radial-gradient(circle at 58% 92%,rgba(119,211,185,.17),transparent 30%),linear-gradient(145deg,#182027,#0e1317);box-shadow:0 20px 48px rgba(0,0,0,.25)}
 .ttwittunDetailPage .detailHero::before{content:"";position:absolute;z-index:-1;right:-55px;bottom:-75px;width:250px;height:250px;border-radius:50%;background:linear-gradient(145deg,#d6ff2f,#9ddf4e);opacity:.92}
 .ttwittunDetailPage .detailHero::after{content:"🦆";position:absolute;z-index:-1;right:35px;bottom:18px;font-size:84px;line-height:1;filter:drop-shadow(0 8px 8px rgba(0,0,0,.2));transform:rotate(-6deg)}
 .ttwittunDetailPage .detailHero>div:first-child{position:relative;z-index:1;max-width:min(72%,720px)}
