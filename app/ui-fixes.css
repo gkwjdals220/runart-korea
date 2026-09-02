@@ -49,14 +49,22 @@ html{scroll-padding-top:156px}
   .filterbar.explorerFilters,.explorerFilters{position:relative!important;top:auto!important;z-index:1!important;max-height:none!important;overflow:visible!important}
   .explorerCourseList{max-height:none!important;overflow:visible!important}
 
-  /* On phones the old map tab hid the matched course list completely.
-     Keep the map first, then expose the matching results directly below it.
-     The dedicated list tab still hides the map for list-only browsing. */
-  .explorerLayout.view-map .explorerCourseList{display:block!important;margin-top:10px!important}
+  /* Keep matched results visible in map mode so a second tab tap is not required. */
+  .explorerLayout.view-map .explorerCourseList{display:block!important;margin-top:8px!important}
   .explorerLayout.view-list .explorerCourseList{display:block!important}
   .explorerLayout.view-list .explorerMapPanel{display:none!important}
   .explorerLayout.view-map .explorerMapPanel{display:block!important}
-  .explorerLayout.view-map .explorerCourseList::before{content:"검색 결과";display:block;padding:10px 10px 7px;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.04em}
+  .explorerLayout.view-map .explorerCourseList::before{content:"지도 검색 결과";display:block;padding:9px 10px 6px;color:var(--muted);font-size:11px;font-weight:900;letter-spacing:.04em}
+
+  /* While text is entered, shrink the map enough that the first matched cards are
+     visible in the same viewport. This avoids Map -> List -> back navigation. */
+  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerMapPanel .courseMap{height:34vh!important;min-height:270px!important;max-height:340px!important}
+  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerMapPanel .mapCourseInfo{max-height:42%!important}
+  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerCourseList{margin-top:6px!important}
+  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerCourseList .listHead{position:relative!important;top:auto!important;padding:8px 8px 7px!important;margin-bottom:6px!important;border-radius:12px 12px 0 0}
+  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerCourseCard{padding:11px!important;margin:0 6px 7px!important}
+  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerCourseCard .metaRow{margin:6px 0!important}
+  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .courseListActions{margin-top:7px!important}
 
   /* The course-list guide must sit BELOW the sticky map/list tabs, never on top of them. */
   .explorerCourseList .listHead{position:sticky!important;top:calc(var(--runart-mobile-header-h) + var(--runart-mobile-quick-h) + var(--runart-mobile-tabs-h))!important;z-index:18!important;background:rgba(20,25,31,.98)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);max-width:100%}
@@ -73,6 +81,7 @@ html{scroll-padding-top:156px}
   .homeQuickNav{gap:5px;padding-left:8px;padding-right:8px}
   .homeQuickNav a{padding-left:9px;padding-right:9px}
   .explorerCourseList .listHead{padding-left:8px!important;padding-right:8px!important}
+  .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerMapPanel .courseMap{height:31vh!important;min-height:245px!important}
 }
 
 @media(max-width:360px){
