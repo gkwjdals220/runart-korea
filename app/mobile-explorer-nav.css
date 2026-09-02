@@ -4,12 +4,18 @@
     display:block!important;
     margin-top:8px!important;
     padding:0!important;
+    height:248px!important;
+    min-height:248px!important;
     max-height:248px!important;
-    overflow-y:auto!important;
+    overflow-y:scroll!important;
     overflow-x:hidden!important;
     scroll-snap-type:none!important;
-    overscroll-behavior:contain;
+    overscroll-behavior-x:none!important;
+    overscroll-behavior-y:contain!important;
     -webkit-overflow-scrolling:touch;
+    touch-action:pan-y!important;
+    contain:layout paint;
+    isolation:isolate;
     border:1px solid var(--line);
     border-radius:16px;
     background:var(--panel);
@@ -135,7 +141,7 @@
 }
 
 @media(max-width:390px){
-  .explorerLayout.view-map .explorerCourseList{max-height:224px!important}
+  .explorerLayout.view-map .explorerCourseList{height:224px!important;min-height:224px!important;max-height:224px!important}
   .explorerLayout.view-map .explorerCourseCard{padding:9px 10px!important}
   .explorerLayout.view-map .explorerCourseCard .metaRow>*:nth-child(n+3){display:none!important}
   .mobileBottomNavV3{height:61px!important;padding-left:4px!important;padding-right:4px!important}
