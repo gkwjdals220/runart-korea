@@ -3,6 +3,12 @@ html{scroll-padding-top:156px}
 .simpleTop{top:0!important;z-index:1000!important}
 .homeQuickNav{top:76px!important;z-index:940!important}
 
+/* Native shell safe-area support. */
+.nativeApp body{padding-top:env(safe-area-inset-top);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+.nativeApp .simpleTop{padding-top:max(7px,env(safe-area-inset-top))!important}
+.nativeApp .mobileBottomNav{padding-bottom:max(5px,env(safe-area-inset-bottom))!important}
+.nativeApp .runControlDock{padding-bottom:max(12px,env(safe-area-inset-bottom))!important}
+
 /* Keep the course-list guide attached to its own scroll container.
    The previous page-level top offset made it float over course cards. */
 .explorerCourseList{position:relative;min-width:0}
@@ -46,8 +52,10 @@ html{scroll-padding-top:156px}
   :root{--runart-mobile-header-h:58px;--runart-mobile-tabs-h:46px}
   html{scroll-padding-top:76px}
   body{overflow-x:hidden;padding-bottom:88px}
+  .nativeApp body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
   .simpleHome{padding:0 10px 24px!important}
   .simpleTop{top:0!important;min-height:var(--runart-mobile-header-h);height:var(--runart-mobile-header-h);z-index:1000!important;padding:7px 2px!important;background:rgba(12,15,18,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .nativeApp .simpleTop{height:calc(var(--runart-mobile-header-h) + env(safe-area-inset-top))!important;min-height:calc(var(--runart-mobile-header-h) + env(safe-area-inset-top))!important}
   .simpleTop .homeDesktopNav{display:none!important}
   .simpleTop .nav .btn.ghost{display:none!important}
   .simpleTop .nav .btn{padding:9px 11px!important;border-radius:12px!important;font-size:11px!important}
