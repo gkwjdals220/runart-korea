@@ -21,15 +21,15 @@ export default async function ShoesPage({ searchParams }: { searchParams: Promis
       .order("created_at", { ascending: false }),
     sb
       .from("runart_live_runs")
-      .select("shoe_id,distance_km")
+      .select("shoe_id,distance_km,finished_at")
       .eq("user_id", user.id)
       .not("shoe_id", "is", null),
   ]);
   const rows = (shoes || []).map((s: any) => ({
     ...s,
-    run_km: (runs || [])
-      .filter((r: any) => r.shoe_id === s.id)
-      .reduce((a: number, r: any) => a + Number(r.distance_km || 0), 0),
+    run_km: (runs || []).filter((r: any) => r.shoe_id === s.id).reduce((a: number, r: any) => a + Number(r.distance_km || 0), 0),
+    run_count: (runs || []).filter((r: any) => r.shoe_id === s.id).length,
+    last_run_at: (runs || []).filter((r: any) => r.shoe_id === s.id && r.finished_at).sort((a: any,b: any) => String(b.finished_at).localeCompare(String(a.finished_at)))[0]?.finished_at || null,
   }));
   return (
     <main className="wrap shoePage">
