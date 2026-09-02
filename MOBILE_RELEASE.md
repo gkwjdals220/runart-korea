@@ -1,6 +1,13 @@
-# RUNART KOREA mobile release
+# TTWITTUN mobile release
 
-RUNART KOREA uses Capacitor to package the production web service as iOS and Android apps.
+TTWITTUN uses Capacitor to package the production service as iOS and Android apps.
+
+## App identity
+
+- App name: `TTWITTUN`
+- Bundle / Application ID: `com.ttwittun.korea`
+- Production origin: `https://runart-korea.vercel.app`
+- Initial version: `1.0.0`
 
 ## 1. Generate native projects
 
@@ -11,53 +18,83 @@ chmod +x scripts/setup-mobile.sh
 ./scripts/setup-mobile.sh
 ```
 
-This installs Capacitor and creates `ios/` and `android/` projects.
+The script installs the Capacitor toolchain, creates `ios/` and `android/`, runs `cap sync`, and runs the Capacitor doctor check.
+
+After web/native dependency changes:
+
+```bash
+npm run mobile:sync
+```
 
 ## 2. iOS
 
 ```bash
-npx cap open ios
+npm run mobile:ios
 ```
 
 In Xcode:
-- Bundle Identifier: `com.runart.korea`
-- Display Name: `RUNART KOREA`
+- Bundle Identifier: `com.ttwittun.korea`
+- Display Name: `TTWITTUN`
 - Set the Apple Developer Team
-- Set deployment target supported by the installed Capacitor version
-- Add app icons and launch screen assets
-- Test login, geolocation, favorites, Kakao external links, RUN + EAT saving and sharing on a physical iPhone
+- Version: `1.0.0`
+- Build: start with `1`
+- Add a 1024 x 1024 app icon master and launch assets
+- Add location permission descriptions for GPS running and nearby course/facility discovery
+- Test login, email confirmation, GPS start/pause/finish, background/foreground recovery, course map, race links/forms, sharing, favorites, and external links on a physical iPhone
 - Archive > Distribute App > App Store Connect
 
-Location usage description should explain that location is used to find running courses near the user.
+Suggested iOS permission copy:
+
+`TTWITTUN은 러닝 기록 측정과 주변 코스·편의시설 안내를 위해 사용자의 위치를 사용합니다.`
+
+If background location is introduced later, add a separate background-location explanation and validate the App Store review requirement before enabling it.
 
 ## 3. Android
 
 ```bash
-npx cap open android
+npm run mobile:android
 ```
 
 In Android Studio:
-- Application ID: `com.runart.korea`
-- App name: `RUNART KOREA`
-- Add launcher icon assets
-- Test login, geolocation, favorites, Kakao external links, RUN + EAT saving and sharing on a physical Android device
+- Application ID: `com.ttwittun.korea`
+- App name: `TTWITTUN`
+- Version name: `1.0.0`
+- Version code: start with `1`
+- Add adaptive launcher icon assets
+- Verify foreground location permission and Android 13+ notification permission only if notifications are enabled
+- Test login, GPS start/pause/finish, app resume recovery, course map, race links/forms, sharing, favorites, and external links on a physical Android device
 - Build > Generate Signed Bundle / APK > Android App Bundle
 - Upload the `.aab` to Google Play Console
 
-## 4. Supabase authentication
+## 4. Native capabilities included in the first app toolchain
+
+The first TTWITTUN native shell includes packages for:
+- Geolocation
+- Native share sheet
+- Browser/external links
+- App lifecycle/back-button handling
+- Haptics
+- Status bar
+- Splash screen
+
+Native-only code should always guard with `Capacitor.isNativePlatform()` so the Vercel web app continues to work unchanged.
+
+## 5. Supabase authentication
 
 The app loads the production origin:
 
 `https://runart-korea.vercel.app`
 
-Keep the existing production auth callback URL enabled in Supabase. Verify email confirmation and login inside both native shells before submitting to stores.
+Keep the existing production auth callback URL enabled in Supabase. Verify signup confirmation, login persistence, logout, and auth callback behavior inside both native shells before store submission.
 
-## 5. Store submission checklist
+## 6. Store submission assets
 
 Prepare:
-- App icon (1024 x 1024 master)
-- iPhone and Android screenshots
-- Short and full app descriptions
+- App icon 1024 x 1024 master
+- iPhone screenshots
+- Android phone screenshots
+- Short description
+- Full description
 - Support URL
 - Privacy Policy URL
 - Location permission explanation
@@ -65,10 +102,16 @@ Prepare:
 - Apple Developer Program account
 - Google Play Console developer account
 
-## 6. Important review note
+## 7. Review readiness
 
-The first Capacitor version keeps the current RUNART service and navigation intact. Before public App Store review, add enough mobile-specific value (for example native geolocation behavior, native sharing, push notifications, deep links, or offline/error handling) so the app is more than a minimal website wrapper.
+Do not submit a bare website wrapper. Before public review, verify at least these native-value behaviors on-device:
+- GPS running/location permission
+- native share
+- app lifecycle recovery while a run is active
+- sensible hardware back-button behavior on Android
+- external registration/map links opening correctly
+- offline/network-error fallback
 
-## 7. Updating the app
+## 8. Updating the app
 
-Most web UI/data changes continue to deploy through Vercel without rebuilding the native shell. Rebuild and resubmit native apps when native configuration, permissions, icons, plugins, bundle settings, or store metadata change.
+Most UI/data updates continue to deploy through Vercel without a native store rebuild because the native shell points at the production origin. Rebuild and resubmit when native configuration, permissions, plugins, app icons, signing, bundle settings, or store metadata change.
