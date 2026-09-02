@@ -23,7 +23,6 @@ export default function UrgentFacilityNav(){
   const[open,setOpen]=useState(false),[loading,setLoading]=useState<FacilityType|null>(null),[origin,setOrigin]=useState<UserPos|null>(null),[facilities,setFacilities]=useState<Facility[]>([]),[error,setError]=useState("");
 
   useEffect(()=>{setOpen(false);setLoading(null);setOrigin(null);setFacilities([]);setError("");},[pathname]);
-  useEffect(()=>{const onFacility=(event:Event)=>{const type=(event as CustomEvent<{type?:FacilityType}>).detail?.type;if(type==="water"||type==="convenience")find(type)};window.addEventListener("runart:facility",onFacility);return()=>window.removeEventListener("runart:facility",onFacility)},[]);
 
   function find(type:FacilityType){
     if(!navigator.geolocation){setError("현재 위치 기능을 사용할 수 없습니다.");setOpen(true);return;}
@@ -42,31 +41,31 @@ export default function UrgentFacilityNav(){
     },()=>{setLoading(null);setError("위치 권한을 허용해야 현재 위치 기준으로 찾을 수 있어요.");},{enableHighAccuracy:true,timeout:9000,maximumAge:30000});
   }
 
-  const dockBottom=inLiveRun?168:82,panelBottom=inLiveRun?220:136;
+  if(!inLiveRun)return null;
+
+  const dockBottom=168,panelBottom=220;
   const buttonStyle={border:"1px solid rgba(255,255,255,.18)",borderRadius:999,padding:"10px 13px",fontWeight:800,background:"rgba(28,36,48,.94)",color:"white",boxShadow:"0 8px 24px rgba(0,0,0,.24)",backdropFilter:"blur(10px)"} as const;
   return <>
-    <div style={{position:"fixed",right:14,bottom:dockBottom,zIndex:1350,display:"flex",gap:8,flexWrap:"wrap",justifyContent:"flex-end",maxWidth:"calc(100vw - 28px)"}} aria-label="긴급 주변 시설">
-      <button type="button" onClick={()=>find("toilet")} style={buttonStyle}>{loading==="toilet"?"🚻 찾는 중…":inLiveRun?"🚻 화장실 SOS":"🚻 급한 화장실"}</button>
-      <button type="button" onClick={()=>find("water")} style={buttonStyle}>{loading==="water"?"💧 찾는 중…":inLiveRun?"💧 물 SOS":"💧 식수 찾기"}</button>
-      <button type="button" onClick={()=>find("convenience")} style={buttonStyle}>{loading==="convenience"?"🏪 찾는 중…":inLiveRun?"🏪 편의점":"🏪 가까운 편의점"}</button>
-      {!inLiveRun&&<button type="button" onClick={()=>find("parking")} style={buttonStyle}>{loading==="parking"?"🚗 찾는 중…":"🚗 가까운 주차"}</button>}
+    <div style={{position:"fixed",right:14,bottom:dockBottom,zIndex:1350,display:"flex",gap:8,flexWrap:"wrap",justifyContent:"flex-end",maxWidth:"calc(100vw - 28px)"}} aria-label="러닝 중 주변 시설">
+      <button type="button" onClick={()=>find("toilet")} style={buttonStyle}>{loading==="toilet"?"🚻 찾는 중…":"🚻 화장실 SOS"}</button>
+      <button type="button" onClick={()=>find("water")} style={buttonStyle}>{loading==="water"?"💧 찾는 중…":"💧 물 SOS"}</button>
+      <button type="button" onClick={()=>find("convenience")} style={buttonStyle}>{loading==="convenience"?"🏪 찾는 중…":"🏪 편의점"}</button>
+      <button type="button" onClick={()=>find("parking")} style={buttonStyle}>{loading==="parking"?"🚗 찾는 중…":"🚗 주차"}</button>
     </div>
     {open&&<div role="dialog" aria-modal="false" aria-label="주변 시설 길찾기" style={{position:"fixed",right:14,bottom:panelBottom,zIndex:1360,width:"min(380px,calc(100vw - 28px))",maxHeight:"min(66vh,520px)",overflowY:"auto",border:"1px solid rgba(255,255,255,.14)",borderRadius:18,padding:14,background:"rgba(18,24,32,.97)",color:"white",boxShadow:"0 18px 50px rgba(0,0,0,.35)",backdropFilter:"blur(14px)"}}>
       <button type="button" aria-label="닫기" onClick={()=>setOpen(false)} style={{position:"absolute",right:10,top:8,border:0,background:"transparent",color:"white",fontSize:24,cursor:"pointer"}}>×</button>
-      <small style={{opacity:.72}}>현재 위치 기준 · {inLiveRun?"러닝 중 긴급 길찾기":"가까운 순"}</small>
+      <small style={{opacity:.72}}>현재 위치 기준 · 러닝 중 빠른 길찾기</small>
       {loading&&<p style={{margin:"8px 0 2px",fontWeight:800}}>{META[loading].icon} 가까운 {META[loading].label} 정보를 찾고 있어요…</p>}
       {error&&<p style={{margin:"8px 24px 2px 0",lineHeight:1.45}}>{error}</p>}
       {facilities.map((f,i)=><div key={f.id} style={{marginTop:10,paddingTop:i?12:2,borderTop:i?"1px solid rgba(255,255,255,.1)":"none"}}>
         <h3 style={{margin:"4px 24px 4px 0",fontSize:16}}>{i+1}. {META[f.type].icon} {f.name}</h3>
         <p style={{margin:"0 0 8px",opacity:.8,fontSize:13}}>직선거리 약 {distanceText(f.distance_m)}{f.address?` · ${f.address}`:""}</p>
         {f.opening_hours&&<p style={{margin:"0 0 8px",fontSize:12,opacity:.72}}>운영시간 {f.opening_hours}</p>}
-        {f.type==="water"&&i===0&&<p style={{margin:"0 0 8px",fontSize:12,opacity:.72,lineHeight:1.4}}>공공 지도에 식수 가능 시설로 등록된 지점입니다. 현장 상태·운영 여부는 실제 시설 표기를 확인해주세요.</p>}
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:7}}>
           <a href={kakaoDirections(f)} target="_blank" rel="noreferrer" style={{textAlign:"center",padding:"9px 7px",borderRadius:10,textDecoration:"none",fontWeight:900,background:"#fee500",color:"#111"}}>카카오 길찾기</a>
           {origin&&<a href={naverDirections(origin,f)} target="_blank" rel="noreferrer" style={{textAlign:"center",padding:"9px 7px",borderRadius:10,textDecoration:"none",fontWeight:900,background:"#03c75a",color:"white"}}>네이버 도보</a>}
         </div>
       </div>)}
-      {!!facilities.length&&<p style={{margin:"10px 0 0",fontSize:11,opacity:.6,lineHeight:1.4}}>표시 거리는 직선거리입니다. 실제 이동거리·영업/운영 여부는 지도 앱 또는 현장에서 최종 확인해주세요.</p>}
     </div>}
   </>;
 }
