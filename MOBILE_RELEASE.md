@@ -8,6 +8,9 @@ TTWITTUN uses Capacitor to package the production service as iOS and Android app
 - Bundle / Application ID: `com.ttwittun.korea`
 - Production origin: `https://runart-korea.vercel.app`
 - Initial version: `1.0.0`
+- Capacitor fallback web assets: `native-web/`
+
+The native shell loads the production Vercel origin. `native-web/index.html` exists so `cap sync` always has a valid local web asset directory and also provides a minimal fallback screen during native setup.
 
 ## 1. Generate native projects
 
@@ -18,7 +21,7 @@ chmod +x scripts/setup-mobile.sh
 ./scripts/setup-mobile.sh
 ```
 
-The script installs the Capacitor toolchain, creates `ios/` and `android/`, runs `cap sync`, and runs the Capacitor doctor check.
+The script installs dependencies, creates `ios/` and `android/`, runs `cap sync`, and runs the Capacitor doctor check.
 
 After web/native dependency changes:
 
@@ -66,20 +69,31 @@ In Android Studio:
 - Build > Generate Signed Bundle / APK > Android App Bundle
 - Upload the `.aab` to Google Play Console
 
-## 4. Native capabilities included in the first app toolchain
+## 4. Native capabilities already wired
 
-The first TTWITTUN native shell includes packages for:
+The current native bridge now handles:
+- Capacitor native-platform detection
+- native app lifecycle events
+- Android hardware back button behavior
+- external HTTP/HTTPS links through Capacitor Browser
+- internal production deep-link handoff
+- native splash-screen dismissal
+- native share sheet for RUN + EAT plan sharing
+
+Packages are also prepared for:
 - Geolocation
-- Native share sheet
-- Browser/external links
-- App lifecycle/back-button handling
 - Haptics
 - Status bar
-- Splash screen
 
-Native-only code should always guard with `Capacitor.isNativePlatform()` so the Vercel web app continues to work unchanged.
+Native-only code is guarded with `Capacitor.isNativePlatform()` so the Vercel web app continues to work normally.
 
-## 5. Supabase authentication
+## 5. GPS migration plan
+
+The current runner still uses the browser/WebView geolocation API. This is valid for the first physical-shell test, but before store submission the run tracker should be field-tested on both platforms. If WebView GPS continuity or permission behavior is inconsistent, migrate the runner watch implementation to `@capacitor/geolocation` while keeping the same run-state recovery model.
+
+Do not enable background location merely to satisfy store review. Only add it if TTWITTUN actually supports a clearly disclosed background-running use case and it passes device testing.
+
+## 6. Supabase authentication
 
 The app loads the production origin:
 
@@ -87,7 +101,7 @@ The app loads the production origin:
 
 Keep the existing production auth callback URL enabled in Supabase. Verify signup confirmation, login persistence, logout, and auth callback behavior inside both native shells before store submission.
 
-## 6. Store submission assets
+## 7. Store submission assets
 
 Prepare:
 - App icon 1024 x 1024 master
@@ -102,7 +116,7 @@ Prepare:
 - Apple Developer Program account
 - Google Play Console developer account
 
-## 7. Review readiness
+## 8. Review readiness
 
 Do not submit a bare website wrapper. Before public review, verify at least these native-value behaviors on-device:
 - GPS running/location permission
@@ -112,6 +126,6 @@ Do not submit a bare website wrapper. Before public review, verify at least thes
 - external registration/map links opening correctly
 - offline/network-error fallback
 
-## 8. Updating the app
+## 9. Updating the app
 
 Most UI/data updates continue to deploy through Vercel without a native store rebuild because the native shell points at the production origin. Rebuild and resubmit when native configuration, permissions, plugins, app icons, signing, bundle settings, or store metadata change.
