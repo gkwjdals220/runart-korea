@@ -9,6 +9,7 @@ import "./toilets.css";
 import "./ui-fixes.css";
 import "./board-home.css";
 import "./mobile-pages.css";
+import "./mobile-overlap-fixes.css";
 import "leaflet/dist/leaflet.css";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import UrgentFacilityNav from "@/components/UrgentFacilityNav";
