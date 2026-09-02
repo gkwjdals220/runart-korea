@@ -25,7 +25,7 @@ export default function TrackRunStudio({userId}:{userId?:string|null}){
  function startRest(){if(!preset.restSec)return;setRest(preset.restSec);setResting(true)}
  function resetRest(){setRest(0);setResting(false)}
  const runName=["트랙런",selected?.name,preset.id!=="free"?preset.name:null].filter(Boolean).join(" · ");
- return <>
+ return <div className="trackStudioPage">
   <section className="wrap" style={{paddingBottom:0}}>
    <div className="card" style={{padding:18,marginTop:14}}>
     <span className="eyebrow">TRACK TRAINING</span><h2 style={{margin:"6px 0 4px"}}>🏟️ 트랙런 훈련 설정</h2><p className="muted">트랙 장소와 인터벌을 고른 뒤 아래에서 GPS 기록을 시작하세요.</p>
@@ -41,5 +41,5 @@ export default function TrackRunStudio({userId}:{userId?:string|null}){
    </div>
   </section>
   <RunModeV2 trackRun courseName={runName} userId={userId||null}/>
- </>;
+ </div>;
 }
