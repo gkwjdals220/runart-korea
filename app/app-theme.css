@@ -1,0 +1,173 @@
+/* Shared TTWITTUN visual system for auxiliary and detail screens. */
+:is(.mobileSubPage,.hubPage,.racePage,.shoePage,.shoeGuidePage,.treadmillPage,.authJoinPage,.courseSubmitPage,.artCollectionPage){
+ --app-lime:#d6ff2f;
+ --app-ink:#0d1114;
+ --app-panel:#151b20;
+ --app-panel-soft:#1b2228;
+ --app-line:#303943;
+ padding-bottom:120px;
+}
+
+:is(.mobileSubPage,.hubPage,.racePage,.shoePage,.shoeGuidePage,.treadmillPage,.authJoinPage,.courseSubmitPage,.artCollectionPage) .compactPageTop{
+ border:1px solid rgba(255,255,255,.08);
+ border-top:0;
+ background:rgba(13,17,20,.92);
+ box-shadow:0 12px 34px rgba(0,0,0,.22);
+}
+
+:is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero{
+ position:relative;
+ isolation:isolate;
+ overflow:hidden;
+ min-height:190px;
+ margin:14px 0 18px;
+ padding:28px 210px 26px 28px;
+ border:1px solid #3a454f;
+ border-radius:26px;
+ background:radial-gradient(circle at 82% 22%,rgba(214,255,47,.2),transparent 30%),linear-gradient(145deg,#192128,#0f1418);
+ box-shadow:0 18px 42px rgba(0,0,0,.2);
+}
+
+:is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero::before{
+ content:"";
+ position:absolute;
+ z-index:-1;
+ right:-35px;
+ bottom:-72px;
+ width:240px;
+ height:240px;
+ border-radius:50%;
+ background:linear-gradient(145deg,#d6ff2f,#a7e94c);
+}
+
+:is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero::after{
+ content:"";
+ position:absolute;
+ z-index:-1;
+ right:28px;
+ bottom:9px;
+ width:138px;
+ height:138px;
+ border-radius:24px;
+ background:url('/home-assets/quick-run.png') center/cover no-repeat;
+ filter:drop-shadow(0 10px 12px rgba(0,0,0,.2));
+ transform:rotate(-3deg);
+}
+
+:is(.mobileSubPage,.hubPage,.racePage,.shoePage,.shoeGuidePage,.treadmillPage,.authJoinPage,.courseSubmitPage,.artCollectionPage) .eyebrow{
+ color:var(--app-lime);
+ font-weight:950;
+ letter-spacing:.12em;
+}
+
+:is(.mobileSubPage,.hubPage,.racePage,.shoePage,.shoeGuidePage,.treadmillPage,.authJoinPage,.courseSubmitPage,.artCollectionPage) .card,
+.trackStudioPage .card{
+ border-color:var(--app-line,#303943);
+ border-radius:22px;
+ background:linear-gradient(145deg,var(--app-panel,#151b20),#101519);
+ box-shadow:0 10px 28px rgba(0,0,0,.14);
+}
+
+:is(.mobileSubPage,.hubPage,.racePage,.shoePage,.shoeGuidePage,.treadmillPage,.authJoinPage,.courseSubmitPage,.artCollectionPage) .btn:not(.ghost),
+.trackStudioPage .btn:not(.ghost){
+ border-color:var(--app-lime,#d6ff2f);
+ background:var(--app-lime,#d6ff2f);
+ color:#101417;
+ font-weight:950;
+}
+
+:is(.mobileSubPage,.hubPage,.racePage,.shoePage,.shoeGuidePage,.treadmillPage,.authJoinPage,.courseSubmitPage,.artCollectionPage) .btn.ghost,
+.trackStudioPage .btn.ghost{
+ border-color:#3b4650;
+ background:#20262b;
+ color:#f6f8fa;
+}
+
+.pageHubGrid .hubTile{
+ position:relative;
+ overflow:hidden;
+ border-color:var(--app-line);
+ background:linear-gradient(145deg,#192027,#11161a);
+ box-shadow:0 10px 28px rgba(0,0,0,.14);
+ transition:transform .18s ease,border-color .18s ease;
+}
+.pageHubGrid .hubTile::after{content:"";position:absolute;right:-30px;bottom:-52px;width:105px;height:105px;border-radius:50%;background:rgba(214,255,47,.08)}
+.pageHubGrid .hubTile:active{transform:scale(.985)}
+.pageHubGrid .primaryHubTile{border-color:rgba(214,255,47,.65);background:linear-gradient(145deg,rgba(214,255,47,.14),#12181b)}
+.pageHubGrid .hubTile>span{display:grid;place-items:center;width:52px;height:52px;border-radius:17px;background:#242c32;color:var(--app-lime)}
+.pageHubGrid .primaryHubTile>span{background:var(--app-lime);color:#101417}
+
+.mobileCardList .mobileListCard{border-color:var(--app-line);background:linear-gradient(145deg,#171e23,#11161a)}
+.mobileCardList .mobileListCard>div>small:first-child{color:var(--app-lime);font-weight:850;letter-spacing:.04em}
+.mobileCardList .mobileListCard>b{color:var(--app-lime)}
+.emptyState{border-style:dashed!important;text-align:center}
+.emptyState>.btn{margin-top:12px}
+
+.pbPageGrid .pbPageCard{position:relative;overflow:hidden;background:linear-gradient(150deg,#182027,#101519)}
+.pbPageGrid .pbPageCard::after{content:"";position:absolute;right:-22px;bottom:-30px;width:72px;height:72px;border-radius:50%;background:rgba(214,255,47,.1)}
+.pbPageGrid .pbPageCard b{color:var(--app-lime);font-variant-numeric:tabular-nums}
+
+.shoePage .shoeToolbar,
+.treadmillPage .treadmillHero,
+.trackStudioPage>.wrap:first-child>.card{
+ position:relative;
+ overflow:hidden;
+ border:1px solid #3a454f;
+ border-radius:26px;
+ background:radial-gradient(circle at 88% 12%,rgba(214,255,47,.18),transparent 32%),linear-gradient(145deg,#192128,#0f1418);
+ box-shadow:0 18px 42px rgba(0,0,0,.2);
+}
+.shoePage .shoeToolbar{padding:24px}
+.treadmillPage .treadmillHero{margin-top:14px;padding:28px}
+.trackStudioPage{--app-lime:#d6ff2f;--app-line:#303943;padding-bottom:120px}
+.trackStudioPage>.wrap:first-child>.card{padding:24px!important}
+.trackStudioPage .miniStats span{border:1px solid var(--app-line);border-radius:16px;background:#11171b}
+.trackStudioPage .miniStats b{color:var(--app-lime)}
+
+.shoePage .shoeSummaryGrid>div,
+.treadmillPage .treadmillResult,
+.racePage .raceFinderBar,
+.profilePage .profileEditorWrap,
+.courseSubmitPage>.grid2>.card{
+ border:1px solid var(--app-line);
+ border-radius:22px;
+ background:linear-gradient(145deg,#171e23,#11161a);
+ box-shadow:0 10px 28px rgba(0,0,0,.14);
+}
+.profilePage .profileEditorWrap{padding:20px}
+.racePage .raceLiveCard.savedRace{border-color:rgba(214,255,47,.55);box-shadow:inset 3px 0 0 var(--app-lime),0 10px 28px rgba(0,0,0,.14)}
+.racePage .raceDateBox,.racePage .raceRegStatus.open{background:var(--app-lime);color:#101417}
+
+:is(.mobileSubPage,.hubPage,.racePage,.shoePage,.shoeGuidePage,.treadmillPage,.authJoinPage,.courseSubmitPage,.artCollectionPage) input,
+:is(.mobileSubPage,.hubPage,.racePage,.shoePage,.shoeGuidePage,.treadmillPage,.authJoinPage,.courseSubmitPage,.artCollectionPage) select,
+:is(.mobileSubPage,.hubPage,.racePage,.shoePage,.shoeGuidePage,.treadmillPage,.authJoinPage,.courseSubmitPage,.artCollectionPage) textarea,
+.trackStudioPage select{
+ border-color:#39434c;
+ border-radius:14px;
+ background:#0d1216;
+}
+
+.artCollectionPage>.grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.artCollectionPage>.grid>.card{transition:transform .18s ease,border-color .18s ease}
+.artCollectionPage>.grid>.card:active{transform:scale(.985);border-color:var(--app-lime)}
+.courseSubmitPage>.grid2{align-items:start;gap:14px}
+.courseSubmitPage>.grid2>*{min-width:0}
+
+@media(max-width:700px){
+ :is(.mobileSubPage,.hubPage,.racePage,.shoePage,.shoeGuidePage,.treadmillPage,.authJoinPage,.courseSubmitPage,.artCollectionPage){padding-left:10px!important;padding-right:10px!important;padding-bottom:104px}
+ :is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero{min-height:186px;margin:10px 0 14px;padding:23px 118px 22px 18px;border-radius:22px}
+ :is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero::before{right:-62px;bottom:-64px;width:180px;height:180px}
+ :is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero::after{right:10px;bottom:12px;width:104px;height:104px;border-radius:19px}
+ :is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero h1{font-size:27px;line-height:1.12}
+ .pageHubGrid .hubTile>span{width:46px;height:46px;border-radius:15px}
+ .mobileCardList .mobileListCard{border-radius:18px!important;padding:15px!important}
+ .shoePage .shoeToolbar,.treadmillPage .treadmillHero,.trackStudioPage>.wrap:first-child>.card{border-radius:22px}
+ .shoePage .shoeToolbar,.treadmillPage .treadmillHero{padding:20px}
+ .trackStudioPage>.wrap:first-child{padding-left:10px!important;padding-right:10px!important}
+ .trackStudioPage>.wrap:first-child>.card{padding:18px!important}
+ .trackStudioPage .miniStats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .profilePage .profileEditorWrap{padding:14px}
+ .courseSubmitPage>.grid2{grid-template-columns:1fr}
+}
+
+@media(prefers-reduced-motion:reduce){.pageHubGrid .hubTile,.artCollectionPage>.grid>.card{transition:none}}
