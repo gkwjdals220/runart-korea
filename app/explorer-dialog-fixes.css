@@ -92,3 +92,27 @@ p,.muted,.courseTop p,.mapCourseTitle p{line-height:1.55}
     font-weight:950!important;
   }
 }
+
+
+/* Domestic-first map proportions and readable course keywords. */
+.explorerMapPanel .sheet-full .mapCourseTags span{
+  color:#111!important;
+  background:var(--lime)!important;
+  border-color:var(--lime)!important;
+  font-weight:900!important;
+}
+.explorerMapPanel .courseMap{height:min(56vh,520px)!important}
+@media(max-width:700px){
+  .explorerMapPanel .courseMap{
+    height:350px!important;
+    min-height:350px!important;
+    max-height:350px!important;
+  }
+}
+@media(max-width:390px){
+  .explorerMapPanel .courseMap{
+    height:330px!important;
+    min-height:330px!important;
+    max-height:330px!important;
+  }
+}
