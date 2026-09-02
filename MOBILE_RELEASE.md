@@ -18,14 +18,15 @@ On macOS in the repository root:
 
 ```bash
 chmod +x scripts/setup-mobile.sh
-./scripts/setup-mobile.sh
+npm run mobile:setup
 ```
 
-The script installs dependencies, creates `ios/` and `android/`, runs `cap sync`, and runs the Capacitor doctor check.
+The setup script installs dependencies, creates `ios/` and `android/`, applies native foreground-location permission text with `scripts/configure-native.mjs`, runs `cap sync`, and runs the Capacitor doctor check.
 
-After web/native dependency changes:
+After native configuration changes:
 
 ```bash
+npm run mobile:configure
 npm run mobile:sync
 ```
 
@@ -42,15 +43,11 @@ In Xcode:
 - Version: `1.0.0`
 - Build: start with `1`
 - Add a 1024 x 1024 app icon master and launch assets
-- Add location permission descriptions for GPS running and nearby course/facility discovery
-- Test login, email confirmation, GPS start/pause/finish, background/foreground recovery, course map, race links/forms, sharing, favorites, and external links on a physical iPhone
+- Confirm the generated `Info.plist` contains the TTWITTUN location usage descriptions
+- Test login, email confirmation, GPS start/pause/finish, foreground/background app-state recovery, course map, race links/forms, sharing, favorites, and external links on a physical iPhone
 - Archive > Distribute App > App Store Connect
 
-Suggested iOS permission copy:
-
-`TTWITTUN은 러닝 기록 측정과 주변 코스·편의시설 안내를 위해 사용자의 위치를 사용합니다.`
-
-If background location is introduced later, add a separate background-location explanation and validate the App Store review requirement before enabling it.
+The current release only declares foreground location. Do not enable background location unless TTWITTUN later implements and clearly discloses a real background-running use case.
 
 ## 3. Android
 
@@ -64,42 +61,48 @@ In Android Studio:
 - Version name: `1.0.0`
 - Version code: start with `1`
 - Add adaptive launcher icon assets
-- Verify foreground location permission and Android 13+ notification permission only if notifications are enabled
+- Confirm `ACCESS_COARSE_LOCATION` and `ACCESS_FINE_LOCATION` exist in the generated manifest
 - Test login, GPS start/pause/finish, app resume recovery, course map, race links/forms, sharing, favorites, and external links on a physical Android device
 - Build > Generate Signed Bundle / APK > Android App Bundle
 - Upload the `.aab` to Google Play Console
 
 ## 4. Native capabilities already wired
 
-The current native bridge now handles:
+The current native bridge handles:
 - Capacitor native-platform detection
 - native app lifecycle events
 - Android hardware back button behavior
 - external HTTP/HTTPS links through Capacitor Browser
 - internal production deep-link handoff
 - native splash-screen dismissal
-- native share sheet for RUN + EAT plan sharing
+- native share-sheet support where the sharing component uses Capacitor
 
-Packages are also prepared for:
+Packages are prepared for:
 - Geolocation
 - Haptics
 - Status bar
 
 Native-only code is guarded with `Capacitor.isNativePlatform()` so the Vercel web app continues to work normally.
 
-## 5. GPS migration plan
+## 5. GPS plan
 
-The current runner still uses the browser/WebView geolocation API. This is valid for the first physical-shell test, but before store submission the run tracker should be field-tested on both platforms. If WebView GPS continuity or permission behavior is inconsistent, migrate the runner watch implementation to `@capacitor/geolocation` while keeping the same run-state recovery model.
+The current runner still uses the browser/WebView geolocation watch API. This is suitable for the first physical-shell test. Before store submission, field-test at least one iPhone and one Android device for GPS continuity, pause/resume, screen lock behavior, and permission recovery.
 
-Do not enable background location merely to satisfy store review. Only add it if TTWITTUN actually supports a clearly disclosed background-running use case and it passes device testing.
+If WebView GPS behavior is inconsistent, migrate the runner watch implementation to `@capacitor/geolocation` while keeping the existing live-run recovery model.
 
-## 6. Supabase authentication
+## 6. Authentication and account deletion
 
-The app loads the production origin:
+The app loads the production origin `https://runart-korea.vercel.app` and keeps the existing Supabase auth callback flow.
 
-`https://runart-korea.vercel.app`
+Public store-facing pages:
+- Privacy Policy: `https://runart-korea.vercel.app/privacy`
+- Support: `https://runart-korea.vercel.app/support`
 
-Keep the existing production auth callback URL enabled in Supabase. Verify signup confirmation, login persistence, logout, and auth callback behavior inside both native shells before store submission.
+Signed-in users can start an account deletion request from:
+- `MY > 계정 관리`
+- `https://runart-korea.vercel.app/my/account`
+
+The deletion-request table is protected by RLS so users can only create/view/update their own request. Before public launch, define the operational process that marks requests as processing/completed and removes the associated user data and auth account.
 
 ## 7. Store submission assets
 
@@ -125,6 +128,7 @@ Do not submit a bare website wrapper. Before public review, verify at least thes
 - sensible hardware back-button behavior on Android
 - external registration/map links opening correctly
 - offline/network-error fallback
+- in-app account deletion entry point
 
 ## 9. Updating the app
 
