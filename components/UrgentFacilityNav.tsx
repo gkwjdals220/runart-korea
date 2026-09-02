@@ -25,7 +25,7 @@ export default function UrgentFacilityNav(){
   useEffect(()=>{setMenuOpen(false);setOpen(false);setLoading(null);setOrigin(null);setFacilities([]);setError("");setLiveStarted(false);},[pathname]);
   useEffect(()=>{
     if(!inLiveRun){setLiveStarted(false);return;}
-    const sync=()=>setLiveStarted(!!document.querySelector(".runLivePill"));
+    const sync=()=>setLiveStarted(!!document.querySelector(".runControlDock .runStopControl"));
     sync();
     const observer=new MutationObserver(sync);
     observer.observe(document.body,{childList:true,subtree:true,attributes:true});
