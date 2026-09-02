@@ -126,3 +126,14 @@ p,.muted,.courseTop p,.mapCourseTitle p{line-height:1.55}
   border-color:var(--lime)!important;
   font-weight:900!important;
 }
+
+/* Definitive selected-course contrast. This file is loaded after explorer-polish. */
+.explorerMapPanel .mapCourseInfo .mapCourseTags span,
+.explorerMapPanel .mapCourseInfo .mapCourseTags .tag,
+.explorerCourseCard .tag:first-child{color:#090b0d!important;background:#d6ff2f!important;border-color:#d6ff2f!important;font-weight:950!important;text-shadow:none!important;opacity:1!important}
+.explorerMapPanel .mapCourseInfo .sheetExpandedDetail>div{background:#0c1014!important;border-color:#38414c!important}
+.explorerMapPanel .mapCourseInfo .sheetExpandedDetail span{color:#aeb8c4!important;opacity:1!important}
+.explorerMapPanel .mapCourseInfo .sheetExpandedDetail b,
+.explorerMapPanel .mapCourseInfo .mapCourseTitle h3,
+.explorerMapPanel .mapCourseInfo .mapCourseTitle strong{color:#f7f9fb!important;opacity:1!important;text-shadow:none!important}
+.explorerMapPanel .mapCourseInfo .mapCourseStats span{color:#dce3ea!important;opacity:1!important}
