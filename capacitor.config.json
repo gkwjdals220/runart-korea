@@ -11,10 +11,22 @@
   },
   "ios": {
     "contentInset": "automatic",
-    "scrollEnabled": true
+    "scrollEnabled": true,
+    "backgroundColor": "#0c0f12"
   },
   "android": {
     "allowMixedContent": false,
-    "backgroundColor": "#fffaf2"
+    "backgroundColor": "#0c0f12"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 900,
+      "launchAutoHide": true,
+      "backgroundColor": "#0c0f12",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "DARK"
+    }
   }
 }
