@@ -1,0 +1,14 @@
+/* iOS zooms the whole WebView when a focused form control renders below 16px. */
+@media (max-width: 900px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+    line-height: 1.25;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}

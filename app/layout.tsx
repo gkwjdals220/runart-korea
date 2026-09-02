@@ -14,6 +14,7 @@ import "./mobile-explorer-nav.css";
 import "./mobile-explorer-refine.css";
 import "./race-live.css";
 import "./race-calendar.css";
+import "./mobile-input-fixes.css";
 import "leaflet/dist/leaflet.css";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import UrgentFacilityNav from "@/components/UrgentFacilityNav";
