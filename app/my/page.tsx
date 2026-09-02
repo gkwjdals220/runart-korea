@@ -241,8 +241,8 @@ export default async function MyPage() {
           </div>
           <b>›</b>
         </Link>
-        <Link className="hubTile primaryHubTile" href="/run/free">
-          <span>▶</span>
+        <Link className="hubTile primaryHubTile runStartTile" href="/run/free">
+          <span className="hubPlayIcon" aria-hidden="true"><i /></span>
           <div>
             <small>START</small>
             <h2>RUN 시작</h2>
