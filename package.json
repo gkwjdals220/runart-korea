@@ -8,6 +8,7 @@
     "start": "next start",
     "mobile:setup": "bash scripts/setup-mobile.sh",
     "mobile:configure": "node scripts/configure-native.mjs",
+    "mobile:assets": "capacitor-assets generate --ios --android",
     "mobile:sync": "npx cap sync",
     "mobile:ios": "npx cap open ios",
     "mobile:android": "npx cap open android",
@@ -26,17 +27,18 @@
     "@capacitor/status-bar": "^7.0.0",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.56.0",
+    "leaflet": "^1.9.4",
     "next": "^15.5.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "leaflet": "^1.9.4"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^7.0.0",
+    "@types/leaflet": "^1.9.20",
     "@types/node": "^24.0.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
-    "typescript": "^5.9.0",
-    "@types/leaflet": "^1.9.20"
+    "typescript": "^5.9.0"
   }
 }

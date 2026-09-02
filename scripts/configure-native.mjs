@@ -17,7 +17,7 @@ if(fs.existsSync(iosPlist)){
  const src=fs.readFileSync(iosPlist,"utf8");
  if(!src.includes("NSLocationWhenInUseUsageDescription")){
   const marker="</dict>\n</plist>";
-  const block=`\t<key>NSLocationWhenInUseUsageDescription</key>\n\t<string>TTWITTUN은 러닝 중 현재 위치와 이동 경로를 기록하고 주변 러닝 코스를 안내하기 위해 위치 정보를 사용합니다.</string>\n\t<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>\n\t<string>TTWITTUN은 사용자가 시작한 러닝 기록을 정확히 측정하기 위해 위치 정보를 사용합니다.</string>\n</dict>\n</plist>`;
+  const block=`\t<key>NSLocationWhenInUseUsageDescription</key>\n\t<string>TTWITTUN은 러닝 중 현재 위치와 이동 경로를 기록하고 주변 러닝 코스를 안내하기 위해 위치 정보를 사용합니다.</string>\n</dict>\n</plist>`;
   replaceOnce(iosPlist,marker,block);
  }
  console.log("[TTWITTUN] iOS location descriptions configured.");

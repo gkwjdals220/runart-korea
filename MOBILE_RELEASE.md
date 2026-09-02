@@ -27,8 +27,19 @@ After native configuration changes:
 
 ```bash
 npm run mobile:configure
+npm run mobile:assets
 npm run mobile:sync
 ```
+
+The app icon source files are committed in `assets/`:
+
+- `assets/icon-only.png`: 1024 x 1024 full icon master
+- `assets/icon-foreground.png`: Android adaptive-icon foreground
+- `assets/icon-background.png`: Android adaptive-icon cream background
+
+Run `npm run mobile:assets` after creating the native `ios/` and `android/`
+projects. This regenerates the iOS AppIcon set and Android launcher/adaptive
+icon resources from the same approved master artwork.
 
 ## 2. iOS
 
@@ -42,7 +53,7 @@ In Xcode:
 - Set the Apple Developer Team
 - Version: `1.0.0`
 - Build: start with `1`
-- Add a 1024 x 1024 app icon master and launch assets
+- Confirm the generated AppIcon set uses the RUNART running-duck icon
 - Confirm the generated `Info.plist` contains the TTWITTUN location usage descriptions
 - Test login, email confirmation, GPS start/pause/finish, foreground/background app-state recovery, course map, race links/forms, sharing, favorites, and external links on a physical iPhone
 - Archive > Distribute App > App Store Connect
@@ -60,7 +71,7 @@ In Android Studio:
 - App name: `TTWITTUN`
 - Version name: `1.0.0`
 - Version code: start with `1`
-- Add adaptive launcher icon assets
+- Confirm the generated adaptive launcher icon uses the RUNART running-duck foreground
 - Confirm `ACCESS_COARSE_LOCATION` and `ACCESS_FINE_LOCATION` exist in the generated manifest
 - Test login, GPS start/pause/finish, app resume recovery, course map, race links/forms, sharing, favorites, and external links on a physical Android device
 - Build > Generate Signed Bundle / APK > Android App Bundle
@@ -107,7 +118,7 @@ The deletion-request table is protected by RLS so users can only create/view/upd
 ## 7. Store submission assets
 
 Prepare:
-- App icon 1024 x 1024 master
+- App icon 1024 x 1024 master (completed in `assets/icon-only.png`)
 - iPhone screenshots
 - Android phone screenshots
 - Short description

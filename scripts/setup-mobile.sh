@@ -16,6 +16,7 @@ if [ ! -d android ]; then
 fi
 
 node scripts/configure-native.mjs
+npm run mobile:assets
 npx cap sync
 npx cap doctor || true
 
