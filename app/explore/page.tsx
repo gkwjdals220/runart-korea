@@ -5,8 +5,12 @@ import {createClient} from "@/lib/supabase/server";
 
 export default async function ExplorePage(){
  const sb=await createClient();
- const {data:{user}}=await sb.auth.getUser();
- const {data:courses}=await sb.from("runart_courses").select("id,name,region,city,course_type,art_shape,distance_km,difficulty,traffic_lights,toilets,night_recommended,route_geojson,tags,surface,loop_type,verified,start_name,elevation_gain_m,data_quality").eq("status","approved").order("name");
+ const [userResult,coursesResult]=await Promise.all([
+  sb.auth.getUser(),
+  sb.from("runart_courses").select("id,name,region,city,course_type,art_shape,distance_km,difficulty,traffic_lights,toilets,night_recommended,route_geojson,tags,surface,loop_type,verified,start_name,elevation_gain_m,data_quality").eq("status","approved").order("name")
+ ]);
+ const user=userResult.data.user;
+ const courses=coursesResult.data;
  const normalized=(courses||[]).map(c=>({...c,distance_km:Number(c.distance_km)}));
  let favoriteIds:string[]=[];
  if(user){const {data:favs}=await sb.from("runart_favorites").select("course_id").eq("user_id",user.id);favoriteIds=(favs||[]).map((x:any)=>x.course_id)}
