@@ -4,7 +4,7 @@ import {usePathname} from "next/navigation";
 
 const items=[
  {href:"/",label:"홈",icon:"⌂",match:(p:string)=>p==="/"},
- {href:"/#explore",label:"코스",icon:"⌕",match:(p:string)=>p.startsWith("/courses")||p.startsWith("/art")||p.startsWith("/favorites")||p.startsWith("/plans")},
+ {href:"/explore",label:"코스",icon:"⌕",match:(p:string)=>p.startsWith("/explore")||p.startsWith("/courses")||p.startsWith("/art")||p.startsWith("/favorites")||p.startsWith("/plans")},
  {href:"/run/free",label:"RUN",icon:"▶",primary:true,match:(p:string)=>p.startsWith("/run/")},
  {href:"/dashboard",label:"크루",icon:"◉",match:(p:string)=>p.startsWith("/dashboard")||p.startsWith("/manage")||p.startsWith("/races")},
  {href:"/my",label:"MY",icon:"●",match:(p:string)=>p.startsWith("/my")||p.startsWith("/login")||p.startsWith("/join")}
