@@ -116,3 +116,13 @@ p,.muted,.courseTop p,.mapCourseTitle p{line-height:1.55}
     max-height:330px!important;
   }
 }
+
+
+/* Verified badges need the same high-contrast treatment in compact results. */
+.explorerCourseCard .tag:first-child,
+.explorerMapPanel .mapCourseTags .tag{
+  color:#111!important;
+  background:var(--lime)!important;
+  border-color:var(--lime)!important;
+  font-weight:900!important;
+}

@@ -17,11 +17,15 @@ import "./race-calendar.css";
 import "./mobile-input-fixes.css";
 import "./run-tools.css";
 import "./run-shoe-picker.css";
+import "./run-club-refresh.css";
 import "leaflet/dist/leaflet.css";
+import { Noto_Sans_KR } from "next/font/google";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import UrgentFacilityNav from "@/components/UrgentFacilityNav";
 import ExplorerSelectionAssist from "@/components/ExplorerSelectionAssist";
 import NativeAppBridge from "@/components/NativeAppBridge";
+
+const ttwittunFont = Noto_Sans_KR({ subsets: ["latin"], variable: "--font-ttwittun", display: "swap" });
 
 export const metadata = {
   title: "TTWITTUN · 러닝 코스 & 개인 기록",
@@ -45,7 +49,7 @@ export const viewport = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={ttwittunFont.variable}>
       <body>
         <div id="top" />
         {children}

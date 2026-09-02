@@ -1,0 +1,62 @@
+/* TTWITTUN Run Club visual refresh — fast actions, strong metrics, Korean-first type. */
+:root{
+  --font-ui:var(--font-ttwittun),"Pretendard Variable","Apple SD Gothic Neo",sans-serif;
+  --font-display:var(--font-ttwittun),"Pretendard Variable","Apple SD Gothic Neo",sans-serif;
+  --radius-card:22px;
+  --shadow-card:0 12px 34px rgba(5,10,14,.11);
+}
+html{font-family:var(--font-ui)}
+body,button,input,select,textarea{font-family:var(--font-ui)!important;letter-spacing:-.018em}
+h1,h2,h3,h4,.brand b,.homePromoCard h1,.homePromoCard h2{font-family:var(--font-display)!important;letter-spacing:-.048em;text-wrap:balance}
+b,strong,.miniStats b,.runMetricPanel strong,.shoeKm strong{font-variant-numeric:tabular-nums}
+.brand{gap:11px}
+.brand>div{gap:4px}
+.brand b{
+  display:inline-flex;
+  width:max-content;
+  padding:4px 9px 5px;
+  border-radius:8px;
+  background:var(--lime);
+  color:#0b0d10!important;
+  font-weight:950;
+  letter-spacing:-.035em!important;
+  line-height:1;
+}
+.brand span{color:var(--text)!important;opacity:.82;font-weight:750;letter-spacing:.055em}
+.card,.hubTile,.homeDirectList>a,.homeQuickGrid>a{box-shadow:var(--shadow-card);border-color:rgba(127,127,127,.16)}
+.btn{font-weight:900;letter-spacing:-.02em}
+.homePromoCard{isolation:isolate}
+.homePromoCard::after{content:"";position:absolute;inset:auto -12% -48% 32%;height:100%;border-radius:50%;background:radial-gradient(circle,rgba(217,255,67,.2),transparent 68%);z-index:0}
+.homePromoCard small,.eyebrow{font-weight:950;letter-spacing:.12em}
+.promoRun{background:linear-gradient(145deg,#090b0e 0%,#20272e 62%,#39444f 100%)}
+.homeQuickGrid{grid-template-columns:repeat(8,minmax(0,1fr))}
+.homeQuickGrid>a{position:relative;overflow:hidden;transition:transform .18s ease,border-color .18s ease}
+.homeQuickGrid>a:hover{transform:translateY(-3px);border-color:var(--lime)}
+.homeQuickGrid>a.primary{box-shadow:0 12px 30px rgba(184,225,36,.28)}
+.homeQuickGrid>a.primary span{transform:translateX(1px)}
+.homeSectionTitle h2{font-weight:900}
+.mobileBottomNavV3{background:rgba(250,249,246,.9)!important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid rgba(0,0,0,.08)!important}
+.mobileBottomNavV3 a.active{color:#0b0d10!important}
+.mobileBottomNavV3 a:nth-child(3) .mobileNavIcon{background:#0b0d10!important;color:var(--lime)!important;box-shadow:0 8px 22px rgba(0,0,0,.24)}
+.runMetricPanel{background:linear-gradient(150deg,#080a0d,#1a2027)!important;border-radius:28px!important}
+.runMetricPanel strong{letter-spacing:-.055em}
+.courseCard h3,.mapCourseTitle h3,.historyListCard h3{font-weight:900}
+input,select,textarea{font-size:16px}
+@media(max-width:900px){.homeQuickGrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:700px){
+  .brandLogo{width:52px;height:52px}
+  .brand b{font-size:16px}
+  .brand span{font-size:8px}
+  .homePromoCard{border-radius:26px;box-shadow:0 18px 38px rgba(0,0,0,.2)}
+  .homePromoCard h1{font-size:32px;line-height:1.02}
+  .homeQuickGrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .homeQuickGrid>a{min-height:88px;padding:10px 3px;border-radius:18px}
+  .homeQuickGrid span{font-size:20px}
+  .homeQuickGrid b{font-size:11px}
+  .homeQuickGrid small{font-size:7.5px}
+  .homeDirectList>a{border-radius:20px}
+  .compactPageHero h1,.explorePageHero h1{font-size:29px;line-height:1.05}
+}
+@media(max-width:360px){
+  .homeQuickGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
