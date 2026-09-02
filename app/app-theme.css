@@ -95,6 +95,8 @@
 .pageHubGrid .hubTile:active{transform:scale(.985)}
 .pageHubGrid .primaryHubTile{border-color:rgba(214,255,47,.65);background:linear-gradient(145deg,rgba(214,255,47,.14),#12181b)}
 .pageHubGrid .hubTile>span{display:grid;place-items:center;width:52px;height:52px;border-radius:17px;background:#242c32;color:var(--app-lime)}
+.pageHubGrid .hubTile>div{position:relative;z-index:1;min-width:0}
+.pageHubGrid .hubTile>b{position:relative;z-index:1}
 .pageHubGrid .primaryHubTile>span{background:var(--app-lime);color:#101417}
 
 .mobileCardList .mobileListCard{border-color:var(--app-line);background:linear-gradient(145deg,#171e23,#11161a)}
@@ -159,7 +161,8 @@
  :is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero::before{right:-62px;bottom:-64px;width:180px;height:180px}
  :is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero::after{right:10px;bottom:12px;width:104px;height:104px;border-radius:19px}
  :is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero h1{font-size:27px;line-height:1.12}
- .pageHubGrid .hubTile>span{width:46px;height:46px;border-radius:15px}
+ .pageHubGrid .hubTile{grid-template-columns:46px minmax(0,1fr) 14px!important;column-gap:14px!important}
+ .pageHubGrid .hubTile>span{z-index:1;width:46px;min-width:46px;height:46px;box-sizing:border-box;border-radius:15px}
  .mobileCardList .mobileListCard{border-radius:18px!important;padding:15px!important}
  .shoePage .shoeToolbar,.treadmillPage .treadmillHero,.trackStudioPage>.wrap:first-child>.card{border-radius:22px}
  .shoePage .shoeToolbar,.treadmillPage .treadmillHero{padding:20px}
@@ -168,6 +171,15 @@
  .trackStudioPage .miniStats{grid-template-columns:repeat(2,minmax(0,1fr))}
  .profilePage .profileEditorWrap{padding:14px}
  .courseSubmitPage>.grid2{grid-template-columns:1fr}
+}
+
+@media(max-width:420px){
+ .pageHubGrid .hubTile{grid-template-columns:46px minmax(0,1fr) 14px!important;gap:14px!important}
+}
+
+@media(max-width:360px){
+ .pageHubGrid .hubTile{grid-template-columns:42px minmax(0,1fr) 12px!important;gap:12px!important}
+ .pageHubGrid .hubTile>span{width:42px;min-width:42px;height:42px}
 }
 
 @media(prefers-reduced-motion:reduce){.pageHubGrid .hubTile,.artCollectionPage>.grid>.card{transition:none}}
