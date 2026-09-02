@@ -2,99 +2,29 @@ import Link from "next/link";
 import Brand from "@/components/Brand";
 import {createClient} from "@/lib/supabase/server";
 
-function fmt(sec:number){
- const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=Math.floor(sec%60);
- return h?`${h}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`:`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-}
-function pace(sec?:number|null){return sec?`${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}`:"--:--";}
-function pbText(flags:any){
- if(!Array.isArray(flags)||!flags.length)return null;
- return flags.map((x:any)=>String(x)==="LONGEST"?"최장":String(x)).join("·");
-}
-function trackPb(rows:any[]){
- let best400:number|null=null,best800:number|null=null;
- for(const r of rows){
-  if(r.run_mode!=="track"||!Array.isArray(r.splits))continue;
-  const laps=r.splits.map((s:any)=>({sec:Number(s?.lapSeconds||0),m:Number(s?.distanceM||400)})).filter((s:any)=>s.sec>0&&s.m>=350&&s.m<=450);
-  for(const lap of laps){if(lap.sec>=45&&lap.sec<=600&&(best400==null||lap.sec<best400))best400=lap.sec;}
-  for(let i=0;i+1<laps.length;i++){const sec=laps[i].sec+laps[i+1].sec;if(sec>=90&&sec<=1200&&(best800==null||sec<best800))best800=sec;}
- }
- return {best400,best800};
-}
+function pace(sec?:number|null){return sec?`${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}`:"--:--"}
 
 export default async function MyPage(){
- const sb=await createClient();
- const {data:{user}}=await sb.auth.getUser();
- if(!user)return <main className="wrap"><header className="top"><Brand/></header><section className="hero compact"><div><span className="eyebrow">MY TTWITTUN</span><h1>MY</h1><p className="muted">로그인하면 개인 러닝 기록, 찜한 코스, RUN + EAT 일정, 크루 기록을 한 곳에서 관리할 수 있습니다.</p><div className="actions" style={{marginTop:18}}><Link className="btn" href="/login">로그인</Link><Link className="btn ghost" href="/join">회원가입</Link></div></div></section></main>;
-
+ const sb=await createClient();const {data:{user}}=await sb.auth.getUser();
+ if(!user)return <main className="wrap authJoinPage"><header className="top"><Brand/></header><section className="hero compact"><div><span className="eyebrow">MY TTWITTUN</span><h1>MY</h1><p className="muted">로그인하면 러닝 기록과 저장한 코스를 관리할 수 있어요.</p><div className="actions" style={{marginTop:18}}><Link className="btn" href="/login">로그인</Link></div></div></section></main>;
  const {data:profile}=await sb.from("runart_profiles").select("display_name").eq("user_id",user.id).maybeSingle();
  const {count:favCount}=await sb.from("runart_favorites").select("course_id",{count:"exact",head:true}).eq("user_id",user.id);
- const {data:allRuns}=await sb.from("runart_live_runs").select("id,course_id,run_mode,distance_km,elapsed_seconds,avg_pace_sec_per_km,best_pace_sec_per_km,pb_1k_sec,pb_3k_sec,pb_5k_sec,pb_10k_sec,pb_flags,splits,finished_at,runart_courses(name)").eq("user_id",user.id).order("finished_at",{ascending:false}).limit(200);
- const rows=allRuns||[],runs=rows.slice(0,10),now=Date.now(),weekAgo=now-7*86400000,monthAgo=now-30*86400000;
- const totalKm=rows.reduce((sum:number,r:any)=>sum+Number(r.distance_km||0),0),longestKm=rows.reduce((max:number,r:any)=>Math.max(max,Number(r.distance_km||0)),0);
- const weekRuns=rows.filter((r:any)=>new Date(r.finished_at).getTime()>=weekAgo),monthRuns=rows.filter((r:any)=>new Date(r.finished_at).getTime()>=monthAgo);
- const weekKm=weekRuns.reduce((s:number,r:any)=>s+Number(r.distance_km||0),0),monthKm=monthRuns.reduce((s:number,r:any)=>s+Number(r.distance_km||0),0);
- const validPaces=rows.map((r:any)=>Number(r.avg_pace_sec_per_km||0)).filter((v:number)=>v>0),avgPace=validPaces.length?Math.round(validPaces.reduce((a:number,b:number)=>a+b,0)/validPaces.length):null;
- const bestPaces=rows.map((r:any)=>Number(r.best_pace_sec_per_km||0)).filter((v:number)=>v>0),bestPace=bestPaces.length?Math.min(...bestPaces):null;
- const pbMin=(field:string)=>{const vals=rows.map((r:any)=>Number(r[field]||0)).filter((v:number)=>v>0);return vals.length?Math.min(...vals):null;};
- const pb1=pbMin("pb_1k_sec"),pb3=pbMin("pb_3k_sec"),pb5=pbMin("pb_5k_sec"),pb10=pbMin("pb_10k_sec");
- const trackCount=rows.filter((r:any)=>r.run_mode==="track").length,{best400,best800}=trackPb(rows);
-
- return <main className="wrap myPage">
-  <header className="top myTop"><Brand/><div className="nav"><Link className="btn ghost" href="/#explore">코스 찾기</Link><Link className="btn ghost" href="/favorites">♡ 찜</Link><Link className="btn ghost" href="/run/track">🏟️ 트랙런</Link><Link className="btn" href="/run/free">🏃 자유 러닝</Link></div></header>
-  <section className="myHero"><div><span className="eyebrow">MY TTWITTUN</span><h1>{profile?.display_name||"러너"}님</h1><p>내 러닝 기록과 코스, 크루 활동을 한 곳에서 확인하세요.</p></div><div className="actions"><Link className="btn" href="/run/free">🏃 기록 시작</Link><Link className="btn ghost" href="/run/track">🏟️ 트랙런</Link><Link className="btn ghost" href="/#explore">코스 찾기</Link></div></section>
-  <nav className="mySectionNav" aria-label="MY 빠른 이동"><a href="#my-summary">요약</a><a href="#personal-best">PB</a><a href="#recent-runs">최근 러닝</a><Link href="/favorites">찜</Link><Link href="/dashboard">크루 기록</Link><Link href="/races">대회 일정</Link></nav>
-
-  <section className="mySummaryGrid" id="my-summary">
-   <div><small>이번 주</small><b>{weekKm.toFixed(1)}<em>km · {weekRuns.length}회</em></b></div>
-   <div><small>최근 30일</small><b>{monthKm.toFixed(1)}<em>km · {monthRuns.length}회</em></b></div>
-   <div><small>최장 거리</small><b>{longestKm.toFixed(1)}<em>km</em></b></div>
-   <div><small>평균 페이스</small><b>{pace(avgPace)}<em>/km</em></b></div>
+ const {data:rowsData}=await sb.from("runart_live_runs").select("distance_km,avg_pace_sec_per_km,finished_at").eq("user_id",user.id).order("finished_at",{ascending:false}).limit(300);
+ const rows=rowsData||[],now=Date.now(),weekAgo=now-7*86400000,monthAgo=now-30*86400000;
+ const week=rows.filter((r:any)=>new Date(r.finished_at).getTime()>=weekAgo),month=rows.filter((r:any)=>new Date(r.finished_at).getTime()>=monthAgo);
+ const weekKm=week.reduce((s:number,r:any)=>s+Number(r.distance_km||0),0),monthKm=month.reduce((s:number,r:any)=>s+Number(r.distance_km||0),0),totalKm=rows.reduce((s:number,r:any)=>s+Number(r.distance_km||0),0);
+ const paces=rows.map((r:any)=>Number(r.avg_pace_sec_per_km||0)).filter((v:number)=>v>0),avgPace=paces.length?Math.round(paces.reduce((a:number,b:number)=>a+b,0)/paces.length):null;
+ return <main className="wrap hubPage myHubPage">
+  <header className="top compactPageTop"><Brand/><div className="nav"><Link className="btn" href="/run/free">RUN</Link></div></header>
+  <section className="compactPageHero"><span className="eyebrow">MY TTWITTUN</span><h1>{profile?.display_name||"러너"}님</h1><p className="muted">내 기록과 저장함을 필요한 화면으로 바로 이동해 확인하세요.</p></section>
+  <section className="myHubSummary"><div><small>이번 주</small><b>{weekKm.toFixed(1)}<em>km · {week.length}회</em></b></div><div><small>최근 30일</small><b>{monthKm.toFixed(1)}<em>km · {month.length}회</em></b></div><div><small>누적</small><b>{totalKm.toFixed(1)}<em>km</em></b></div><div><small>평균 페이스</small><b>{pace(avgPace)}<em>/km</em></b></div></section>
+  <section className="pageHubGrid">
+   <Link className="hubTile" href="/my/history"><span>👟</span><div><small>HISTORY</small><h2>러닝 기록</h2><p>최근 러닝과 상세 기록</p></div><b>›</b></Link>
+   <Link className="hubTile" href="/my/pb"><span>🏆</span><div><small>PERSONAL BEST</small><h2>내 PB</h2><p>1K·3K·5K·10K·트랙</p></div><b>›</b></Link>
+   <Link className="hubTile" href="/favorites"><span>♡</span><div><small>SAVED</small><h2>저장함</h2><p>찜한 코스 {favCount||0}개 · 장소 · 일정</p></div><b>›</b></Link>
+   <Link className="hubTile" href="/dashboard"><span>◉</span><div><small>CREW</small><h2>크루</h2><p>활동·출석·대회 관리</p></div><b>›</b></Link>
+   <Link className="hubTile" href="/races"><span>🏁</span><div><small>RACE</small><h2>대회 일정</h2><p>참가 현황과 신청</p></div><b>›</b></Link>
+   <Link className="hubTile primaryHubTile" href="/run/free"><span>▶</span><div><small>START</small><h2>RUN 시작</h2><p>바로 GPS 기록 시작</p></div><b>›</b></Link>
   </section>
-  <section className="mySummaryGrid" style={{marginTop:10}}>
-   <div><small>누적 거리</small><b>{totalKm.toFixed(1)}<em>km</em></b></div>
-   <div><small>전체 러닝</small><b>{rows.length}<em>회</em></b></div>
-   <div><small>최고 페이스</small><b>{pace(bestPace)}<em>/km</em></b></div>
-   <div><small>트랙런</small><b>{trackCount}<em>회</em></b></div>
-  </section>
-
-  <section className="section" id="personal-best">
-   <div className="sectionHead"><div><span className="eyebrow">PERSONAL BEST</span><h2>내 PB</h2><p className="muted">GPS 기록에서 자동 계산된 가장 빠른 구간 기록입니다.</p></div></div>
-   <div className="mySummaryGrid">
-    <div><small>Best 1K</small><b>{pb1?fmt(pb1):"--:--"}<em>{pb1?"개인 최고":"기록 없음"}</em></b></div>
-    <div><small>Best 3K</small><b>{pb3?fmt(pb3):"--:--"}<em>3km</em></b></div>
-    <div><small>Best 5K</small><b>{pb5?fmt(pb5):"--:--"}<em>5km</em></b></div>
-    <div><small>Best 10K</small><b>{pb10?fmt(pb10):"--:--"}<em>10km</em></b></div>
-   </div>
-   <div className="mySummaryGrid" style={{marginTop:10}}>
-    <div><small>🏟️ Track 400m</small><b>{best400?fmt(best400):"--:--"}<em>{best400?"400m PB":"트랙 기록 없음"}</em></b></div>
-    <div><small>🏟️ Track 800m</small><b>{best800?fmt(best800):"--:--"}<em>{best800?"800m PB":"트랙 기록 없음"}</em></b></div>
-    <div><small>트랙런 횟수</small><b>{trackCount}<em>회</em></b></div>
-    <div><small>다음 훈련</small><b><Link href="/run/track">START</Link><em>인터벌</em></b></div>
-   </div>
-  </section>
-
-  <section className="myQuickGrid">
-   <Link className="card myQuickCard" href="/run/free"><span>🏃</span><div><b>자유 러닝</b><small>코스 없이 바로 GPS 기록</small></div><em>→</em></Link>
-   <Link className="card myQuickCard" href="/run/track"><span>🏟️</span><div><b>트랙런</b><small>400m 자동랩 · 인터벌 · 휴식 타이머</small></div><em>→</em></Link>
-   <Link className="card myQuickCard" href="/favorites"><span>♡</span><div><b>내 찜 {favCount||0}</b><small>코스·맛집·RUN + EAT</small></div><em>→</em></Link>
-   <Link className="card myQuickCard" href="/dashboard"><span>◉</span><div><b>크루 기록</b><small>출석·활동·러닝 로그</small></div><em>→</em></Link>
-   <Link className="card myQuickCard" href="/races"><span>🏁</span><div><b>대회 일정</b><small>참가 현황과 신청 관리</small></div><em>→</em></Link>
-  </section>
-
-  <section className="section" id="recent-runs">
-   <div className="sectionHead"><div><span className="eyebrow">PERSONAL RUN HISTORY</span><h2>최근 러닝 기록</h2><p className="muted">자유 러닝·트랙런·코스 러닝 기록을 함께 확인할 수 있습니다.</p></div><a className="textLink" href="#top">맨 위로 ↑</a></div>
-   <div className="myRunList">
-    {runs.map((r:any)=>{
-     const flags=pbText(r.pb_flags);
-     const title=r.run_mode==="track"?"🏟️ 트랙런":r.run_mode==="free"?"자유 러닝":r.runart_courses?.name||"코스 러닝";
-     return <Link className="myRunItem" key={r.id} href={`/my/runs/${r.id}`}>
-      <div className="myRunDate"><b>{new Date(r.finished_at).toLocaleDateString("ko-KR",{month:"short",day:"numeric"})}</b><small>{new Date(r.finished_at).toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"})}</small></div>
-      <div className="myRunMain"><h3>{title}</h3><p><b>{Number(r.distance_km).toFixed(2)}km</b><span>{fmt(Number(r.elapsed_seconds||0))}</span><span>{pace(Number(r.avg_pace_sec_per_km||0))}/km</span>{r.best_pace_sec_per_km?<span>⚡ {pace(Number(r.best_pace_sec_per_km))}</span>:null}{flags?<span>🎉 PB {flags}</span>:null}</p></div><em>›</em>
-     </Link>;
-    })}
-    {!runs.length?<div className="card emptyState"><b>아직 러닝 기록이 없어요.</b><p className="muted">자유 러닝이나 트랙런으로 바로 첫 기록을 남길 수 있어요.</p><div className="actions"><Link className="btn" href="/run/free">🏃 자유 러닝 시작</Link><Link className="btn ghost" href="/run/track">🏟️ 트랙런 시작</Link></div></div>:null}
-   </div>
-  </section>
- </main>;
+ </main>
 }
