@@ -3,4 +3,106 @@
 .myHero,.dashboardHero{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:30px 28px;background:linear-gradient(135deg,#171d23,#101419);border:1px solid var(--line);border-radius:24px}.myHero h1,.dashboardHero h1{font-size:38px;margin:4px 0}.myHero p,.dashboardHero p{margin:0;color:var(--muted)}.mySummaryGrid,.dashboardSummary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}.mySummaryGrid>div,.dashboardSummary>div{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:16px}.mySummaryGrid small,.dashboardSummary small{display:block;color:var(--muted);margin-bottom:7px}.mySummaryGrid b,.dashboardSummary b{font-size:25px}.mySummaryGrid em,.dashboardSummary em{font-size:11px;font-style:normal;margin-left:3px;color:var(--muted)}.myRunList{display:grid;gap:9px}.myRunItem{display:grid;grid-template-columns:74px 1fr auto;align-items:center;gap:13px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:13px 15px;transition:.18s ease}.myRunItem:hover{transform:translateY(-2px);border-color:#46505b}.myRunDate{display:flex;flex-direction:column}.myRunDate small{color:var(--muted);margin-top:3px}.myRunMain h3{font-size:15px;margin:0 0 6px}.myRunMain p{display:flex;gap:12px;flex-wrap:wrap;margin:0;color:var(--muted);font-size:12px}.myRunMain p b{color:var(--text)}.myRunItem>em{font-size:25px;font-style:normal;color:var(--lime)}.emptyState{text-align:center;padding:30px}.emptyState p{margin:8px 0 16px}
 .dashboardUtility{display:grid;grid-template-columns:1fr 1fr;gap:12px}.dashboardActionGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.dashboardActionGrid a{background:var(--panel2);border-radius:12px;padding:13px;font-size:12px;font-weight:900}.dashboardPage #summary,.dashboardPage #new-log,.dashboardPage #recent-crew,.dashboardPage #completed{scroll-margin-top:138px}.crewRunList{display:grid;gap:9px}.crewRunItem{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px}.crewRunItem p{margin:5px 0;color:var(--muted);font-size:12px}.crewRunItem small{color:var(--muted)}.completedCourseGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.completedCourseGrid .card{min-height:145px}.completedCourseGrid h3{margin:8px 0}.done{display:inline-flex;background:#eaf5e3;color:#4c7c42;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:900}
 @media(max-width:800px){.mySummaryGrid,.dashboardSummary{grid-template-columns:1fr 1fr}.dashboardUtility{grid-template-columns:1fr}.completedCourseGrid{grid-template-columns:1fr 1fr}.runStatusGrid{grid-template-columns:1fr}}
-@media(max-width:700px){.detailTop,.myTop,.dashboardTop{top:0;border-radius:0 0 15px 15px}.detailQuickNav,.mySectionNav,.dashboardQuickNav{top:66px;margin-top:7px;border-radius:13px}.detailHero,.myHero,.dashboardHero{border-radius:18px;padding:22px 18px}.detailHero h1,.myHero h1,.dashboardHero h1{font-size:28px}.detailStats{grid-template-columns:1fr 1fr}.mobilePrimaryBar{position:fixed;display:grid;grid-template-columns:auto 1fr;gap:7px;left:10px;right:10px;bottom:82px;z-index:990;background:rgba(255,255,255,.96);padding:7px;border:1px solid #e4dfd7;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.16);backdrop-filter:blur(16px)}.mobilePrimaryBar .btn{text-align:center}.detailPage{padding-bottom:138px}.runModePage{padding:0 12px 130px}.runModeTop{align-items:flex-start}.runModeTop h1{font-size:19px}.runMetricPanel{top:6px;border-radius:17px;padding:12px}.runMetricPanel strong{font-size:27px}.runControlDock{bottom:12px;grid-template-columns:1fr auto}.runControlDock .runMapControl{grid-column:1/-1;min-height:40px}.myHero,.dashboardHero{align-items:flex-start;flex-direction:column}.mySummaryGrid>div,.dashboardSummary>div{padding:13px}.mySummaryGrid b,.dashboardSummary b{font-size:22px}.myRunItem{grid-template-columns:60px 1fr auto;padding:12px}.myRunMain p{gap:8px}.dashboardActionGrid{grid-template-columns:1fr 1fr}.completedCourseGrid{grid-template-columns:1fr}.crewRunItem{align-items:flex-start;flex-direction:column}.crewRunItem .btn{width:100%;text-align:center}}
+@media(max-width:700px){
+ .detailPage,.myPage,.dashboardPage{padding:0 10px 104px!important}
+ .detailTop,.myTop,.dashboardTop{position:relative!important;top:auto!important;min-height:54px!important;padding:7px 0!important;border-radius:0!important;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+ .detailTop .nav,.myTop .nav,.dashboardTop .nav{display:none!important}
+ .detailQuickNav,.mySectionNav,.dashboardQuickNav,.journeyBreadcrumb{display:none!important}
+
+ /* Course detail: summary -> ready -> run with one persistent primary action. */
+ .detailHero{border-radius:18px!important;padding:18px 15px!important;margin-top:4px!important}
+ .detailHero h1{font-size:27px!important;line-height:1.12!important;margin:8px 0!important}
+ .detailHero .score{min-width:68px!important}
+ .detailHero .score b{font-size:30px!important}
+ .detailHeroActions{display:none!important}
+ .detailStats{display:flex!important;gap:7px!important;overflow-x:auto!important;margin:9px 0 14px!important;padding-bottom:2px!important;scrollbar-width:none}
+ .detailStats::-webkit-scrollbar{display:none}
+ .detailStats .stat{flex:0 0 118px!important;min-height:72px!important;padding:11px!important;border-radius:14px!important}
+ .detailStats .stat b{font-size:21px!important}
+ .detailSecondaryGrid{grid-template-columns:1fr!important;gap:9px!important}
+ .detailPage .section{margin-top:18px!important}
+ .mobilePrimaryBar{position:fixed;display:grid;grid-template-columns:84px 1fr;gap:7px;left:10px;right:10px;bottom:82px;z-index:990;background:rgba(20,25,31,.97);padding:7px;border:1px solid rgba(255,255,255,.12);border-radius:18px;box-shadow:0 12px 34px rgba(0,0,0,.3);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+ .mobilePrimaryBar .btn{min-height:48px!important;display:grid;place-items:center;text-align:center;border-radius:12px!important}
+
+ /* Start flow loses the explanatory stepper on phones: the actions themselves are the flow. */
+ .startFlowCompact{margin-top:14px!important}
+ .startFlowCard{padding:14px!important;border-radius:18px!important}
+ .startFlowHead{gap:9px!important;align-items:flex-start!important}
+ .startFlowHead h2{font-size:20px!important;margin:3px 0!important}
+ .startFlowHead p{font-size:11px!important;line-height:1.4!important}
+ .startProgress{display:none!important}
+ .startFlowBody{gap:8px!important}
+ .startFlowStep{grid-template-columns:30px 1fr!important;padding:11px 0!important}
+ .startStepNo{width:28px!important;height:28px!important;font-size:11px!important}
+ .startStepTitle{display:block!important}
+ .startStepTitle h3{font-size:15px!important}
+ .startStepTitle p{font-size:10px!important}
+ .selectedParking{display:block!important}
+ .selectedParking .compactActions,.startFlowStep .compactActions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px!important;margin-top:8px!important}
+ .startFlowStep .btn{min-height:42px!important;padding:8px!important;font-size:11px!important}
+ .afterRunHint{font-size:10px!important}
+
+ /* MY: make the first screen a dashboard, not a directory of subsections. */
+ .myHero,.dashboardHero{border-radius:18px!important;padding:17px 15px!important;display:block!important}
+ .myHero h1,.dashboardHero h1{font-size:27px!important;margin:4px 0!important}
+ .myHero p,.dashboardHero p{font-size:11px!important;line-height:1.45!important}
+ .myHero .actions,.dashboardHero .actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;margin-top:12px!important}
+ .myHero .actions .btn,.dashboardHero .actions .btn{min-height:44px!important;padding:9px!important;font-size:11px!important;text-align:center!important}
+ .myHero .actions .btn:nth-child(n+3){display:none!important}
+ .dashboardHero .actions .btn:nth-child(n+3){display:none!important}
+ .mySummaryGrid,.dashboardSummary{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;margin:9px 0!important}
+ .mySummaryGrid>div,.dashboardSummary>div{padding:11px!important;border-radius:14px!important}
+ .mySummaryGrid small,.dashboardSummary small{font-size:10px!important;margin-bottom:4px!important}
+ .mySummaryGrid b,.dashboardSummary b{font-size:20px!important}
+ .mySummaryGrid em,.dashboardSummary em{display:block!important;margin:2px 0 0!important;font-size:9px!important}
+ .myPage .section,.dashboardPage .section{margin-top:20px!important}
+ .myPage .sectionHead h2,.dashboardPage .sectionHead h2{font-size:20px!important;margin:3px 0!important}
+ .myPage .sectionHead p,.dashboardPage .sectionHead p{display:none!important}
+ .myQuickGrid{grid-template-columns:1fr 1fr!important;gap:7px!important}
+ .myQuickCard{padding:11px!important;min-height:76px!important}
+ .myQuickCard span{font-size:20px!important}
+ .myQuickCard small{font-size:9px!important;line-height:1.35!important}
+ .myRunItem{grid-template-columns:48px 1fr auto!important;gap:9px!important;padding:11px!important;border-radius:14px!important}
+ .myRunDate{font-size:11px!important}
+ .myRunMain h3{font-size:14px!important;margin-bottom:4px!important}
+ .myRunMain p{gap:5px 8px!important;font-size:10px!important}
+ .myRunMain p span:nth-of-type(n+3){display:none!important}
+
+ /* Crew: summary and recent activity before management detail. */
+ .dashboardUtility{gap:8px!important}
+ .dashboardActionGrid{grid-template-columns:1fr 1fr!important;gap:6px!important}
+ .dashboardActionGrid a{min-height:44px!important;padding:10px!important;font-size:11px!important}
+ .crewRunItem{padding:11px!important;border-radius:14px!important;gap:8px!important}
+ .crewRunItem p{font-size:10px!important}
+ .crewRunItem .btn{min-height:40px!important;padding:8px!important}
+ .completedCourseGrid{grid-template-columns:1fr!important;gap:7px!important}
+ .completedCourseGrid .card{min-height:0!important;padding:12px!important}
+
+ /* Live run: only the numbers and primary controls dominate the screen. */
+ .runModePage{padding:0 10px 126px!important}
+ .runModeTop{padding:9px 1px!important;align-items:center!important}
+ .runModeTop .eyebrow{display:none!important}
+ .runModeTop h1{font-size:17px!important;margin:0!important}
+ .runModeTop p{font-size:10px!important;margin-top:2px!important}
+ .runMetricPanel{top:4px!important;border-radius:18px!important;padding:12px 8px!important;gap:5px!important}
+ .runMetricPanel strong{font-size:30px!important}
+ .runMetricPanel small{font-size:9px!important}
+ .runProgress{height:22px!important}
+ .runProgress small{line-height:22px!important;font-size:9px!important}
+ .runStatusGrid{grid-template-columns:1fr 1fr!important;gap:7px!important;margin-top:9px!important}
+ .runStatusCard{min-height:0!important;padding:11px!important;border-radius:14px!important}
+ .runStatusCard .eyebrow{font-size:9px!important}
+ .runStatusCard h3{font-size:13px!important;margin:4px 0!important}
+ .runStatusCard p{font-size:9px!important;line-height:1.35!important;margin:0!important}
+ .runGuideCard{padding:11px!important;border-radius:14px!important}
+ .runControlDock{left:8px!important;right:8px!important;width:auto!important;transform:none!important;bottom:8px!important;grid-template-columns:1fr 1fr!important;gap:7px!important;padding:7px!important;border-radius:18px!important}
+ .runControlDock button,.runControlDock a{min-height:52px!important;padding:10px!important;font-size:12px!important}
+ .runControlDock .runMapControl{grid-column:1/-1!important;min-height:38px!important}
+ .runFootnote{display:none!important}
+}
+@media(max-width:380px){
+ .detailPage,.myPage,.dashboardPage,.runModePage{padding-left:7px!important;padding-right:7px!important}
+ .mySummaryGrid b,.dashboardSummary b{font-size:18px!important}
+ .runMetricPanel strong{font-size:27px!important}
+ .runStatusGrid{grid-template-columns:1fr!important}
+}
