@@ -12,3 +12,17 @@
 .homeQuickGrid>a.quickImageCard:hover{transform:translateY(-3px);border-color:transparent}
 .homeQuickGrid>a.quickImageCard:hover img{transform:scale(1.055)}
 @media(max-width:700px){.homePromoCard.homePromoImageCard{flex-basis:84vw;min-height:0}.homeQuickGrid>a.quickImageCard{min-height:0!important;padding:0!important;border-radius:18px}}
+
+/* Quick-start artwork ships with a light rounded outer edge. Keep that edge
+   outside the visible card and tighten the mobile grid so it reads as one set. */
+.homeQuickGrid{gap:5px}
+.homeQuickGrid>a.quickImageCard img{
+  object-position:center;
+  transform:scale(1.09);
+}
+.homeQuickGrid>a.quickImageCard:hover img{transform:scale(1.11)}
+
+@media(max-width:700px){
+  .homeQuickGrid{gap:2px!important}
+  .homeQuickGrid>a.quickImageCard{border-radius:15px}
+}
