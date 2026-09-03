@@ -17,5 +17,5 @@ export default function SharePlanButton({title}:{title:string}){
   }
   try{await navigator.clipboard.writeText(url);setMsg("공유 링크를 복사했습니다.")}catch{setMsg("주소창의 링크를 복사해주세요.")}
  }
- return <div className="actions"><button className="btn" onClick={share}>공유하기</button>{msg&&<span className="muted">{msg}</span>}</div>;
+ return <div className="actions"><button className="btn" type="button" onClick={share}>공유하기</button>{msg&&<span className="muted" role="status" aria-live="polite">{msg}</span>}</div>;
 }
