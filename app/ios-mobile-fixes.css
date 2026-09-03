@@ -1,0 +1,264 @@
+/* iPhone layout corrections. Keep this file last so earlier visual passes cannot
+   reintroduce unsafe-area overlaps or compressed controls. */
+@media (max-width: 700px) {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  :is(main, section, article, header, nav, form, div) {
+    min-width: 0;
+  }
+
+  :is(h1, h2, h3, p, small, span, b, a, button, label) {
+    overflow-wrap: anywhere;
+  }
+
+  input, select, textarea, button {
+    max-width: 100%;
+  }
+
+  /* Some WKWebView configurations report a zero safe-area inset. The native
+     iOS marker gives the shell a dependable status-bar fallback. */
+  .nativeApp body.native-ios {
+    padding-top: max(env(safe-area-inset-top), 54px) !important;
+  }
+
+  .nativeApp body.native-ios :is(.compactPageTop, .racePage > .top) {
+    top: 0 !important;
+  }
+
+  /* Apply the same header contract to Home, MY, details and management pages. */
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) {
+    width: 100% !important;
+    min-height: 58px;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .brand {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .brandLogo {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .brand > div {
+    min-width: 0;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .brand span {
+    display: block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .nav {
+    flex: 0 1 auto;
+    max-width: 56vw !important;
+  }
+
+  /* Image-led page heroes keep copy, art and actions in distinct regions. */
+  :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero {
+    min-height: 174px !important;
+    padding: 22px 110px 20px 18px !important;
+  }
+
+  :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero::after {
+    right: 12px !important;
+    bottom: 12px !important;
+    width: 86px !important;
+    height: 86px !important;
+  }
+
+  :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero h1 {
+    font-size: clamp(23px, 7vw, 28px) !important;
+  }
+
+  /* Detail pages must not place the score or artwork over long titles/actions. */
+  .ttwittunDetailPage .detailHero.card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+    min-height: 0 !important;
+    padding: 22px 18px 118px !important;
+  }
+
+  .ttwittunDetailPage .detailHero > div:first-child {
+    max-width: 100% !important;
+  }
+
+  .ttwittunDetailPage .detailHero .score {
+    position: static !important;
+    justify-self: start;
+    min-width: 86px;
+  }
+
+  .ttwittunDetailPage .detailHeroActions,
+  .ttwittunDetailPage .actions {
+    width: 100%;
+  }
+
+  .ttwittunDetailPage .detailHeroActions .btn {
+    min-width: 0;
+    white-space: normal;
+  }
+
+  /* Shared cards/forms: no control may escape the viewport. */
+  :is(.card, .hubTile, .mobileListCard, .profileEditorWrap, .legalCard, .shoeToolbar, .treadmillHero) {
+    max-width: 100%;
+  }
+
+  :is(.actions, .pageBottomActions, .compactActions) > :is(a, button) {
+    min-width: 0;
+  }
+
+  .formgrid,
+  .grid2,
+  .raceSubmitGrid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  /* Fixed sheets and dialogs must remain between the notch and bottom tab. */
+  .nativeApp body.native-ios :is(.urgentRunPanel, .explorerMapPanel .mapCourseInfo.sheet-full) {
+    top: max(env(safe-area-inset-top), 54px) !important;
+    max-height: calc(100dvh - 138px) !important;
+  }
+
+  .nativeApp body.native-ios .mobileBottomNavV3 {
+    bottom: max(env(safe-area-inset-bottom), 8px) !important;
+  }
+
+  /* Free-run artwork and exit are separate hit/visual regions. */
+  .freeRunHero {
+    min-height: 154px !important;
+    padding: 22px 116px 22px 18px !important;
+  }
+
+  .freeRunHero::after {
+    right: 12px !important;
+    bottom: 12px !important;
+    width: 88px !important;
+    height: 88px !important;
+    border-radius: 20px;
+    background-image: url('/home-assets/quick-run.png') !important;
+    background-position: center !important;
+    background-size: cover !important;
+    filter: none !important;
+  }
+
+  .freeRunHero .runExitButton {
+    right: 10px !important;
+    top: 10px !important;
+    min-height: 38px !important;
+    padding: 4px 10px 4px 5px !important;
+  }
+
+  .freeRunHero h1 {
+    padding-top: 24px !important;
+  }
+
+  /* Race discovery: one clear search row, two filter columns and two toggles. */
+  .racePage .raceFinderBar {
+    position: relative !important;
+    top: auto !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    margin: 10px 0 8px !important;
+    padding: 10px !important;
+    border-radius: 18px !important;
+    box-shadow: none !important;
+  }
+
+  .racePage .raceFinderBar input {
+    grid-column: 1 / -1 !important;
+  }
+
+  .racePage .raceFinderBar input,
+  .racePage .raceFinderBar select,
+  .racePage .raceFinderBar .chip {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 44px !important;
+    box-sizing: border-box;
+    font-size: 12px !important;
+  }
+
+  .racePage .raceSourceRow {
+    margin: 8px 2px 10px !important;
+  }
+
+  .racePage .raceSourceRow > span {
+    max-width: 62% !important;
+    font-size: 10px !important;
+  }
+
+  /* Cards remain readable instead of shrinking every label to 8–9px. */
+  .racePage .raceLiveCard {
+    grid-template-columns: 56px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    padding: 12px !important;
+  }
+
+  .racePage .raceDateBox {
+    width: 56px !important;
+    height: 56px !important;
+  }
+
+  .racePage .raceLiveTitle h3 {
+    font-size: 15px !important;
+  }
+
+  .racePage .raceLiveTitle p,
+  .racePage .raceRegistrationText {
+    font-size: 10px !important;
+  }
+
+  .racePage .raceTags > * {
+    font-size: 9px !important;
+  }
+
+  .racePage .raceCardActions button,
+  .racePage .raceCardActions a {
+    min-height: 40px !important;
+    font-size: 10px !important;
+  }
+
+  .racePage .racePersonalRow {
+    margin-top: 10px !important;
+    padding-top: 10px !important;
+  }
+}
+
+@media (max-width: 370px) {
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .brand span {
+    display: none;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .nav {
+    max-width: 62vw !important;
+  }
+
+  .freeRunHero {
+    padding-right: 104px !important;
+  }
+
+  .freeRunHero::after {
+    width: 78px !important;
+    height: 78px !important;
+  }
+
+  .racePage .raceLiveCard {
+    grid-template-columns: 50px minmax(0, 1fr) !important;
+  }
+
+  .racePage .raceDateBox {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
