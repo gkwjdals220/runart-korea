@@ -22,6 +22,7 @@ type Props = {
   crewId?: string | null;
   freeRun?: boolean;
   trackRun?: boolean;
+  onRunStateChange?: (running: boolean, finished: boolean) => void;
 };
 type Draft = {
   version: 3;
@@ -136,6 +137,7 @@ export default function RunModeV2({
   crewId,
   freeRun = false,
   trackRun = false,
+  onRunStateChange,
 }: Props) {
   const route = useMemo<Pt[]>(
     () =>
@@ -166,6 +168,9 @@ export default function RunModeV2({
     [pb, setPb] = useState<PbResult | null>(null);
   const [shoes, setShoes] = useState<RunShoe[]>([]),
     [shoeId, setShoeId] = useState("");
+  useEffect(() => {
+    onRunStateChange?.(running, finished);
+  }, [running, finished, onRunStateChange]);
   const watch = useRef<number | null>(null),
     startedAt = useRef<number | null>(null),
     pausedAt = useRef<number | null>(null),
@@ -599,7 +604,7 @@ export default function RunModeV2({
           </h1>
           <p>{sub}</p>
         </div>
-        {!running && (
+        {!running && !trackRun && (
           <Link
             className="btn ghost runExitButton"
             href={
