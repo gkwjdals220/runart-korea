@@ -3,6 +3,7 @@
 import {useCallback,useEffect,useMemo,useState} from "react";
 import Link from "next/link";
 import RunModeV2 from "@/components/RunModeV2";
+import TtwittunButtonIcon from "@/components/TtwittunButtonIcon";
 import {createClient} from "@/lib/supabase/client";
 
 type Track={id:string;name:string;region:string;city:string|null;address:string|null;lat:number;lng:number;lap_m:number;access_note:string|null;verified:boolean};
@@ -31,7 +32,7 @@ export default function TrackRunStudio({userId}:{userId?:string|null}){
  return <div className="trackStudioPage">
   <section className="wrap" style={{paddingBottom:0}}>
    <div className="card" style={{padding:18,marginTop:14}}>
-    <div className="trackStudioSetupHeader"><div><span className="eyebrow">TRACK TRAINING</span><h2 style={{margin:"6px 0 4px"}}>🏟️ 트랙런 훈련 설정</h2><p className="muted">트랙 장소와 인터벌을 고른 뒤 아래에서 GPS 기록을 시작하세요.</p></div>{!runActive&&<Link className="btn ghost runExitButton" href="/my"><span aria-hidden="true">×</span><b>나가기</b></Link>}</div>
+    <div className="trackStudioSetupHeader"><div><span className="eyebrow">TRACK TRAINING</span><h2 style={{margin:"6px 0 4px"}}>🏟️ 트랙런 훈련 설정</h2><p className="muted">트랙 장소와 인터벌을 고른 뒤 아래에서 GPS 기록을 시작하세요.</p></div>{!runActive&&<Link className="btn ghost runExitButton" href="/my"><TtwittunButtonIcon name="back" compact/><b>MY로 돌아가기</b></Link>}</div>
     <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:12,marginTop:14}}>
      <label style={{display:"grid",gap:6}}><b>트랙 장소</b><select value={trackId} disabled={loading} onChange={e=>setTrackId(e.target.value)}><option value="">{loading?"트랙 불러오는 중…":"트랙 선택"}</option>{tracks.map(t=><option value={t.id} key={t.id}>{t.region} · {t.name}</option>)}</select></label>
      <label style={{display:"grid",gap:6}}><b>훈련 프리셋</b><select value={presetId} onChange={e=>{setPresetId(e.target.value);resetRest()}}>{PRESETS.map(p=><option value={p.id} key={p.id}>{p.name}</option>)}</select></label>
