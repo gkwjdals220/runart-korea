@@ -11,15 +11,20 @@
   background: #0d1114;
 }
 
-.homePromoImageCard img,
-.homeQuickGrid > a.quickImageCard img {
+.homePromoImageCard img {
   object-fit: contain !important;
   object-position: center !important;
   transform: none !important;
 }
 
+.homeQuickGrid > a.quickImageCard img {
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: scale(1.09) !important;
+}
+
 .homeQuickGrid > a.quickImageCard:hover img {
-  transform: none !important;
+  transform: scale(1.11) !important;
 }
 
 @media (max-width: 700px) {
