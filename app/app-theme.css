@@ -357,3 +357,62 @@
  .courseDetailPage .detailHero::after,.runDetailPage .detailHero::after,.planDetailPage .detailHero::after,.editLogDetailPage .detailHero::after{width:94px;height:92px}
  .ttwittunDetailPage .detailTop .nav{max-width:54vw}
 }
+
+/* Pre-TestFlight detail UX pass 2: stable feedback and one clear primary action. */
+.ttwittunDetailPage :is(button,.btn):disabled,.shoePage :is(button,.btn):disabled{cursor:wait;opacity:.58;transform:none!important}
+.formStatus{margin:10px 0 0;padding:9px 11px;border:1px solid rgba(214,255,47,.2);border-radius:12px;background:rgba(214,255,47,.065);color:#dce5ec!important;font-size:11px!important;line-height:1.45}
+.favoriteReviewCard{display:flex;flex-direction:column;gap:12px}
+.favoriteReviewHead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.favoriteReviewHead h3{margin:3px 0 0}
+.favoriteReviewHead .btn{flex:0 0 auto}
+.favoriteReviewFields{display:grid;grid-template-columns:130px minmax(0,1fr);gap:10px}
+.favoriteReviewFields label{display:flex;flex-direction:column;gap:6px}
+.favoriteReviewFields textarea{min-height:86px}
+.reviewSaveButton{align-self:flex-end;min-width:140px}
+.runnerPlaceCard .placeActionBar{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr) minmax(0,.75fr);gap:7px}
+.runnerPlaceCard .placeActionBar>*{width:100%;min-width:0;white-space:nowrap}
+.runnerPlaceCard .runEatAction{border-color:var(--app-lime,#d6ff2f);background:var(--app-lime,#d6ff2f);color:#101417}
+.nearbySection .segmented button,.nearbySortBar button{min-height:40px}
+.startFlowLoading{min-height:90px;display:grid;align-items:center}
+.startFlowStep .compactActions+.compactActions{margin-top:7px}
+.startFlowFinal .runPrimary{display:inline-flex;align-items:center;gap:7px}
+.shoePage .shoeForm>.btn{min-height:46px}
+.shoePage .shoeToolbar>.btn{white-space:nowrap}
+
+@media(max-width:700px){
+ .startFlowCard{padding:0!important}
+ .startFlowHead{padding:16px 15px 13px!important}
+ .startFlowBody{padding:3px 14px 14px!important}
+ .startStepTitle select{min-width:0!important;min-height:44px}
+ .selectedParking{gap:7px!important}
+ .selectedParking .compactActions,.startFlowStep .compactActions{grid-template-columns:1fr 1fr!important}
+ .startFlowFinal .compactActions{display:none!important}
+ .startFlowFinal{padding-bottom:8px!important;border-bottom:0!important}
+ .afterRunHint{margin-top:4px!important}
+ .favoriteReviewFields{grid-template-columns:1fr;gap:8px}
+ .favoriteReviewHead{align-items:flex-start}
+ .favoriteReviewHead .btn{min-height:40px!important;padding:8px 10px!important}
+ .reviewSaveButton{align-self:stretch;width:100%;min-height:46px!important}
+ .nearbySection .sectionHead{align-items:flex-start}
+ .nearbySection .segmented{flex:0 0 auto}
+ .nearbySection .segmented button{min-height:40px;padding:8px 10px}
+ .nearbySortBar{margin-right:-14px!important;padding-right:14px;padding-bottom:5px}
+ .nearbySortBar button{min-height:40px;padding:8px 12px}
+ .runnerPlaceCard .placeActionBar{grid-template-columns:1fr 1fr}
+ .runnerPlaceCard .placeActionBar .runEatAction{grid-column:1/-1;min-height:46px}
+ .runnerPlaceCard .placeActionBar .heartBtn,.runnerPlaceCard .placeActionBar .btn.ghost{min-height:42px}
+ .shoePage .shoeToolbar{align-items:center}
+ .shoePage .shoeToolbar>.btn{min-height:42px;padding-left:11px;padding-right:11px}
+ .shoePage .shoeForm{padding:14px!important}
+ .shoePage .shoeFormRow{grid-template-columns:1fr 1fr;gap:8px}
+}
+
+@media(max-width:360px){
+ .nearbySection .sectionHead{display:block}
+ .nearbySection .segmented{width:100%;margin-top:10px}
+ .nearbySection .segmented button{flex:1}
+ .favoriteReviewHead{display:block}
+ .favoriteReviewHead .btn{width:100%;margin-top:9px}
+ .shoePage .shoeToolbar{display:block}
+ .shoePage .shoeToolbar>.btn{width:100%;margin-top:10px}
+}
