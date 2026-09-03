@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
-import {useEffect} from "react";
-import {usePathname,useRouter} from "next/navigation";
+import {usePathname} from "next/navigation";
 
 type IconName="home"|"search"|"plus"|"crew"|"profile";
 function NavIcon({name,active}:{name:IconName;active:boolean}){
@@ -23,14 +22,6 @@ const items=[
 
 export default function MobileBottomNav(){
  const pathname=usePathname();
- const router=useRouter();
- useEffect(()=>{
-  if(pathname.startsWith("/run/"))return;
-  const prefetch=()=>items.forEach(item=>{if(!item.match(pathname))router.prefetch(item.href)});
-  const w=window as Window & {requestIdleCallback?:(cb:()=>void,opts?:{timeout:number})=>number;cancelIdleCallback?:(id:number)=>void};
-  if(w.requestIdleCallback){const id=w.requestIdleCallback(prefetch,{timeout:1200});return()=>w.cancelIdleCallback?.(id)}
-  const id=window.setTimeout(prefetch,250);return()=>window.clearTimeout(id);
- },[pathname,router]);
  if(pathname.startsWith("/run/"))return null;
  return <nav className="mobileBottomNav mobileBottomNavV3" aria-label="모바일 주요 메뉴">{items.map(item=>{const on=item.match(pathname);return <Link key={item.label} href={item.href} prefetch className={on?"active":""} aria-label={item.label} aria-current={on?"page":undefined}><span className="mobileNavIcon"><NavIcon name={item.icon} active={on}/></span><b>{item.label}</b><i className="mobileNavActiveDot" aria-hidden="true"/></Link>})}</nav>;
 }

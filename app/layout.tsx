@@ -23,6 +23,7 @@ import "./run-club-refresh.css";
 import "./mobile-ux-stability.css";
 import "./detail-theme.css";
 import "./app-theme.css";
+import "./performance-ux.css";
 import "./ios-mobile-fixes.css";
 import "leaflet/dist/leaflet.css";
 import { Noto_Sans_KR } from "next/font/google";
