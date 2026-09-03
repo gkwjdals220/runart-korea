@@ -243,7 +243,7 @@ export default function RunModeV2({
     } catch {}
   }, [key]);
   useEffect(() => {
-    if (!userId || trackRun) return;
+    if (!userId) return;
     createClient()
       .from("runart_running_shoes")
       .select("id,brand,model,nickname,is_default")
@@ -255,7 +255,7 @@ export default function RunModeV2({
         setShoes(list);
         setShoeId(list.find((s) => s.is_default)?.id || list[0]?.id || "");
       });
-  }, [trackRun, userId]);
+  }, [userId]);
   useEffect(() => {
     if (!running || finished) return;
     const t = window.setInterval(() => {
