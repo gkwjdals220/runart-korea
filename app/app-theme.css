@@ -523,18 +523,7 @@
 .raceSubmitForm > .btn { --ttwittun-action-icon: url("/button-icons/race.png"); }
 .accountPage .btn.ghost { --ttwittun-action-icon: url("/button-icons/back.png"); }
 .accountPage .btn.danger { --ttwittun-action-icon: url("/button-icons/save.png"); }
-.raceCardActions > :is(a,button), .raceNoteEditor .btn { position: relative; }
-.raceCardActions > :is(a,button)::before, .raceNoteEditor .btn::before {
-  content: "";
-  width: 23px;
-  height: 23px;
-  flex: 0 0 23px;
-  margin: -3px 0;
-  border-radius: 7px;
-  background: rgba(217,255,67,.1) url("/button-icons/race.png") center/112% no-repeat;
-}
-.raceCardActions > :is(a,button), .raceNoteEditor .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.raceCardActions > :is(a,button), .raceNoteEditor .btn { display: inline-flex; align-items: center; justify-content: center; }
 @media (max-width: 520px) {
   .compactPageTop .btn:not(:has(.ttwittunButtonIcon))::before { width: 22px; height: 22px; flex-basis: 22px; }
-  .raceCardActions > :is(a,button)::before { width: 21px; height: 21px; flex-basis: 21px; }
 }
