@@ -604,12 +604,12 @@ export default function RunModeV2({
         ? "코스 없이 내 기록 측정"
         : `${startName || "코스 출발점"}${targetKm ? ` · 목표 ${targetKm.toFixed(1)}km` : ""}`;
   return (
-    <main className={`wrap runModePage ${trackRun ? "trackRunModePage" : ""}`}>
-      {!trackRun && <header className="runModeTop">
+    <main className={`wrap runModePage ${trackRun ? "trackRunModePage" : freeRun ? "freeRunModePage" : ""}`}>
+      {!trackRun && <header className={`runModeTop ${freeRun ? "freeRunHero" : ""}`}>
         <div>
-          <span className="eyebrow">TTWITTUN LIVE RUN</span>
+          <span className="eyebrow">{freeRun ? "FREE RUN" : "TTWITTUN LIVE RUN"}</span>
           <h1>
-            {trackRun ? "🏟️" : "🏃"} {title}
+            {!freeRun && "🏃 "}{title}
           </h1>
           <p>{sub}</p>
         </div>
