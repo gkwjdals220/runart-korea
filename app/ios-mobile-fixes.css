@@ -81,6 +81,11 @@
     bottom: 12px !important;
     width: 86px !important;
     height: 86px !important;
+    background-color: #0d1114 !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+    transform: none !important;
   }
 
   :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero h1 {
@@ -155,7 +160,9 @@
     border-radius: 20px;
     background-image: url('/home-assets/quick-run.png') !important;
     background-position: center !important;
-    background-size: cover !important;
+    background-color: #0d1114 !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
     filter: none !important;
   }
 
