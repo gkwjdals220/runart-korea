@@ -416,3 +416,55 @@
  .shoePage .shoeToolbar{display:block}
  .shoePage .shoeToolbar>.btn{width:100%;margin-top:10px}
 }
+
+/* Pre-TestFlight detail UX pass 3: safer forms and calmer utility screens. */
+.profileEditorCard{display:grid;gap:10px;padding:16px!important}
+.profileEditorCard h3{margin:3px 0 0}
+.profileEditorCard label{display:grid;gap:6px}
+.profileEditorCard .profileNameHint{margin-top:-5px;font-size:10px}
+.profileEditorCard>.btn{justify-self:end;min-width:140px}
+.raceActionStatus{position:sticky;z-index:12;bottom:86px;margin:10px 0;border-color:rgba(214,255,47,.38);box-shadow:0 12px 28px rgba(0,0,0,.3)}
+.raceSubmitForm{display:grid;gap:11px}
+.raceSubmitForm label{display:grid;gap:6px}
+.raceSubmitForm>.btn{justify-self:end;min-width:160px}
+.accountDeleteForm{display:grid;gap:12px}
+.accountDeleteConfirm{display:flex!important;align-items:flex-start;gap:10px;padding:12px;border:1px solid #39434c;border-radius:14px;background:#11171b;cursor:pointer}
+.accountDeleteConfirm input{flex:0 0 auto;width:20px!important;height:20px!important;min-height:0!important;margin:1px 0 0;accent-color:var(--app-lime,#d6ff2f)}
+.accountDeleteConfirm span{display:grid;gap:3px}
+.accountDeleteConfirm b{font-size:12px;color:#eef2f5}
+.accountDeleteConfirm small{font-size:10px;line-height:1.45;color:#9ba6b2}
+.accountDeleteForm>.danger{justify-self:start;border-color:rgba(255,120,130,.5)!important;background:rgba(255,120,130,.08)!important;color:#ff9ba4!important}
+.accountDeleteStatus{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0;padding:12px;border:1px solid rgba(214,255,47,.34);border-radius:14px;background:rgba(214,255,47,.07)}
+.shoeChoices button{min-height:68px;cursor:pointer}
+.shoeChoices button:focus-visible,.raceFinderBar button:focus-visible,.raceCardActions button:focus-visible{outline:2px solid var(--app-lime,#d6ff2f);outline-offset:2px}
+
+@media(max-width:700px){
+ .profileEditorCard>.btn,.raceSubmitForm>.btn{justify-self:stretch;width:100%;min-height:46px}
+ .raceFinderBar{top:env(safe-area-inset-top,0px)!important;padding:7px 0 9px!important;box-shadow:0 8px 14px rgba(11,13,16,.78)}
+ .raceFinderBar input,.raceFinderBar select,.raceFinderBar .chip{min-height:42px!important}
+ .raceSourceRow{align-items:flex-start!important;gap:8px!important}
+ .raceSourceRow>span{max-width:58%;line-height:1.4}
+ .raceSourceRow>div{flex:0 0 auto;gap:8px!important}
+ .raceCardActions .raceGoogleForm,.raceCardActions a{grid-column:1/-1!important;min-height:40px!important}
+ .racePersonalRow{display:grid!important;grid-template-columns:minmax(0,1fr) auto auto;align-items:center}
+ .raceDistanceSelect{min-width:0}
+ .raceDistanceSelect select{min-width:0;max-width:110px!important}
+ .racePersonalRow .textReset{min-height:38px;padding:7px 5px}
+ .raceActionStatus{bottom:82px;font-size:10px!important}
+ .raceSubmitForm{padding:14px!important}
+ .raceSubmitGrid{grid-template-columns:1fr!important;gap:9px!important}
+ .accountDeleteConfirm{padding:11px}
+ .accountDeleteForm>.danger{width:100%;min-height:46px;justify-content:center}
+ .accountDeleteStatus{align-items:flex-start;flex-direction:column}
+ .shoeChoices button{min-height:64px;padding:11px 9px!important}
+ .shoeChoices strong{font-size:12px}
+ .shoeChoices span{font-size:9px}
+}
+
+@media(max-width:360px){
+ .raceSourceRow{display:block!important}
+ .raceSourceRow>span{display:block;max-width:none;margin-bottom:7px}
+ .raceSourceRow>div{justify-content:flex-end}
+ .racePersonalRow{grid-template-columns:1fr 1fr}
+ .raceDistanceSelect{grid-column:1/-1;justify-content:space-between!important}
+}
