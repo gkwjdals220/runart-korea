@@ -54,6 +54,13 @@
  transform:rotate(-3deg);
 }
 
+/* Match hero artwork to the page purpose instead of showing RUN everywhere. */
+.racePage>.compactPageHero::after{
+ background-image:url('/home-assets/quick-races.png');
+ background-position:center;
+ transform:rotate(2deg);
+}
+
 :is(.mobileSubPage,.hubPage,.racePage,.shoePage,.shoeGuidePage,.treadmillPage,.authJoinPage,.courseSubmitPage,.artCollectionPage) .eyebrow{
  color:var(--app-lime);
  font-weight:950;
@@ -176,6 +183,7 @@
  :is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero{min-height:186px;margin:10px 0 14px;padding:23px 118px 22px 18px;border-radius:22px}
  :is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero::before{right:-62px;bottom:-64px;width:180px;height:180px}
  :is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero::after{right:10px;bottom:12px;width:104px;height:104px;border-radius:19px}
+ .racePage>.compactPageHero::after{right:14px;bottom:14px;width:100px;height:100px}
  :is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage)>.compactPageHero h1{font-size:27px;line-height:1.12}
  .pageHubGrid .hubTile{grid-template-columns:46px minmax(0,1fr) 14px!important;column-gap:14px!important}
  .pageHubGrid .hubTile>span{z-index:1;width:46px;min-width:46px;height:46px;box-sizing:border-box;border-radius:15px}
