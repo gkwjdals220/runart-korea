@@ -221,6 +221,35 @@
   }
 
   /* Free-run artwork and exit are separate hit/visual regions. */
+  .treadmillPage .treadmillHero {
+    min-height: 182px;
+    padding: 24px 146px 22px 20px !important;
+    overflow: hidden;
+  }
+
+  .treadmillPage .treadmillHero::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    right: -8px;
+    bottom: -14px;
+    width: 158px;
+    height: 166px;
+    background: url('/hero-decor/treadmill-duck.png') right bottom / contain no-repeat;
+    filter: drop-shadow(0 14px 18px rgba(0, 0, 0, .38));
+    transform: rotate(-2deg);
+    pointer-events: none;
+  }
+
+  .treadmillPage .treadmillHero > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .treadmillPage .treadmillHero h1 {
+    font-size: clamp(42px, 12vw, 64px);
+  }
+
   .freeRunHero {
     min-height: 166px !important;
     padding: 24px 140px 22px 18px !important;
@@ -370,6 +399,15 @@
 
   .freeRunHero {
     padding-right: 112px !important;
+  }
+
+  .treadmillPage .treadmillHero {
+    padding-right: 116px !important;
+  }
+
+  .treadmillPage .treadmillHero::after {
+    width: 126px;
+    height: 140px;
   }
 
   .freeRunHero::after {
