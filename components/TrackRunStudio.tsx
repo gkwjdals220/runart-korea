@@ -1,6 +1,7 @@
 "use client";
 
-import {useEffect,useMemo,useState} from "react";
+import {useCallback,useEffect,useMemo,useState} from "react";
+import Link from "next/link";
 import RunModeV2 from "@/components/RunModeV2";
 import {createClient} from "@/lib/supabase/client";
 
@@ -17,18 +18,19 @@ const PRESETS:Preset[]=[
 function fmt(sec:number){const m=Math.floor(sec/60),s=sec%60;return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}
 
 export default function TrackRunStudio({userId}:{userId?:string|null}){
- const [tracks,setTracks]=useState<Track[]>([]),[trackId,setTrackId]=useState(""),[presetId,setPresetId]=useState("free"),[rest,setRest]=useState(0),[resting,setResting]=useState(false),[loading,setLoading]=useState(true),[msg,setMsg]=useState("");
+ const [tracks,setTracks]=useState<Track[]>([]),[trackId,setTrackId]=useState(""),[presetId,setPresetId]=useState("free"),[rest,setRest]=useState(0),[resting,setResting]=useState(false),[loading,setLoading]=useState(true),[msg,setMsg]=useState(""),[runActive,setRunActive]=useState(false);
  const preset=useMemo(()=>PRESETS.find(x=>x.id===presetId)||PRESETS[0],[presetId]);
  const selected=useMemo(()=>tracks.find(x=>x.id===trackId)||null,[tracks,trackId]);
  useEffect(()=>{let alive=true;(async()=>{try{const sb=createClient();const {data,error}=await sb.from("runart_tracks").select("id,name,region,city,address,lat,lng,lap_m,access_note,verified").order("region").order("name");if(error)throw error;if(alive){setTracks((data||[]) as Track[]);if(data?.[0]?.id)setTrackId(data[0].id)}}catch(e:any){if(alive)setMsg(e?.message||"트랙 목록을 불러오지 못했습니다.")}finally{if(alive)setLoading(false)}})();return()=>{alive=false}},[]);
  useEffect(()=>{if(!resting)return;const t=window.setInterval(()=>setRest(v=>{if(v<=1){window.clearInterval(t);setResting(false);return 0}return v-1}),1000);return()=>window.clearInterval(t)},[resting]);
  function startRest(){if(!preset.restSec)return;setRest(preset.restSec);setResting(true)}
  function resetRest(){setRest(0);setResting(false)}
+ const handleRunStateChange=useCallback((running:boolean,finished:boolean)=>setRunActive(running||finished),[]);
  const runName=["트랙런",selected?.name,preset.id!=="free"?preset.name:null].filter(Boolean).join(" · ");
  return <div className="trackStudioPage">
   <section className="wrap" style={{paddingBottom:0}}>
    <div className="card" style={{padding:18,marginTop:14}}>
-    <span className="eyebrow">TRACK TRAINING</span><h2 style={{margin:"6px 0 4px"}}>🏟️ 트랙런 훈련 설정</h2><p className="muted">트랙 장소와 인터벌을 고른 뒤 아래에서 GPS 기록을 시작하세요.</p>
+    <div className="trackStudioSetupHeader"><div><span className="eyebrow">TRACK TRAINING</span><h2 style={{margin:"6px 0 4px"}}>🏟️ 트랙런 훈련 설정</h2><p className="muted">트랙 장소와 인터벌을 고른 뒤 아래에서 GPS 기록을 시작하세요.</p></div>{!runActive&&<Link className="btn ghost runExitButton" href="/my"><span aria-hidden="true">×</span><b>나가기</b></Link>}</div>
     <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:12,marginTop:14}}>
      <label style={{display:"grid",gap:6}}><b>트랙 장소</b><select value={trackId} disabled={loading} onChange={e=>setTrackId(e.target.value)}><option value="">{loading?"트랙 불러오는 중…":"트랙 선택"}</option>{tracks.map(t=><option value={t.id} key={t.id}>{t.region} · {t.name}</option>)}</select></label>
      <label style={{display:"grid",gap:6}}><b>훈련 프리셋</b><select value={presetId} onChange={e=>{setPresetId(e.target.value);resetRest()}}>{PRESETS.map(p=><option value={p.id} key={p.id}>{p.name}</option>)}</select></label>
@@ -40,6 +42,6 @@ export default function TrackRunStudio({userId}:{userId?:string|null}){
     {msg&&<p className="muted" style={{marginTop:10}}>{msg}</p>}
    </div>
   </section>
-  <RunModeV2 trackRun courseName={runName} userId={userId||null}/>
+  <RunModeV2 trackRun courseName={runName} userId={userId||null} onRunStateChange={handleRunStateChange}/>
  </div>;
 }
