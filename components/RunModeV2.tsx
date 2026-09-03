@@ -605,6 +605,14 @@ export default function RunModeV2({
         : `${startName || "코스 출발점"}${targetKm ? ` · 목표 ${targetKm.toFixed(1)}km` : ""}`;
   return (
     <main className={`wrap runModePage ${trackRun ? "trackRunModePage" : freeRun ? "freeRunModePage" : ""}`}>
+      {freeRun && !running && (
+        <nav className="runModeUtilityBar" aria-label="러닝 화면 메뉴">
+          <Link className="btn ghost runExitButton" href="/my">
+            <span aria-hidden="true">×</span>
+            <b>나가기</b>
+          </Link>
+        </nav>
+      )}
       {!trackRun && <header className={`runModeTop ${freeRun ? "freeRunHero" : ""}`}>
         <div>
           <span className="eyebrow">{freeRun ? "FREE RUN" : "TTWITTUN LIVE RUN"}</span>
@@ -613,7 +621,7 @@ export default function RunModeV2({
           </h1>
           <p>{sub}</p>
         </div>
-        {!running && !trackRun && (
+        {!running && !trackRun && !freeRun && (
           <Link
             className="btn ghost runExitButton"
             href={

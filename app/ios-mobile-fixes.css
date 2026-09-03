@@ -1,5 +1,27 @@
 /* iPhone layout corrections. Keep this file last so earlier visual passes cannot
    reintroduce unsafe-area overlaps or compressed controls. */
+.runModeUtilityBar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 8px 0;
+}
+
+/* Preserve all supplied artwork and in-image copy instead of zoom-cropping it. */
+.homePromoCard.homePromoImageCard {
+  background: #0d1114;
+}
+
+.homePromoImageCard img,
+.homeQuickGrid > a.quickImageCard img {
+  object-fit: contain !important;
+  object-position: center !important;
+  transform: none !important;
+}
+
+.homeQuickGrid > a.quickImageCard:hover img {
+  transform: none !important;
+}
+
 @media (max-width: 700px) {
   *, *::before, *::after {
     box-sizing: border-box;
@@ -20,7 +42,8 @@
   /* Some WKWebView configurations report a zero safe-area inset. The native
      iOS marker gives the shell a dependable status-bar fallback. */
   .nativeApp body.native-ios {
-    padding-top: max(env(safe-area-inset-top), 54px) !important;
+    /* Capacitor's automatic content inset already clears the iOS status bar. */
+    padding-top: 0 !important;
   }
 
   .nativeApp body.native-ios :is(.compactPageTop, .racePage > .top) {
@@ -66,14 +89,33 @@
   /* Image-led page heroes keep copy, art and actions in distinct regions. */
   :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero {
     min-height: 174px !important;
-    padding: 22px 110px 20px 18px !important;
+    padding: 22px 122px 20px 18px !important;
   }
 
   :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero::after {
     right: 12px !important;
     bottom: 12px !important;
-    width: 86px !important;
-    height: 86px !important;
+    width: 94px !important;
+    height: 118px !important;
+    background-color: #0d1114 !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+    transform: none !important;
+  }
+
+  .racePage > .compactPageHero::after {
+    background-image: url('/home-assets/quick-races.png') !important;
+  }
+
+  .shoeGuidePage > .compactPageHero::after,
+  .shoePage > .compactPageHero::after {
+    background-image: url('/home-assets/quick-shoes.png') !important;
+  }
+
+  .myHubPage > .compactPageHero::after,
+  .profilePage > .compactPageHero::after {
+    background-image: url('/home-assets/quick-history.png') !important;
   }
 
   :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero h1 {
@@ -107,6 +149,36 @@
   .ttwittunDetailPage .detailHeroActions .btn {
     min-width: 0;
     white-space: normal;
+  }
+
+  .courseDetailPage .detailHero::after,
+  .runDetailPage .detailHero::after,
+  .planDetailPage .detailHero::after,
+  .editLogDetailPage .detailHero::after {
+    right: 12px !important;
+    bottom: 12px !important;
+    width: 94px !important;
+    height: 108px !important;
+    border-radius: 20px;
+    background-color: #0d1114 !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+    filter: none !important;
+    transform: none !important;
+  }
+
+  .courseDetailPage .detailHero::after {
+    background-image: url('/home-assets/quick-course.png') !important;
+  }
+
+  .runDetailPage .detailHero::after,
+  .planDetailPage .detailHero::after {
+    background-image: url('/home-assets/quick-run.png') !important;
+  }
+
+  .editLogDetailPage .detailHero::after {
+    background-image: url('/home-assets/quick-history.png') !important;
   }
 
   /* Shared cards/forms: no control may escape the viewport. */
@@ -148,7 +220,9 @@
     border-radius: 20px;
     background-image: url('/home-assets/quick-run.png') !important;
     background-position: center !important;
-    background-size: cover !important;
+    background-color: #0d1114 !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
     filter: none !important;
   }
 
@@ -160,7 +234,41 @@
   }
 
   .freeRunHero h1 {
-    padding-top: 24px !important;
+    padding-top: 0 !important;
+  }
+
+  .freeRunModePage .runModeUtilityBar {
+    display: flex;
+    justify-content: flex-end;
+    margin: 8px 0;
+  }
+
+  .freeRunModePage .runModeUtilityBar .runExitButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 42px;
+    padding: 5px 13px 5px 6px;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+
+  .freeRunModePage .runModeUtilityBar .runExitButton > span {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #293039;
+    color: var(--app-lime, #d6ff2f);
+    font-size: 25px;
+    line-height: 1;
+  }
+
+  .racePage > .compactPageHero p {
+    max-width: 220px;
+    font-size: 10.5px !important;
+    line-height: 1.55;
   }
 
   /* Race discovery: one clear search row, two filter columns and two toggles. */
@@ -251,6 +359,15 @@
   .freeRunHero::after {
     width: 78px !important;
     height: 78px !important;
+  }
+
+  :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero {
+    padding-right: 108px !important;
+  }
+
+  :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero::after {
+    width: 82px !important;
+    height: 104px !important;
   }
 
   .racePage .raceLiveCard {
