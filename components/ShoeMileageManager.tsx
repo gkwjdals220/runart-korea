@@ -26,6 +26,7 @@ export default function ShoeMileageManager({
   const [shoes, setShoes] = useState(initial),
     [open, setOpen] = useState(Boolean(preset?.brand && preset?.model)),
     [busy, setBusy] = useState(false),
+    [msg, setMsg] = useState(""),
     [form, setForm] = useState({
       brand: preset?.brand || "",
       model: preset?.model || "",
@@ -57,21 +58,26 @@ export default function ShoeMileageManager({
     );
   }
   async function add() {
-    if (!form.brand.trim() || !form.model.trim()) return;
+    if (!form.brand.trim() || !form.model.trim()) return setMsg("브랜드와 모델을 입력해주세요.");
+    if (busy) return;
+    const initialKm=Number(form.initial),targetKm=Number(form.target);
+    if (!Number.isFinite(initialKm)||initialKm<0||!Number.isFinite(targetKm)||targetKm<=0) return setMsg("현재 거리와 교체 목표를 올바르게 입력해주세요.");
     setBusy(true);
+    setMsg("");
     const sb = createClient(),
       isFirst = !shoes.some((s) => !s.retired_at);
-    await sb
+    const {error}=await sb
       .from("runart_running_shoes")
       .insert({
         user_id: userId,
         brand: form.brand.trim(),
         model: form.model.trim(),
         nickname: form.nickname.trim() || null,
-        initial_distance_km: Number(form.initial) || 0,
-        target_distance_km: Number(form.target) || 500,
+        initial_distance_km: initialKm,
+        target_distance_km: targetKm,
         is_default: isFirst,
       });
+    if(error){setMsg(error.message);setBusy(false);return}
     await refresh();
     setForm({
       brand: "",
@@ -82,6 +88,7 @@ export default function ShoeMileageManager({
     });
     setOpen(false);
     setBusy(false);
+    setMsg("러닝화를 등록했습니다.");
   }
   async function makeDefault(id: string) {
     setBusy(true);
@@ -132,8 +139,8 @@ export default function ShoeMileageManager({
             러닝을 저장하면 선택한 신발의 거리가 자동 누적돼요.
           </p>
         </div>
-        <button className="btn" onClick={() => setOpen((v) => !v)}>
-          ＋ 신발 추가
+        <button className="btn" type="button" aria-expanded={open} onClick={() => {setOpen((v) => !v);setMsg("")}}>
+          {open?"닫기":"＋ 신발 추가"}
         </button>
       </div>
       {preset?.brand && preset?.model && open && (
@@ -185,11 +192,12 @@ export default function ShoeMileageManager({
               />
             </label>
           </div>
-          <button className="btn" disabled={busy} onClick={add}>
+          <button className="btn" type="button" disabled={busy} onClick={add}>
             {busy ? "저장 중…" : "등록하기"}
           </button>
         </section>
       )}
+      {msg&&<p className="muted formStatus" role="status" aria-live="polite">{msg}</p>}
       <section className="shoeSummaryGrid" aria-label="러닝화 사용 요약">
         <div><span>사용 중</span><b>{activeShoes.length}</b><small>켤레</small></div>
         <div><span>누적 거리</span><b>{totalKm.toFixed(1)}</b><small>km</small></div>
@@ -230,6 +238,7 @@ export default function ShoeMileageManager({
                   <button
                     disabled={busy}
                     className="btn ghost"
+                    type="button"
                     onClick={() => makeDefault(s.id)}
                   >
                     기본 신발
@@ -238,6 +247,7 @@ export default function ShoeMileageManager({
                 <button
                   disabled={busy}
                   className="btn ghost"
+                  type="button"
                   onClick={() => retire(s)}
                 >
                   {s.retired_at ? "다시 사용" : "사용 종료"}
