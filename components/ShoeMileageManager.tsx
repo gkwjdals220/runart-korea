@@ -91,38 +91,51 @@ export default function ShoeMileageManager({
     setMsg("러닝화를 등록했습니다.");
   }
   async function makeDefault(id: string) {
+    if (busy) return;
     setBusy(true);
+    setMsg("");
     const sb = createClient();
-    await sb
-      .from("runart_running_shoes")
-      .update({ is_default: false, updated_at: new Date().toISOString() })
-      .eq("user_id", userId);
-    await sb
-      .from("runart_running_shoes")
-      .update({
-        is_default: true,
-        retired_at: null,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", id)
-      .eq("user_id", userId);
-    await refresh();
-    setBusy(false);
+    try {
+      const {error:clearError}=await sb
+        .from("runart_running_shoes")
+        .update({ is_default: false, updated_at: new Date().toISOString() })
+        .eq("user_id", userId);
+      if(clearError)throw clearError;
+      const {error:setError}=await sb
+        .from("runart_running_shoes")
+        .update({
+          is_default: true,
+          retired_at: null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", id)
+        .eq("user_id", userId);
+      if(setError)throw setError;
+      await refresh();
+      setMsg("다음 러닝에 사용할 기본 신발로 설정했습니다.");
+    } catch(e:any) { setMsg(e?.message||"기본 신발 변경 중 오류가 발생했습니다."); }
+    finally { setBusy(false); }
   }
   async function retire(s: Shoe) {
+    if (busy) return;
     setBusy(true);
+    setMsg("");
     const sb = createClient();
-    await sb
-      .from("runart_running_shoes")
-      .update({
-        retired_at: s.retired_at ? null : new Date().toISOString(),
-        is_default: false,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", s.id)
-      .eq("user_id", userId);
-    await refresh();
-    setBusy(false);
+    try {
+      const {error}=await sb
+        .from("runart_running_shoes")
+        .update({
+          retired_at: s.retired_at ? null : new Date().toISOString(),
+          is_default: false,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", s.id)
+        .eq("user_id", userId);
+      if(error)throw error;
+      await refresh();
+      setMsg(s.retired_at?"러닝화를 다시 사용 중으로 변경했습니다.":"러닝화 사용을 종료했습니다.");
+    } catch(e:any) { setMsg(e?.message||"러닝화 상태 변경 중 오류가 발생했습니다."); }
+    finally { setBusy(false); }
   }
   const activeShoes=shoes.filter(s=>!s.retired_at);
   const totalKm=shoes.reduce((sum,s)=>sum+Number(s.initial_distance_km||0)+Number(s.run_km||0),0);
