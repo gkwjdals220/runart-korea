@@ -800,9 +800,10 @@ export default function RunModeV2({
         <section className="card" style={{ marginTop: 14 }}>
           <span className="eyebrow">AUTO LAP</span>
           <h3>{lapLabel} 스플릿</h3>
-          <div style={{ display: "grid", gap: 8, marginTop: 10 }}>
+          <div className="runSplitList" style={{ display: "grid", gap: 8, marginTop: 10 }}>
             {splits.map((s) => (
               <div
+                className="runSplitRow"
                 key={s.lap}
                 style={{
                   display: "grid",

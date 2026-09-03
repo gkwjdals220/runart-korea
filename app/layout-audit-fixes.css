@@ -1,0 +1,92 @@
+/* Final layout guardrails found during the full mobile page audit. */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+}
+
+img,
+svg,
+canvas,
+video {
+  max-width: 100%;
+}
+
+@media (max-width: 700px) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  .wrap,
+  main,
+  main > section,
+  main > article,
+  main > form {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* globals.css switches every .top to a column below 820px. Compact mobile
+     headers have a fixed height, so restore their intended single-row layout. */
+  .top.simpleTop,
+  .top.compactPageTop,
+  .top.detailTop {
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+
+  :is(.grid, .grid2, .stats, .formgrid, .pageHubGrid, .myHubSummary, .pbPageGrid) > *,
+  :is(.card, .hubTile, .mobileListCard, .stat) > * {
+    min-width: 0;
+  }
+
+  :is(.card, .hubTile, .mobileListCard, .stat, .legalCard, .raceNoteEditor) {
+    overflow-wrap: anywhere;
+  }
+
+  :is(input, select, textarea, button),
+  :is(.actions, .nav, .compactActions, .pageBottomActions) > :is(a, button) {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .courseTop > div,
+  .raceLiveTitle > div,
+  .startStepContent,
+  .selectedParking > div,
+  .shoeCardTop > div {
+    min-width: 0;
+  }
+
+  .runSplitRow {
+    grid-template-columns: minmax(42px, .65fr) minmax(72px, 1fr) minmax(76px, auto) !important;
+    gap: 7px !important;
+    align-items: center;
+  }
+
+  .runSplitRow > :last-child {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .mobileBottomNavV3,
+  .runControlDock,
+  .mobilePrimaryBar,
+  .urgentRunPanel {
+    max-width: calc(100vw - 16px) !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .runSplitRow {
+    grid-template-columns: 40px minmax(64px, 1fr) minmax(72px, auto) !important;
+    font-size: 12px;
+  }
+
+  .racePage .raceCardActions button,
+  .racePage .raceCardActions a {
+    padding-inline: 3px !important;
+  }
+}
