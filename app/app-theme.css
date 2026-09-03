@@ -151,6 +151,14 @@
 .trackStudioSetupHeader .runExitButton{flex:0 0 auto}
 .trackStudioPage .miniStats span{border:1px solid var(--app-line);border-radius:16px;background:#11171b}
 .trackStudioPage .miniStats b{color:var(--app-lime)}
+.trackRunModePage{padding-top:4px}
+.trackReadyCard{display:grid;gap:7px;margin-top:10px!important;padding:20px!important;border-color:rgba(214,255,47,.48)!important;background:linear-gradient(145deg,rgba(214,255,47,.12),#11171b)!important}
+.trackReadyCard b{font-size:21px;line-height:1.3}
+.trackReadyCard p{margin:0}
+.trackRestTimer{margin-top:14px;padding:18px!important;border-color:rgba(214,255,47,.42)!important}
+.trackRestTimerBody{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.trackRestTimerBody h2{margin:4px 0;font-variant-numeric:tabular-nums}
+.trackRestTimerBody p{margin:0}
 
 .shoePage .shoeSummaryGrid>div,
 .treadmillPage .treadmillResult,
@@ -196,6 +204,9 @@
  .trackStudioPage>.wrap:first-child{padding-left:10px!important;padding-right:10px!important}
  .trackStudioPage>.wrap:first-child>.card{padding:18px!important}
  .trackStudioPage .miniStats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .trackRunModePage{padding-top:0!important}
+ .trackReadyCard{margin-top:8px!important;padding:18px!important}
+ .trackRestTimerBody{align-items:flex-start}
  .profilePage .profileEditorWrap{padding:14px}
  .courseSubmitPage>.grid2{grid-template-columns:1fr}
  .myHubPage .runStartTile{grid-template-columns:60px minmax(0,1fr) 14px!important;min-height:118px;padding-top:18px;padding-bottom:18px}
