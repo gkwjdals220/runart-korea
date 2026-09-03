@@ -160,6 +160,22 @@
 .trackRestTimerBody h2{margin:4px 0;font-variant-numeric:tabular-nums}
 .trackRestTimerBody p{margin:0}
 
+/* Keep live-run information legible on the dark app theme. */
+.runModePage .runMetricPanel{grid-template-columns:repeat(4,minmax(0,1fr));border-color:#39434c!important;background:linear-gradient(150deg,#11171c,#090d10)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025),0 14px 34px rgba(0,0,0,.24)!important}
+.runModePage .runMetricPanel strong{color:#f7f9fb!important;text-shadow:0 1px 14px rgba(255,255,255,.08)}
+.runModePage .runMetricPanel>div:first-child strong{color:var(--app-lime,#d6ff2f)!important}
+.runModePage .runMetricPanel small{color:#aab4bf!important;font-weight:700}
+
+/* Free run hero reuses the established TTWITTUN running artwork. */
+.freeRunHero{position:relative;isolation:isolate;min-height:132px;margin:10px 0 14px;padding:22px 158px 22px 22px!important;overflow:hidden;border:1px solid #39434c;border-radius:25px;background:radial-gradient(circle at 86% 18%,rgba(214,255,47,.22),transparent 33%),linear-gradient(145deg,#192128,#0f1418);box-shadow:0 18px 42px rgba(0,0,0,.2)}
+.freeRunHero::before{content:"";position:absolute;z-index:-1;right:-30px;bottom:-42px;width:205px;height:205px;border-radius:50%;background:rgba(214,255,47,.08)}
+.freeRunHero::after{content:"";position:absolute;z-index:-1;right:14px;bottom:8px;width:132px;height:116px;background:url('/home-assets/banner-run.png') right bottom/370px auto no-repeat;filter:drop-shadow(0 10px 13px rgba(0,0,0,.24))}
+.freeRunHero>div{position:relative;z-index:1;min-width:0}
+.freeRunHero .eyebrow{display:block!important;color:var(--app-lime,#d6ff2f);font-weight:950;letter-spacing:.14em}
+.freeRunHero h1{margin:6px 0 4px!important;font-size:28px!important}
+.freeRunHero p{max-width:280px;color:#aab4bf!important}
+.freeRunHero .runExitButton{position:absolute;z-index:2;right:14px;top:14px}
+
 .shoePage .shoeSummaryGrid>div,
 .treadmillPage .treadmillResult,
 .racePage .raceFinderBar,
@@ -207,6 +223,15 @@
  .trackRunModePage{padding-top:0!important}
  .trackReadyCard{margin-top:8px!important;padding:18px!important}
  .trackRestTimerBody{align-items:flex-start}
+ .runModePage .runMetricPanel{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;padding:14px!important}
+ .runModePage .runMetricPanel>div:not(.runProgress){display:grid;align-content:center;min-height:76px;padding:8px 5px;border:1px solid rgba(255,255,255,.055);border-radius:15px;background:rgba(255,255,255,.025)}
+ .runModePage .runMetricPanel strong{font-size:31px!important}
+ .runModePage .runMetricPanel small{font-size:10px!important}
+ .freeRunHero{min-height:142px;padding:21px 126px 20px 18px!important;border-radius:22px}
+ .freeRunHero::after{right:3px;bottom:5px;width:122px;height:110px;background-size:350px auto}
+ .freeRunHero .runExitButton{right:9px;top:9px}
+ .freeRunHero h1{padding-top:28px;font-size:25px!important}
+ .freeRunHero p{font-size:11px!important}
  .profilePage .profileEditorWrap{padding:14px}
  .courseSubmitPage>.grid2{grid-template-columns:1fr}
  .myHubPage .runStartTile{grid-template-columns:60px minmax(0,1fr) 14px!important;min-height:118px;padding-top:18px;padding-bottom:18px}
