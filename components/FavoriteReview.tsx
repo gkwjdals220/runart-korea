@@ -2,6 +2,7 @@
 
 import {useState} from "react";
 import {createClient} from "@/lib/supabase/client";
+import TtwittunButtonIcon from "@/components/TtwittunButtonIcon";
 
 export default function FavoriteReview({
  userId,courseId,initialFavorite,initialRating,initialBody
@@ -44,7 +45,7 @@ export default function FavoriteReview({
 
  return <div className="card favoriteReviewCard">
    <div className="favoriteReviewHead"><div><span className="eyebrow">RUNNER NOTE</span><h3>코스 후기</h3></div>
-     <button type="button" disabled={!!busy} aria-pressed={fav} className={`btn ${fav?"pink":""}`} onClick={toggleFavorite}>{busy==="favorite"?"변경 중…":fav?"♥ 저장됨":"♡ 즐겨찾기"}</button>
+     <button type="button" disabled={!!busy} aria-pressed={fav} className={`btn ${fav?"pink":""}`} onClick={toggleFavorite}><TtwittunButtonIcon name="favorite" compact/>{busy==="favorite"?"변경 중…":fav?"저장됨":"즐겨찾기"}</button>
    </div>
    <div className="favoriteReviewFields"><label>별점
      <select value={rating} onChange={e=>setRating(Number(e.target.value))}>
@@ -52,7 +53,7 @@ export default function FavoriteReview({
      </select>
    </label>
    <label>후기<textarea value={body} onChange={e=>setBody(e.target.value)} placeholder="노면, 조명, 신호 등 러닝 경험을 남겨주세요."/></label></div>
-   <button className="btn reviewSaveButton" type="button" disabled={!!busy} onClick={saveReview}>{busy==="review"?"저장 중…":"후기 저장"}</button>
+   <button className="btn reviewSaveButton" type="button" disabled={!!busy} onClick={saveReview}><TtwittunButtonIcon name="save" compact/>{busy==="review"?"저장 중…":"후기 저장"}</button>
    {msg&&<p className="muted formStatus" role="status" aria-live="polite">{msg}</p>}
  </div>
 }

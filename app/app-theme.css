@@ -468,3 +468,73 @@
  .racePersonalRow{grid-template-columns:1fr 1fr}
  .raceDistanceSelect{grid-column:1/-1;justify-content:space-between!important}
 }
+/* TTWITTUN action icon system: fixed slots prevent mascot art from colliding with labels. */
+.ttwittunButtonIcon {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 10px;
+  background: rgba(217, 255, 67, .1);
+  margin: -5px 0;
+}
+.ttwittunButtonIcon.compact { width: 25px; height: 25px; flex-basis: 25px; border-radius: 8px; }
+.ttwittunButtonIcon img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.12); }
+.btn:has(.ttwittunButtonIcon),
+.raceCardActions :is(a, button):has(.ttwittunButtonIcon),
+.compactActions :is(a, button):has(.ttwittunButtonIcon) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.btn:has(.ttwittunButtonIcon) { min-width: 0; }
+.mobilePrimaryBar .ttwittunButtonIcon { width: 27px; height: 27px; flex-basis: 27px; }
+@media (max-width: 520px) {
+  .detailTop .btn:has(.ttwittunButtonIcon) { padding-inline: 10px; gap: 5px; }
+  .detailTop .ttwittunButtonIcon { width: 23px; height: 23px; flex-basis: 23px; }
+}
+
+/* Pages that render on the server also receive the same mascot system without extra markup. */
+.compactPageTop .btn:not(:has(.ttwittunButtonIcon))::before,
+.pageBottomActions .btn:not(:has(.ttwittunButtonIcon))::before,
+.raceSubmitForm > .btn:not(:has(.ttwittunButtonIcon))::before,
+.shoeMileageManager .btn:not(:has(.ttwittunButtonIcon))::before,
+.accountPage .btn:not(:has(.ttwittunButtonIcon))::before {
+  content: "";
+  width: 25px;
+  height: 25px;
+  flex: 0 0 25px;
+  margin: -4px 0;
+  border-radius: 8px;
+  background: rgba(217,255,67,.1) var(--ttwittun-action-icon, url("/button-icons/save.png")) center/112% no-repeat;
+}
+.compactPageTop .btn,
+.pageBottomActions .btn,
+.raceSubmitForm > .btn,
+.shoeMileageManager .btn,
+.accountPage .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
+.compactPageTop a[href*="/my"] { --ttwittun-action-icon: url("/button-icons/back.png"); }
+.compactPageTop a[href*="/race"] { --ttwittun-action-icon: url("/button-icons/race.png"); }
+.compactPageTop a[href*="/run"], .pageBottomActions a[href*="/run"] { --ttwittun-action-icon: url("/button-icons/run.png"); }
+.compactPageTop a[href*="/shoe"], .pageBottomActions a[href*="/shoe"], .shoeMileageManager .btn { --ttwittun-action-icon: url("/button-icons/shoe.png"); }
+.raceSubmitForm > .btn { --ttwittun-action-icon: url("/button-icons/race.png"); }
+.accountPage .btn.ghost { --ttwittun-action-icon: url("/button-icons/back.png"); }
+.accountPage .btn.danger { --ttwittun-action-icon: url("/button-icons/save.png"); }
+.raceCardActions > :is(a,button), .raceNoteEditor .btn { position: relative; }
+.raceCardActions > :is(a,button)::before, .raceNoteEditor .btn::before {
+  content: "";
+  width: 23px;
+  height: 23px;
+  flex: 0 0 23px;
+  margin: -3px 0;
+  border-radius: 7px;
+  background: rgba(217,255,67,.1) url("/button-icons/race.png") center/112% no-repeat;
+}
+.raceCardActions > :is(a,button), .raceNoteEditor .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+@media (max-width: 520px) {
+  .compactPageTop .btn:not(:has(.ttwittunButtonIcon))::before { width: 22px; height: 22px; flex-basis: 22px; }
+  .raceCardActions > :is(a,button)::before { width: 21px; height: 21px; flex-basis: 21px; }
+}

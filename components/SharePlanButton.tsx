@@ -2,6 +2,7 @@
 import {useState} from "react";
 import {Capacitor} from "@capacitor/core";
 import {Share} from "@capacitor/share";
+import TtwittunButtonIcon from "@/components/TtwittunButtonIcon";
 
 export default function SharePlanButton({title}:{title:string}){
  const [msg,setMsg]=useState("");
@@ -17,5 +18,5 @@ export default function SharePlanButton({title}:{title:string}){
   }
   try{await navigator.clipboard.writeText(url);setMsg("공유 링크를 복사했습니다.")}catch{setMsg("주소창의 링크를 복사해주세요.")}
  }
- return <div className="actions"><button className="btn" type="button" onClick={share}>공유하기</button>{msg&&<span className="muted" role="status" aria-live="polite">{msg}</span>}</div>;
+ return <div className="actions"><button className="btn" type="button" onClick={share}><TtwittunButtonIcon name="food" compact/>공유하기</button>{msg&&<span className="muted" role="status" aria-live="polite">{msg}</span>}</div>;
 }
