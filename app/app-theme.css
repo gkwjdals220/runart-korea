@@ -118,9 +118,9 @@
 :is(.compactPageTop,.detailTop) .nav .btn.ghost,
 :is(.compactPageTop,.detailTop)>a.btn.ghost{border-color:#3a444d;background:#20262c;color:#e9edf0}
 :is(.compactPageTop,.detailTop) .nav .btn:not(.ghost){border:1px solid var(--app-lime,#d6ff2f);background:var(--app-lime,#d6ff2f);color:#101417}
-.runModeTop .runExitButton{display:inline-flex;align-items:center;gap:7px;min-height:42px;padding:5px 13px 5px 6px;border:1px solid #3a444d;border-radius:999px;background:#20262c;color:#f6f8fa;line-height:1;box-shadow:0 8px 20px rgba(0,0,0,.18)}
-.runModeTop .runExitButton>span{display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#303840;color:var(--app-lime,#d6ff2f);font-size:21px;font-weight:500}
-.runModeTop .runExitButton>b{font-size:11px;font-weight:900}
+.runModeTop .runExitButton,.trackStudioSetupHeader .runExitButton{display:inline-flex;align-items:center;gap:7px;min-height:42px;padding:5px 13px 5px 6px;border:1px solid #3a444d;border-radius:999px;background:#20262c;color:#f6f8fa;line-height:1;box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.runModeTop .runExitButton>span,.trackStudioSetupHeader .runExitButton>span{display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#303840;color:var(--app-lime,#d6ff2f);font-size:21px;font-weight:500}
+.runModeTop .runExitButton>b,.trackStudioSetupHeader .runExitButton>b{font-size:11px;font-weight:900}
 
 .mobileCardList .mobileListCard{border-color:var(--app-line);background:linear-gradient(145deg,#171e23,#11161a)}
 .mobileCardList .mobileListCard>div>small:first-child{color:var(--app-lime);font-weight:850;letter-spacing:.04em}
@@ -146,6 +146,9 @@
 .treadmillPage .treadmillHero{margin-top:14px;padding:28px}
 .trackStudioPage{--app-lime:#d6ff2f;--app-line:#303943;padding-bottom:120px}
 .trackStudioPage>.wrap:first-child>.card{padding:24px!important}
+.trackStudioSetupHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.trackStudioSetupHeader>div{min-width:0}
+.trackStudioSetupHeader .runExitButton{flex:0 0 auto}
 .trackStudioPage .miniStats span{border:1px solid var(--app-line);border-radius:16px;background:#11171b}
 .trackStudioPage .miniStats b{color:var(--app-lime)}
 
@@ -201,8 +204,8 @@
  :is(.compactPageTop,.detailTop) .nav{flex-wrap:nowrap!important;max-width:62vw;padding:3px;overflow-x:auto;scrollbar-width:none}
  :is(.compactPageTop,.detailTop) .nav::-webkit-scrollbar{display:none}
  :is(.compactPageTop,.detailTop) .nav .btn{flex:0 0 auto;min-height:38px!important;padding:8px 11px!important}
- .runModeTop .runExitButton{flex:0 0 auto;min-height:39px;padding:4px 11px 4px 5px}
- .runModeTop .runExitButton>span{width:28px;height:28px}
+ .runModeTop .runExitButton,.trackStudioSetupHeader .runExitButton{flex:0 0 auto;min-height:39px;padding:4px 11px 4px 5px}
+ .runModeTop .runExitButton>span,.trackStudioSetupHeader .runExitButton>span{width:28px;height:28px}
 }
 
 @media(max-width:420px){
