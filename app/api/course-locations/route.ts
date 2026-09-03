@@ -1,6 +1,8 @@
 import {NextResponse} from "next/server";
 import {createClient} from "@/lib/supabase/server";
 
+export const revalidate=86400;
+
 type CourseRow={id:string;name:string;region:string;city:string|null;start_name:string|null;route_geojson:any};
 
 function centerFromGeojson(geo:any){
@@ -29,7 +31,7 @@ export async function GET(){
   }
 
   if(!key){
-    return NextResponse.json({configured:false,locations,unresolved:missing.map(c=>c.id)});
+    return NextResponse.json({configured:false,locations,unresolved:missing.map(c=>c.id)},{headers:{"Cache-Control":"public, s-maxage=86400, stale-while-revalidate=604800"}});
   }
 
   const groups=new Map<string,CourseRow[]>();
@@ -63,5 +65,5 @@ export async function GET(){
     else unresolved.push(...item.rows.map(c=>c.id));
   }
 
-  return NextResponse.json({configured:true,locations,unresolved,updatedAt:new Date().toISOString()});
+  return NextResponse.json({configured:true,locations,unresolved,updatedAt:new Date().toISOString()},{headers:{"Cache-Control":"public, s-maxage=86400, stale-while-revalidate=604800"}});
 }

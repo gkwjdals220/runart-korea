@@ -2,16 +2,15 @@ import Link from "next/link";
 import Brand from "@/components/Brand";
 import CourseExplorer from "@/components/CourseExplorer";
 import {createClient} from "@/lib/supabase/server";
+import {getApprovedCourseCatalog} from "@/lib/course-catalog";
 
 export default async function ExplorePage(){
  const sb=await createClient();
- const [userResult,coursesResult]=await Promise.all([
-  sb.auth.getUser(),
-  sb.from("runart_courses").select("id,name,region,city,course_type,art_shape,distance_km,difficulty,traffic_lights,toilets,night_recommended,route_geojson,tags,surface,loop_type,verified,start_name,elevation_gain_m,data_quality").eq("status","approved").order("name")
+ const [sessionResult,normalized]=await Promise.all([
+  sb.auth.getSession(),
+  getApprovedCourseCatalog()
  ]);
- const user=userResult.data.user;
- const courses=coursesResult.data;
- const normalized=(courses||[]).map(c=>({...c,distance_km:Number(c.distance_km)}));
+ const user=sessionResult.data.session?.user??null;
  let favoriteIds:string[]=[];
  if(user){const {data:favs}=await sb.from("runart_favorites").select("course_id").eq("user_id",user.id);favoriteIds=(favs||[]).map((x:any)=>x.course_id)}
  return <main className="wrap explorePage standaloneExplorePage">

@@ -10,6 +10,7 @@
   .explorerV2 .explorerLayout.view-map.results-open .explorerCourseList{display:block!important;position:absolute;z-index:790;left:7px;right:7px;bottom:7px;max-height:min(49%,430px);margin:0;padding:12px 10px 8px;border:1px solid rgba(255,255,255,.14);border-radius:22px 22px 15px 15px;background:rgba(15,20,24,.96);box-shadow:0 -16px 42px rgba(0,0,0,.4);backdrop-filter:blur(16px);overflow-y:auto;overscroll-behavior:contain}
   .explorerV2 .results-open .explorerCourseList .listHead{position:sticky;z-index:2;top:-12px;margin:-12px -10px 8px;padding:15px 12px 10px;background:linear-gradient(#11171b 82%,transparent)}
   .explorerV2 .results-open .explorerCourseCard{background:#171e23!important}
+  .explorerV2 .explorerCourseCard{content-visibility:auto;contain-intrinsic-size:190px}
   .explorerV2 .results-open .explorerEmpty{padding:24px 12px}
   .explorerV2 .search-idle .courseMap{filter:saturate(.82)}
 }
