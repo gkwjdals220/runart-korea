@@ -1,5 +1,12 @@
 "use client";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
@@ -22,6 +29,7 @@ type Props = {
   crewId?: string | null;
   freeRun?: boolean;
   trackRun?: boolean;
+  trackTools?: ReactNode;
   onRunStateChange?: (running: boolean, finished: boolean) => void;
 };
 type Draft = {
@@ -137,6 +145,7 @@ export default function RunModeV2({
   crewId,
   freeRun = false,
   trackRun = false,
+  trackTools,
   onRunStateChange,
 }: Props) {
   const route = useMemo<Pt[]>(
@@ -234,7 +243,7 @@ export default function RunModeV2({
     } catch {}
   }, [key]);
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || trackRun) return;
     createClient()
       .from("runart_running_shoes")
       .select("id,brand,model,nickname,is_default")
@@ -246,7 +255,7 @@ export default function RunModeV2({
         setShoes(list);
         setShoeId(list.find((s) => s.is_default)?.id || list[0]?.id || "");
       });
-  }, [userId]);
+  }, [trackRun, userId]);
   useEffect(() => {
     if (!running || finished) return;
     const t = window.setInterval(() => {
@@ -595,8 +604,8 @@ export default function RunModeV2({
         ? "코스 없이 내 기록 측정"
         : `${startName || "코스 출발점"}${targetKm ? ` · 목표 ${targetKm.toFixed(1)}km` : ""}`;
   return (
-    <main className="wrap runModePage">
-      <header className="runModeTop">
+    <main className={`wrap runModePage ${trackRun ? "trackRunModePage" : ""}`}>
+      {!trackRun && <header className="runModeTop">
         <div>
           <span className="eyebrow">TTWITTUN LIVE RUN</span>
           <h1>
@@ -615,7 +624,7 @@ export default function RunModeV2({
             <b>나가기</b>
           </Link>
         )}
-      </header>
+      </header>}
       {recoverable && !running && !finished && (
         <section className="card runGuideCard">
           <b>♻️ 중단된 러닝 기록</b>
@@ -640,7 +649,7 @@ export default function RunModeV2({
           </div>
         </section>
       )}
-      {!running && !finished && userId && (
+      {!trackRun && !running && !finished && userId && (
         <section className="card runShoePicker">
           <div>
             <span className="eyebrow">RUNNING SHOE</span>
@@ -661,6 +670,16 @@ export default function RunModeV2({
           )}
         </section>
       )}
+      {trackRun && !running && !finished && (
+        <section className="card runGuideCard trackReadyCard">
+          <span className="eyebrow">READY TO RUN</span>
+          <b>트랙과 훈련 설정을 확인했어요</b>
+          <p className="muted">
+            아래 러닝 시작을 누르면 GPS 기록과 400m 자동 랩이 함께 시작됩니다.
+          </p>
+        </section>
+      )}
+      {(!trackRun || running || finished) && <>
       <section className="runMetricPanel">
         <div>
           <strong>{km.toFixed(2)}</strong>
@@ -685,6 +704,7 @@ export default function RunModeV2({
           </div>
         )}
       </section>
+      {trackRun && running && trackTools}
       <section className="runStatusGrid">
         <div className="card runStatusCard">
           <span className="eyebrow">PERSONAL RECORD</span>
@@ -718,6 +738,7 @@ export default function RunModeV2({
           </p>
         </div>
       </section>
+      </>}
       {!!splits.length && (
         <section className="card" style={{ marginTop: 14 }}>
           <span className="eyebrow">AUTO LAP</span>
@@ -743,7 +764,7 @@ export default function RunModeV2({
           </div>
         </section>
       )}
-      <section className="card runGuideCard">
+      {(!trackRun || running || finished) && <section className="card runGuideCard">
         <b>
           {finished
             ? "🏁 러닝 완료"
@@ -762,7 +783,7 @@ export default function RunModeV2({
               ? message
               : "GPS 권한을 허용한 뒤 시작해주세요."}
         </p>
-      </section>
+      </section>}
       {finished && (
         <section className="section">
           <div className="card runCompleteCard">
