@@ -257,3 +257,103 @@
 }
 
 @media(prefers-reduced-motion:reduce){.pageHubGrid .hubTile,.artCollectionPage>.grid>.card{transition:none}}
+
+/* Pre-TestFlight detail UX pass: compact type, clear hierarchy, thumb-safe actions. */
+.ttwittunDetailPage .section{margin-top:20px}
+.ttwittunDetailPage .sectionHead{align-items:flex-end;gap:12px}
+.ttwittunDetailPage .sectionHead h2{margin:4px 0 0;font-size:20px;line-height:1.25}
+.ttwittunDetailPage .sectionHead p,.ttwittunDetailPage .card p{font-size:13px;line-height:1.55}
+.ttwittunDetailPage .card h2{font-size:22px;line-height:1.25}
+.ttwittunDetailPage .card h3{font-size:17px;line-height:1.3}
+.ttwittunDetailPage .btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 13px;border-radius:13px;font-size:12px;line-height:1.15}
+.ttwittunDetailPage input,.ttwittunDetailPage select,.ttwittunDetailPage textarea{min-height:44px;border-radius:13px;font-size:14px}
+.ttwittunDetailPage label{font-size:11px;font-weight:800}
+.runRecordStats .stat{min-width:0}
+.runRecordStats .stat b{overflow-wrap:anywhere;font-size:clamp(20px,4vw,27px)}
+.planSteps{align-items:stretch}
+.planSteps>article{display:flex;flex-direction:column}
+.planSteps>article .actions{margin-top:auto!important;padding-top:14px}
+.planNextAction{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 18px}
+.planNextAction h3,.planNextAction p{grid-column:1}
+.planNextAction .btn{grid-column:2;grid-row:1/3}
+.editRunLogCard{padding:18px!important}
+.editLogFields{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.editLogMemo{grid-column:1/-1}
+.editLogMemo textarea{min-height:92px}
+.editLogActions{align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--detail-line)}
+.editLogActions .btn:first-child{flex:1}
+.editLogActions .danger{border-color:rgba(255,120,130,.38)!important;background:transparent!important;color:#ff9ba4!important}
+.racePageActions{display:flex;gap:7px;overflow-x:auto;margin:0 0 12px;padding:2px;scrollbar-width:none}
+.racePageActions::-webkit-scrollbar{display:none}
+.racePageActions a{flex:0 0 auto;min-height:40px;padding:10px 13px;border:1px solid #39434c;border-radius:999px;background:#171d22;color:#e9edf0;font-size:11px;font-weight:900}
+.racePageActions a:last-child{border-color:rgba(214,255,47,.55);color:var(--app-lime,#d6ff2f)}
+.profileSessionActions{justify-content:flex-end;padding:4px 0 16px}
+.profileSessionActions .btn{border:1px solid #39434c;background:transparent;color:#aab4bf;font-size:11px}
+.courseDetailPage .detailHero::after,.runDetailPage .detailHero::after,.planDetailPage .detailHero::after,.editLogDetailPage .detailHero::after{content:"";width:150px;height:150px;border-radius:26px;font-size:0;transform:rotate(-3deg);filter:drop-shadow(0 10px 14px rgba(0,0,0,.24))}
+.courseDetailPage .detailHero::after{background:url('/home-assets/banner-course.png') 73% 80%/430px auto no-repeat}
+.runDetailPage .detailHero::after{background:url('/home-assets/banner-run.png') 78% 82%/420px auto no-repeat}
+.planDetailPage .detailHero::after{background:url('/home-assets/banner-run.png') 78% 82%/420px auto no-repeat}
+.editLogDetailPage .detailHero::after{background:url('/home-assets/banner-run.png') 78% 82%/420px auto no-repeat}
+
+@media(max-width:700px){
+ .ttwittunDetailPage{padding-bottom:112px!important}
+ .ttwittunDetailPage .detailTop{min-height:54px;padding:5px 7px!important}
+ .ttwittunDetailPage .detailTop .brandLogo{width:40px!important;height:40px!important;border-radius:12px}
+ .ttwittunDetailPage .detailTop .brand b{font-size:14px}
+ .ttwittunDetailPage .detailTop .brand span{display:none}
+ .ttwittunDetailPage .detailTop .nav{max-width:58vw}
+ .ttwittunDetailPage .detailTop .nav .btn{min-height:36px!important;padding:7px 10px!important;font-size:10px!important}
+ .ttwittunDetailPage .detailHero.card{min-height:174px!important;margin-top:8px!important;padding:19px 116px 18px 17px!important;border-radius:21px!important}
+ .ttwittunDetailPage .detailHero>div:first-child{max-width:100%!important}
+ .ttwittunDetailPage .detailHero h1{margin:6px 0!important;font-size:24px!important;line-height:1.14!important}
+ .ttwittunDetailPage .detailHero p{margin:0;font-size:11px!important;line-height:1.45}
+ .ttwittunDetailPage .detailHero .metaRow{gap:4px;font-size:10px}
+ .ttwittunDetailPage .detailHero .tag{padding:3px 6px!important;font-size:9px!important}
+ .ttwittunDetailPage .detailHero .score{right:9px!important;top:9px!important;padding:6px 8px!important;border-radius:13px!important}
+ .ttwittunDetailPage .detailHero .score b{font-size:23px!important}
+ .ttwittunDetailPage .detailHero .score span{font-size:9px}
+ .ttwittunDetailPage .detailHero::before{right:-64px!important;bottom:-72px!important;width:176px!important;height:176px!important;opacity:.68}
+ .courseDetailPage .detailHero::after,.runDetailPage .detailHero::after,.planDetailPage .detailHero::after,.editLogDetailPage .detailHero::after{right:4px!important;bottom:5px!important;width:108px;height:102px;border-radius:20px}
+ .courseDetailPage .detailHero::after{background-size:320px auto}
+ .runDetailPage .detailHero::after,.planDetailPage .detailHero::after,.editLogDetailPage .detailHero::after{background-size:310px auto}
+ .ttwittunDetailPage .section{margin-top:15px}
+ .ttwittunDetailPage .sectionHead h2{font-size:17px}
+ .ttwittunDetailPage .sectionHead p{display:none}
+ .ttwittunDetailPage .card h2{font-size:18px}
+ .ttwittunDetailPage .card h3{font-size:15px}
+ .ttwittunDetailPage .card p{font-size:11px;line-height:1.5}
+ .ttwittunDetailPage .detailSecondaryGrid>.card,.ttwittunDetailPage .section.card,.ttwittunDetailPage .reviewGrid>.card{padding:14px!important;border-radius:18px}
+ .ttwittunDetailPage .detailStats{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;overflow:visible!important}
+ .ttwittunDetailPage .detailStats .stat{min-height:68px!important;padding:10px!important}
+ .ttwittunDetailPage .detailStats .stat b{font-size:19px!important}
+ .ttwittunDetailPage .detailStats .stat span{font-size:9px}
+ .runRecordStats .stat{display:grid;align-content:center;text-align:center}
+ .planSteps{grid-template-columns:1fr!important;gap:8px}
+ .planSteps>article .actions{display:grid;grid-template-columns:1fr 1fr}
+ .planNextAction{display:block}
+ .planNextAction .btn{width:100%;margin-top:8px}
+ .editLogFields{grid-template-columns:1fr}
+ .editLogMemo{grid-column:auto}
+ .editRunLogCard{padding:14px!important}
+ .editLogActions{display:grid;grid-template-columns:1fr auto}
+ .editLogActions .btn{min-height:46px}
+ .shoePage .shoeToolbar{margin:10px 0 12px;padding:17px!important}
+ .shoePage .shoeToolbar h1{font-size:24px}
+ .shoePage .shoeToolbar p{font-size:11px;line-height:1.5}
+ .shoePage .shoeGrid{gap:8px}
+ .shoePage .shoeCard{padding:14px!important;border-radius:18px}
+ .shoePage .shoeCard h2{font-size:18px}
+ .shoePage .shoeKm strong{font-size:30px}
+ .racePage>.compactPageHero{min-height:168px!important;padding-top:19px!important;padding-bottom:18px!important}
+ .racePage>.compactPageHero h1{font-size:24px!important}
+ .racePage>.compactPageHero p{font-size:11px;line-height:1.48}
+ .legalPage>.compactPageHero,.profilePage>.compactPageHero{min-height:158px!important}
+ .legalPage .legalCard{padding:14px}
+ .legalPage .legalCard p{font-size:11px;line-height:1.65}
+}
+
+@media(max-width:380px){
+ .ttwittunDetailPage .detailHero.card{padding-right:102px!important}
+ .courseDetailPage .detailHero::after,.runDetailPage .detailHero::after,.planDetailPage .detailHero::after,.editLogDetailPage .detailHero::after{width:94px;height:92px}
+ .ttwittunDetailPage .detailTop .nav{max-width:54vw}
+}
