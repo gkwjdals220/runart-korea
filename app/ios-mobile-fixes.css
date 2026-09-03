@@ -1,5 +1,11 @@
 /* iPhone layout corrections. Keep this file last so earlier visual passes cannot
    reintroduce unsafe-area overlaps or compressed controls. */
+.runModeUtilityBar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 8px 0;
+}
+
 @media (max-width: 700px) {
   *, *::before, *::after {
     box-sizing: border-box;
@@ -20,7 +26,8 @@
   /* Some WKWebView configurations report a zero safe-area inset. The native
      iOS marker gives the shell a dependable status-bar fallback. */
   .nativeApp body.native-ios {
-    padding-top: max(env(safe-area-inset-top), 54px) !important;
+    /* Capacitor's automatic content inset already clears the iOS status bar. */
+    padding-top: 0 !important;
   }
 
   .nativeApp body.native-ios :is(.compactPageTop, .racePage > .top) {
@@ -160,7 +167,41 @@
   }
 
   .freeRunHero h1 {
-    padding-top: 24px !important;
+    padding-top: 0 !important;
+  }
+
+  .freeRunModePage .runModeUtilityBar {
+    display: flex;
+    justify-content: flex-end;
+    margin: 8px 0;
+  }
+
+  .freeRunModePage .runModeUtilityBar .runExitButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 42px;
+    padding: 5px 13px 5px 6px;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+
+  .freeRunModePage .runModeUtilityBar .runExitButton > span {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #293039;
+    color: var(--app-lime, #d6ff2f);
+    font-size: 25px;
+    line-height: 1;
+  }
+
+  .racePage > .compactPageHero p {
+    max-width: 240px;
+    font-size: 10.5px !important;
+    line-height: 1.55;
   }
 
   /* Race discovery: one clear search row, two filter columns and two toggles. */
