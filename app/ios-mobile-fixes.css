@@ -93,34 +93,43 @@
 
   /* Image-led page heroes keep copy, art and actions in distinct regions. */
   :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero {
-    min-height: 174px !important;
-    padding: 22px 122px 20px 18px !important;
+    min-height: 182px !important;
+    padding: 24px 138px 22px 18px !important;
+    overflow: hidden;
   }
 
   :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero::after {
-    right: 12px !important;
-    bottom: 12px !important;
-    width: 94px !important;
-    height: 118px !important;
-    background-color: #0d1114 !important;
-    background-position: center !important;
+    right: -8px !important;
+    bottom: -14px !important;
+    width: 150px !important;
+    height: 164px !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+    background-image: url('/hero-decor/run-duck.png') !important;
+    background-position: right bottom !important;
     background-repeat: no-repeat !important;
     background-size: contain !important;
-    transform: none !important;
+    filter: drop-shadow(0 14px 18px rgba(0, 0, 0, .38)) !important;
+    transform: rotate(-2deg) !important;
+    transform-origin: center bottom;
   }
 
   .racePage > .compactPageHero::after {
-    background-image: url('/home-assets/quick-races.png') !important;
+    background-image: url('/hero-decor/race-duck.png') !important;
   }
 
   .shoeGuidePage > .compactPageHero::after,
   .shoePage > .compactPageHero::after {
-    background-image: url('/home-assets/quick-shoes.png') !important;
+    background-image: url('/hero-decor/shoes-duck.png') !important;
   }
 
   .myHubPage > .compactPageHero::after,
   .profilePage > .compactPageHero::after {
-    background-image: url('/home-assets/quick-history.png') !important;
+    background-image: url('/hero-decor/history-duck.png') !important;
+  }
+
+  .mobileSubPage:has(.pbPageGrid) > .compactPageHero::after {
+    background-image: url('/hero-decor/pb-duck.png') !important;
   }
 
   :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero h1 {
@@ -160,30 +169,30 @@
   .runDetailPage .detailHero::after,
   .planDetailPage .detailHero::after,
   .editLogDetailPage .detailHero::after {
-    right: 12px !important;
-    bottom: 12px !important;
-    width: 94px !important;
-    height: 108px !important;
-    border-radius: 20px;
-    background-color: #0d1114 !important;
-    background-position: center !important;
+    right: -8px !important;
+    bottom: -14px !important;
+    width: 146px !important;
+    height: 152px !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+    background-position: right bottom !important;
     background-repeat: no-repeat !important;
     background-size: contain !important;
-    filter: none !important;
-    transform: none !important;
+    filter: drop-shadow(0 14px 18px rgba(0, 0, 0, .38)) !important;
+    transform: rotate(-2deg) !important;
   }
 
   .courseDetailPage .detailHero::after {
-    background-image: url('/home-assets/quick-course.png') !important;
+    background-image: url('/hero-decor/course-duck.png') !important;
   }
 
   .runDetailPage .detailHero::after,
   .planDetailPage .detailHero::after {
-    background-image: url('/home-assets/quick-run.png') !important;
+    background-image: url('/hero-decor/run-duck.png') !important;
   }
 
   .editLogDetailPage .detailHero::after {
-    background-image: url('/home-assets/quick-history.png') !important;
+    background-image: url('/hero-decor/history-duck.png') !important;
   }
 
   /* Shared cards/forms: no control may escape the viewport. */
@@ -213,22 +222,24 @@
 
   /* Free-run artwork and exit are separate hit/visual regions. */
   .freeRunHero {
-    min-height: 154px !important;
-    padding: 22px 116px 22px 18px !important;
+    min-height: 166px !important;
+    padding: 24px 140px 22px 18px !important;
+    overflow: hidden;
   }
 
   .freeRunHero::after {
-    right: 12px !important;
-    bottom: 12px !important;
-    width: 88px !important;
-    height: 88px !important;
-    border-radius: 20px;
-    background-image: url('/home-assets/quick-run.png') !important;
-    background-position: center !important;
-    background-color: #0d1114 !important;
+    right: -10px !important;
+    bottom: -15px !important;
+    width: 154px !important;
+    height: 166px !important;
+    border-radius: 0 !important;
+    background-image: url('/hero-decor/run-duck.png') !important;
+    background-position: right bottom !important;
+    background-color: transparent !important;
     background-repeat: no-repeat !important;
     background-size: contain !important;
-    filter: none !important;
+    filter: drop-shadow(0 14px 18px rgba(0, 0, 0, .38)) !important;
+    transform: rotate(-2deg) !important;
   }
 
   .freeRunHero .runExitButton {
@@ -358,21 +369,21 @@
   }
 
   .freeRunHero {
-    padding-right: 104px !important;
+    padding-right: 112px !important;
   }
 
   .freeRunHero::after {
-    width: 78px !important;
-    height: 78px !important;
+    width: 122px !important;
+    height: 136px !important;
   }
 
   :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero {
-    padding-right: 108px !important;
+    padding-right: 112px !important;
   }
 
   :is(.mobileSubPage, .hubPage, .racePage, .shoeGuidePage, .authJoinPage, .courseSubmitPage, .artCollectionPage) > .compactPageHero::after {
-    width: 82px !important;
-    height: 104px !important;
+    width: 122px !important;
+    height: 138px !important;
   }
 
   .racePage .raceLiveCard {
