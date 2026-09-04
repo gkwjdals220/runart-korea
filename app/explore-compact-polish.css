@@ -1,0 +1,152 @@
+/* Course Explore: compact, consistent mobile typography and current mascot buttons. */
+.standaloneExplorePage .explorePageHero .eyebrow {
+  letter-spacing: .12em;
+}
+
+.standaloneExplorePage .explorePageHero h1 {
+  letter-spacing: -.045em;
+  line-height: 1.08;
+}
+
+.standaloneExplorePage .explorePageHero p {
+  line-height: 1.5;
+}
+
+.standaloneExplorePage .explorePageHero > .btn,
+.standaloneExplorePage .simpleTop .nav .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+@media (max-width: 700px) {
+  .standaloneExplorePage {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .standaloneExplorePage .simpleTop {
+    min-height: 52px !important;
+    height: 52px !important;
+    padding: 5px 6px !important;
+  }
+
+  .standaloneExplorePage .simpleTop .brandLogo {
+    width: 38px !important;
+    height: 38px !important;
+    flex-basis: 38px !important;
+    border-radius: 11px !important;
+  }
+
+  .standaloneExplorePage .simpleTop .brand b {
+    font-size: 16px !important;
+  }
+
+  .standaloneExplorePage .simpleTop .nav .btn {
+    min-height: 34px !important;
+    padding: 6px 9px !important;
+    border-radius: 11px !important;
+    font-size: 9.5px !important;
+    gap: 4px !important;
+  }
+
+  .standaloneExplorePage .simpleTop .nav .ttwittunButtonIcon {
+    width: 20px !important;
+    height: 20px !important;
+    flex-basis: 20px !important;
+  }
+
+  .standaloneExplorePage .explorePageHero {
+    gap: 10px !important;
+    padding: 14px 2px 12px !important;
+  }
+
+  .standaloneExplorePage .explorePageHero .eyebrow {
+    margin-bottom: 5px !important;
+    font-size: 9.5px !important;
+    line-height: 1.2 !important;
+    letter-spacing: .11em !important;
+  }
+
+  .standaloneExplorePage .explorePageHero h1 {
+    margin: 3px 0 6px !important;
+    font-size: clamp(24px, 7.1vw, 30px) !important;
+    line-height: 1.08 !important;
+  }
+
+  .standaloneExplorePage .explorePageHero p {
+    max-width: 31em !important;
+    margin: 0 !important;
+    font-size: 10.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  .standaloneExplorePage .explorePageHero > .btn {
+    width: auto !important;
+    min-height: 40px !important;
+    padding: 8px 12px !important;
+    border-radius: 13px !important;
+    font-size: 11px !important;
+    gap: 6px !important;
+  }
+
+  .standaloneExplorePage .explorePageHero > .btn .ttwittunButtonIcon {
+    width: 23px !important;
+    height: 23px !important;
+    flex-basis: 23px !important;
+  }
+
+  /* Explorer UI typography: reduce the magnified feel while keeping tap targets usable. */
+  .standaloneExplorePage .explorerV2 :is(h2, h3) {
+    letter-spacing: -.025em;
+  }
+
+  .standaloneExplorePage .explorerV2 .exploreTitle {
+    font-size: 19px !important;
+    line-height: 1.2 !important;
+  }
+
+  .standaloneExplorePage .explorerV2 .explorerSubtitle,
+  .standaloneExplorePage .explorerV2 .muted,
+  .standaloneExplorePage .explorerV2 p {
+    font-size: 10.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  .standaloneExplorePage .explorerV2 :is(.chip, button, input, select, a) {
+    font-size: 10.5px !important;
+  }
+
+  .standaloneExplorePage .explorerV2 .explorerSearchRow input {
+    min-height: 42px !important;
+    padding: 9px 12px !important;
+  }
+
+  .standaloneExplorePage .explorerV2 .explorerQuickChips .chip {
+    min-height: 34px !important;
+    padding: 6px 9px !important;
+  }
+
+  .standaloneExplorePage .explorerV2 .courseTop h3,
+  .standaloneExplorePage .explorerV2 .explorerCourseCard h3 {
+    font-size: 13px !important;
+    line-height: 1.25 !important;
+  }
+
+  .standaloneExplorePage .explorerV2 .metaRow,
+  .standaloneExplorePage .explorerV2 .tagRow,
+  .standaloneExplorePage .explorerV2 small {
+    font-size: 9px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .standaloneExplorePage .explorePageHero h1 {
+    font-size: 23px !important;
+  }
+
+  .standaloneExplorePage .explorePageHero p {
+    font-size: 10px !important;
+  }
+}
