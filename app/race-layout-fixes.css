@@ -27,3 +27,4 @@
  .raceLiveCard .raceDateBox{min-width:72px!important;max-width:72px!important}
 }
 @media(max-width:390px){.raceFinderBar{grid-template-columns:1fr!important}.raceFinderBar>input:first-child{grid-column:auto!important}}
+/* loaded after final-ui-polish.css */
