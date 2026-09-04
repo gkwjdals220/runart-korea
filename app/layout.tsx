@@ -30,11 +30,13 @@ import "./layout-audit-fixes.css";
 import "leaflet/dist/leaflet.css";
 import "./home-shell-polish.css";
 import "./explore-compact-polish.css";
+import "./run-live-polish.css";
 import { Noto_Sans_KR } from "next/font/google";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import UrgentFacilityNav from "@/components/UrgentFacilityNav";
 import ExplorerSelectionAssist from "@/components/ExplorerSelectionAssist";
 import NativeAppBridge from "@/components/NativeAppBridge";
+import RunLegacyEmojiCleanup from "@/components/RunLegacyEmojiCleanup";
 
 const ttwittunFont = Noto_Sans_KR({ subsets: ["latin"], variable: "--font-ttwittun", display: "swap" });
 
@@ -68,6 +70,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <UrgentFacilityNav />
         <MobileBottomNav />
         <NativeAppBridge />
+        <RunLegacyEmojiCleanup />
       </body>
     </html>
   );
