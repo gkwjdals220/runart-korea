@@ -28,6 +28,7 @@ import "./explorer-search-flow.css";
 import "./ios-mobile-fixes.css";
 import "./layout-audit-fixes.css";
 import "leaflet/dist/leaflet.css";
+import "./home-shell-polish.css";
 import { Noto_Sans_KR } from "next/font/google";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import UrgentFacilityNav from "@/components/UrgentFacilityNav";
