@@ -1,9 +1,8 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Brand from "@/components/Brand";
 import HomePromoCarousel from "@/components/HomePromoCarousel";
-import HomePersonalized, { HomeAccountFallback, HomeAccountLink, HomePersonalizedFallback } from "@/components/HomePersonalized";
+import HomePersonalized, { HomePersonalizedFallback } from "@/components/HomePersonalized";
 
 const PROMOS = [
   { href: "/run/free", label: "오늘의 러닝 바로 시작", image: "/home-assets/banner-run.png" },
@@ -24,7 +23,10 @@ const QUICK_START = [
 
 export default function Home() {
   return <main className="wrap simpleHome actionHome">
-    <header className="top simpleTop"><Brand/><nav className="homeDesktopNav" aria-label="주요 메뉴"><Link href="/explore">코스 탐색</Link><Link href="/run/free">RUN</Link><Link href="/races">대회</Link><Link href="/dashboard">크루</Link><Link href="/my">MY</Link></nav><div className="nav"><Suspense fallback={<HomeAccountFallback/>}><HomeAccountLink/></Suspense></div></header>
+    <header className="homeLogoOnly" aria-label="TTWITTUN RUNNING CREW">
+      <strong>TTWITTUN</strong>
+      <small>RUNNING CREW</small>
+    </header>
     <HomePromoCarousel cards={PROMOS}/>
     <section className="homeActionSection"><div className="homeSectionTitle"><div><small>QUICK START</small><h2>무엇을 할까요?</h2></div></div><div className="homeQuickGrid">{QUICK_START.map(([href,label,image],index)=><Link className={`quickImageCard${index===3?" primary":""}`} aria-label={label} href={href} prefetch key={href}><Image src={image} alt="" fill sizes="(max-width: 700px) 30vw, 13vw"/></Link>)}</div></section>
     <Suspense fallback={<HomePersonalizedFallback/>}><HomePersonalized/></Suspense>
