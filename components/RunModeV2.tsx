@@ -169,6 +169,7 @@ export default function RunModeV2({
     [accuracy, setAccuracy] = useState<number | null>(null),
     [routeDistance, setRouteDistance] = useState<number | null>(null),
     [message, setMessage] = useState("GPS 준비 중"),
+    [nativeDiagnostic, setNativeDiagnostic] = useState(""),
     [saving, setSaving] = useState(false),
     [saveMessage, setSaveMessage] = useState("");
   const [currentPace, setCurrentPace] = useState<number | null>(null),
@@ -215,12 +216,19 @@ export default function RunModeV2({
       if (track.current.length > 6000) track.current = track.current.slice(-6000);
     }
     if (value.track?.length) track.current = value.track as Pt[];
+    if (value.running && value.nativePlugin) {
+      if (value.liveActivityError) setNativeDiagnostic(`Live Activity 오류: ${value.liveActivityError}`);
+      else if (value.liveActivityActive) setNativeDiagnostic("백그라운드 GPS · Live Activity 실행 중");
+      else if (value.liveActivitySupported === false) setNativeDiagnostic("이 iOS 버전은 Live Activity를 지원하지 않습니다.");
+      else if (value.liveActivityEnabled === false) setNativeDiagnostic("설정에서 TTWITTUN의 실시간 현황을 켜주세요.");
+      else setNativeDiagnostic("네이티브 GPS 실행 중 · Live Activity 생성 확인 필요");
+    }
   }, []);
   useEffect(() => {
     if (!canUseNativeRun()) return;
     let active = true;
     const updates = TTWITTUNRun.addListener("runUpdate", value => { if (active) applyNativeSnapshot(value); });
-    const errors = TTWITTUNRun.addListener("runError", value => { if (active) setMessage(value.message); });
+    const errors = TTWITTUNRun.addListener("runError", value => { if (active) setNativeDiagnostic(value.message); });
     void TTWITTUNRun.status().then(value => {
       if (!active || !value.running) return;
       applyNativeSnapshot(value);
@@ -432,9 +440,10 @@ export default function RunModeV2({
     setRunning(true);
     setPaused(false);
     setMessage("GPS 연결 중");
+    setNativeDiagnostic("");
     if (canUseNativeRun()) {
-      void TTWITTUNRun.start({ name: title }).then(applyNativeSnapshot).catch(() => {
-        setMessage("네이티브 GPS를 시작하지 못해 기본 GPS로 전환합니다.");
+      void TTWITTUNRun.start({ name: title }).then(applyNativeSnapshot).catch((error) => {
+        setNativeDiagnostic(`네이티브 실행 오류: ${error instanceof Error ? error.message : String(error)}`);
         startGps();
       });
     } else startGps();
@@ -841,6 +850,7 @@ export default function RunModeV2({
               ? message
               : "GPS 권한을 허용한 뒤 시작해주세요."}
         </p>
+        {running && nativeDiagnostic && <p className="muted" style={{ marginTop: 6 }}>{nativeDiagnostic}</p>}
       </section>}
       {finished && (
         <section className="section">
