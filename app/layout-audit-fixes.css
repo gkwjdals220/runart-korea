@@ -93,6 +93,104 @@ video {
 
 /* Selected course: a real mobile bottom sheet instead of a clipped card. */
 @media (max-width: 700px) {
+  /* Quick start artwork should read as a tappable control, not a flat image. */
+  .homeQuickGrid {
+    gap: 8px !important;
+  }
+
+  .homeQuickGrid > a.quickImageCard {
+    position: relative !important;
+    overflow: hidden !important;
+    border: 1px solid #3b4650 !important;
+    border-radius: 18px !important;
+    background: #12181d !important;
+    box-shadow:
+      0 8px 0 #090d10,
+      0 14px 25px rgba(0, 0, 0, .3),
+      inset 0 0 0 1px rgba(255, 255, 255, .045) !important;
+    transform: translateY(0) !important;
+    transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .homeQuickGrid > a.quickImageCard::after {
+    content: "›";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    z-index: 3;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 50%;
+    background: rgba(8, 12, 15, .78);
+    color: #d6ff2f;
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
+    pointer-events: none;
+  }
+
+  .homeQuickGrid > a.quickImageCard.primary {
+    border-color: rgba(214, 255, 47, .78) !important;
+    box-shadow:
+      0 8px 0 #6f8615,
+      0 15px 28px rgba(151, 190, 25, .24),
+      inset 0 0 0 1px rgba(214, 255, 47, .22) !important;
+  }
+
+  .homeQuickGrid > a.quickImageCard:active {
+    transform: translateY(5px) !important;
+    box-shadow:
+      0 3px 0 #090d10,
+      0 7px 14px rgba(0, 0, 0, .24) !important;
+  }
+
+  /* Bottom navigation uses the same dark panel and lime active state. */
+  .mobileBottomNavV3 {
+    height: auto !important;
+    min-height: 64px !important;
+    padding: 6px !important;
+    border: 1px solid #303a43 !important;
+    border-radius: 20px !important;
+    background: rgba(15, 20, 24, .96) !important;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, .38) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+  }
+
+  .mobileBottomNavV3 > a {
+    min-height: 50px !important;
+    gap: 3px !important;
+    margin: 0 2px !important;
+    padding: 5px 2px !important;
+    border: 1px solid transparent !important;
+    border-radius: 14px !important;
+    background: transparent !important;
+    color: #8995a0 !important;
+  }
+
+  .mobileBottomNavV3 > a.active {
+    border-color: #d6ff2f !important;
+    background: #d6ff2f !important;
+    color: #0a0d0f !important;
+    box-shadow: 0 6px 15px rgba(166, 205, 35, .22) !important;
+  }
+
+  .mobileBottomNavV3 > a:nth-child(3) .mobileNavIcon,
+  .mobileBottomNavV3 > a.active .mobileNavIcon {
+    background: transparent !important;
+    color: currentColor !important;
+    box-shadow: none !important;
+  }
+
+  .mobileBottomNavV3 .mobileNavActiveDot {
+    display: none !important;
+  }
+
   /* Compact headers: reserve independent space for branding and actions. */
   :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) {
     display: flex !important;
