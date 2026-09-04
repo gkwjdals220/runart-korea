@@ -4,6 +4,9 @@ import Capacitor
 final class TTWITTUNBridgeViewController: CAPBridgeViewController {
     override func capacitorDidLoad() {
         super.capacitorDidLoad()
-        bridge?.registerPluginType(TTWITTUNRunPlugin.self)
+        // Capacitor 7 ignores registerPluginType while automatic plugin
+        // registration is enabled. Instance registration remains available for
+        // plugins compiled directly into the application target.
+        bridge?.registerPluginInstance(TTWITTUNRunPlugin())
     }
 }
