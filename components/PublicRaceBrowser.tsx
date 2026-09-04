@@ -53,7 +53,7 @@ function monthLabel(key:string){const [y,m]=key.split("-");return y&&m?`${y}년 
 function weekday(date:string){return new Intl.DateTimeFormat("ko-KR",{weekday:"short",timeZone:"Asia/Seoul"}).format(new Date(`${date}T00:00:00+09:00`))}
 function dayOfMonth(date:string){return Number(date?.slice(8,10)||0)}
 
-function distanceMatches(r:Race,filter:DistanceFilter){
+function distanceMatches(r:Race,filter:DistanceFilter):boolean{
   if(filter==="전체") return true;
   const values=(r.distance_options||[]).map(d=>normalizeDistance(d).toLowerCase());
   const joined=values.join(" ");
