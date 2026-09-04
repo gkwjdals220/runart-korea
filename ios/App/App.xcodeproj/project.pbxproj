@@ -10,6 +10,11 @@
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
 		50379B232058CBB4000EE86E /* capacitor.config.json in Resources */ = {isa = PBXBuildFile; fileRef = 50379B222058CBB4000EE86E /* capacitor.config.json */; };
 		504EC3081FED79650016851F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504EC3071FED79650016851F /* AppDelegate.swift */; };
+		7A1100012CA0000000000001 /* RunActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1100032CA0000000000001 /* RunActivityAttributes.swift */; };
+		7A1100022CA0000000000001 /* TTWITTUNRunPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1100042CA0000000000001 /* TTWITTUNRunPlugin.swift */; };
+		7A1200012CA0000000000001 /* TTWITTUNRunActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1200032CA0000000000001 /* TTWITTUNRunActivity.swift */; };
+		7A1200022CA0000000000001 /* RunActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1100032CA0000000000001 /* RunActivityAttributes.swift */; };
+		7A1200102CA0000000000001 /* TTWITTUNRunActivity.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A1200042CA0000000000001 /* TTWITTUNRunActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		504EC30D1FED79650016851F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30B1FED79650016851F /* Main.storyboard */; };
 		504EC30F1FED79650016851F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30E1FED79650016851F /* Assets.xcassets */; };
 		504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC3101FED79650016851F /* LaunchScreen.storyboard */; };
@@ -22,6 +27,11 @@
 		50379B222058CBB4000EE86E /* capacitor.config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = capacitor.config.json; sourceTree = "<group>"; };
 		504EC3041FED79650016851F /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		504EC3071FED79650016851F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7A1100032CA0000000000001 /* RunActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunActivityAttributes.swift; sourceTree = "<group>"; };
+		7A1100042CA0000000000001 /* TTWITTUNRunPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTWITTUNRunPlugin.swift; sourceTree = "<group>"; };
+		7A1200032CA0000000000001 /* TTWITTUNRunActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTWITTUNRunActivity.swift; sourceTree = "<group>"; };
+		7A1200042CA0000000000001 /* TTWITTUNRunActivity.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TTWITTUNRunActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A1200052CA0000000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		504EC30C1FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		504EC30E1FED79650016851F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		504EC3111FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -32,7 +42,16 @@
 		FC68EB0AF532CFC21C3344DD /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXContainerItemProxy section */
+		7A1200062CA0000000000001 /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = 504EC2FC1FED79650016851F /* Project object */; proxyType = 1; remoteGlobalIDString = 7A1200092CA0000000000001; remoteInfo = TTWITTUNRunActivity; };
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7A1200112CA0000000000001 /* Embed App Extensions */ = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = ""; dstSubfolderSpec = 13; files = (7A1200102CA0000000000001 /* TTWITTUNRunActivity.appex in Embed App Extensions */, ); name = "Embed App Extensions"; runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFrameworksBuildPhase section */
+		7A1200082CA0000000000001 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 		504EC3011FED79650016851F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -56,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				504EC3061FED79650016851F /* App */,
+				7A1200122CA0000000000001 /* TTWITTUNRunActivity */,
 				504EC3051FED79650016851F /* Products */,
 				7F8756D8B27F46E3366F6CEA /* Pods */,
 				27E2DDA53C4D2A4D1A88CE4A /* Frameworks */,
@@ -66,8 +86,18 @@
 			isa = PBXGroup;
 			children = (
 				504EC3041FED79650016851F /* App.app */,
+				7A1200042CA0000000000001 /* TTWITTUNRunActivity.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		7A1200122CA0000000000001 /* TTWITTUNRunActivity */ = {
+			isa = PBXGroup;
+			children = (
+				7A1200032CA0000000000001 /* TTWITTUNRunActivity.swift */,
+				7A1200052CA0000000000001 /* Info.plist */,
+			);
+			path = TTWITTUNRunActivity;
 			sourceTree = "<group>";
 		};
 		504EC3061FED79650016851F /* App */ = {
@@ -75,6 +105,8 @@
 			children = (
 				50379B222058CBB4000EE86E /* capacitor.config.json */,
 				504EC3071FED79650016851F /* AppDelegate.swift */,
+				7A1100032CA0000000000001 /* RunActivityAttributes.swift */,
+				7A1100042CA0000000000001 /* TTWITTUNRunPlugin.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
 				504EC30E1FED79650016851F /* Assets.xcassets */,
 				504EC3101FED79650016851F /* LaunchScreen.storyboard */,
@@ -106,15 +138,28 @@
 				504EC3011FED79650016851F /* Frameworks */,
 				504EC3021FED79650016851F /* Resources */,
 				9592DBEFFC6D2A0C8D5DEB22 /* [CP] Embed Pods Frameworks */,
+				7A1200112CA0000000000001 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7A1200072CA0000000000001 /* PBXTargetDependency */,
 			);
 			name = App;
 			productName = App;
 			productReference = 504EC3041FED79650016851F /* App.app */;
 			productType = "com.apple.product-type.application";
+		};
+		7A1200092CA0000000000001 /* TTWITTUNRunActivity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7A1200152CA0000000000001 /* Build configuration list for PBXNativeTarget "TTWITTUNRunActivity" */;
+			buildPhases = (7A1200132CA0000000000001 /* Sources */, 7A1200082CA0000000000001 /* Frameworks */, 7A1200142CA0000000000001 /* Resources */, );
+			buildRules = ();
+			dependencies = ();
+			name = TTWITTUNRunActivity;
+			productName = TTWITTUNRunActivity;
+			productReference = 7A1200042CA0000000000001 /* TTWITTUNRunActivity.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -128,6 +173,10 @@
 					504EC3031FED79650016851F = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 1100;
+						ProvisioningStyle = Automatic;
+					};
+					7A1200092CA0000000000001 = {
+						CreatedOnToolsVersion = 16.0;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -148,6 +197,7 @@
 			projectRoot = "";
 			targets = (
 				504EC3031FED79650016851F /* App */,
+				7A1200092CA0000000000001 /* TTWITTUNRunActivity */,
 			);
 		};
 /* End PBXProject section */
@@ -166,6 +216,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7A1200142CA0000000000001 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -210,10 +264,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
+				7A1100012CA0000000000001 /* RunActivityAttributes.swift in Sources */,
+				7A1100022CA0000000000001 /* TTWITTUNRunPlugin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7A1200132CA0000000000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (7A1200012CA0000000000001 /* TTWITTUNRunActivity.swift in Sources */, 7A1200022CA0000000000001 /* RunActivityAttributes.swift in Sources */, ); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7A1200072CA0000000000001 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = 7A1200092CA0000000000001 /* TTWITTUNRunActivity */; targetProxy = 7A1200062CA0000000000001 /* PBXContainerItemProxy */; };
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		504EC30B1FED79650016851F /* Main.storyboard */ = {
@@ -383,6 +447,16 @@
 			};
 			name = Release;
 		};
+		7A1200162CA0000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; DEVELOPMENT_TEAM = G57WPP94A8; INFOPLIST_FILE = TTWITTUNRunActivity/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 16.1; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.ttwittun.korea.RunActivity; PRODUCT_NAME = "$(TARGET_NAME)"; SKIP_INSTALL = YES; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; };
+			name = Debug;
+		};
+		7A1200172CA0000000000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; DEVELOPMENT_TEAM = G57WPP94A8; INFOPLIST_FILE = TTWITTUNRunActivity/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 16.1; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.ttwittun.korea.RunActivity; PRODUCT_NAME = "$(TARGET_NAME)"; SKIP_INSTALL = YES; SWIFT_ACTIVE_COMPILATION_CONDITIONS = ""; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; };
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -401,6 +475,12 @@
 				504EC3171FED79650016851F /* Debug */,
 				504EC3181FED79650016851F /* Release */,
 			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7A1200152CA0000000000001 /* Build configuration list for PBXNativeTarget "TTWITTUNRunActivity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (7A1200162CA0000000000001 /* Debug */, 7A1200172CA0000000000001 /* Release */, );
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};

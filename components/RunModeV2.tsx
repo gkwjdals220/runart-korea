@@ -9,6 +9,7 @@ import {
 } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { canUseNativeRun, TTWITTUNRun, type NativeRunSnapshot } from "@/lib/native-run";
 
 type Pt = { lat: number; lng: number; ts: number; accuracy?: number };
 type Split = {
@@ -195,7 +196,43 @@ export default function RunModeV2({
     lastLapElapsed = useRef(0),
     nextLap = useRef(1),
     paceWindow = useRef<Pt[]>([]),
-    wake = useRef<any>(null);
+    wake = useRef<any>(null),
+    nativeTracking = useRef(false),
+    nativePointTs = useRef(0);
+  const applyNativeSnapshot = useCallback((value: NativeRunSnapshot) => {
+    if (!value?.available) return;
+    nativeTracking.current = value.running;
+    distanceRef.current = Number(value.distanceM || 0);
+    elapsedRef.current = Number(value.elapsed || 0);
+    setDistanceM(distanceRef.current);
+    setElapsed(elapsedRef.current);
+    setPaused(Boolean(value.paused));
+    if (value.accuracy != null) setAccuracy(value.accuracy);
+    if (value.paceSecPerKm) setCurrentPace(value.paceSecPerKm);
+    if (value.point && value.point.ts > nativePointTs.current) {
+      nativePointTs.current = value.point.ts;
+      track.current.push(value.point as Pt);
+      if (track.current.length > 6000) track.current = track.current.slice(-6000);
+    }
+    if (value.track?.length) track.current = value.track as Pt[];
+  }, []);
+  useEffect(() => {
+    if (!canUseNativeRun()) return;
+    let active = true;
+    const updates = TTWITTUNRun.addListener("runUpdate", value => { if (active) applyNativeSnapshot(value); });
+    const errors = TTWITTUNRun.addListener("runError", value => { if (active) setMessage(value.message); });
+    void TTWITTUNRun.status().then(value => {
+      if (!active || !value.running) return;
+      applyNativeSnapshot(value);
+      runningRef.current = true;
+      pausedRef.current = value.paused;
+      finishedRef.current = false;
+      startedAt.current = Date.now() - value.elapsed * 1000;
+      setRunning(true);
+      setMessage(value.paused ? "백그라운드 기록 · 일시정지" : "백그라운드 GPS 기록 중");
+    }).catch(() => {});
+    return () => { active = false; void updates.then(handle => handle.remove()); void errors.then(handle => handle.remove()); };
+  }, [applyNativeSnapshot]);
   useEffect(() => {
     runningRef.current = running;
   }, [running]);
@@ -395,7 +432,12 @@ export default function RunModeV2({
     setRunning(true);
     setPaused(false);
     setMessage("GPS 연결 중");
-    startGps();
+    if (canUseNativeRun()) {
+      void TTWITTUNRun.start({ name: title }).then(applyNativeSnapshot).catch(() => {
+        setMessage("네이티브 GPS를 시작하지 못해 기본 GPS로 전환합니다.");
+        startGps();
+      });
+    } else startGps();
     wakeLock();
   }
   function restore() {
@@ -433,6 +475,7 @@ export default function RunModeV2({
       setPaused(true);
       setCurrentPace(null);
       persist();
+      if (nativeTracking.current) void TTWITTUNRun.pause().then(applyNativeSnapshot).catch(() => {});
     } else {
       if (pausedAt.current)
         pausedTotal.current += Date.now() - pausedAt.current;
@@ -442,7 +485,8 @@ export default function RunModeV2({
       pausedRef.current = false;
       setPaused(false);
       setMessage("GPS 재확인 중");
-      startGps();
+      if (nativeTracking.current) void TTWITTUNRun.resume().then(applyNativeSnapshot).catch(() => startGps());
+      else startGps();
       wakeLock();
     }
   }
@@ -546,6 +590,10 @@ export default function RunModeV2({
   async function finish() {
     if (!runningRef.current) return;
     persist();
+    if (nativeTracking.current) {
+      try { applyNativeSnapshot(await TTWITTUNRun.stop()); }
+      catch { setMessage("네이티브 기록 종료 상태를 확인하지 못했습니다."); }
+    }
     const finalElapsed = elapsedRef.current,
       finalDistance = distanceRef.current;
     runningRef.current = false;
@@ -558,6 +606,7 @@ export default function RunModeV2({
       navigator.geolocation.clearWatch(watch.current);
       watch.current = null;
     }
+    nativeTracking.current = false;
     wake.current?.release?.().catch(() => {});
     const ok = await saveRun(finalElapsed, finalDistance);
     if (ok)
@@ -751,9 +800,10 @@ export default function RunModeV2({
         <section className="card" style={{ marginTop: 14 }}>
           <span className="eyebrow">AUTO LAP</span>
           <h3>{lapLabel} 스플릿</h3>
-          <div style={{ display: "grid", gap: 8, marginTop: 10 }}>
+          <div className="runSplitList" style={{ display: "grid", gap: 8, marginTop: 10 }}>
             {splits.map((s) => (
               <div
+                className="runSplitRow"
                 key={s.lap}
                 style={{
                   display: "grid",
@@ -891,8 +941,8 @@ export default function RunModeV2({
       <p className="muted runFootnote">
         TTWITTUN은 약 5초마다 러닝 기록을 기기에 임시 저장합니다. 트랙런의 랩은
         GPS 거리 기준이며, 경기장 전광판/공인 계측과 차이가 날 수 있습니다.
-        모바일 웹에서는 화면 잠금·백그라운드 상태에서 GPS 제공이 중단될 수
-        있습니다.
+        iOS 앱은 러닝 중 백그라운드 위치 기록과 잠금화면 현황을 지원합니다.
+        모바일 웹에서는 화면 잠금·백그라운드 상태에서 GPS 제공이 중단될 수 있습니다.
       </p>
     </main>
   );
