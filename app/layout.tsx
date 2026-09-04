@@ -33,6 +33,7 @@ import "./explore-compact-polish.css";
 import "./run-live-polish.css";
 import "./final-ui-polish.css";
 import "./race-layout-fixes.css";
+import "./header-reset.css";
 import { Noto_Sans_KR } from "next/font/google";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import UrgentFacilityNav from "@/components/UrgentFacilityNav";
@@ -68,13 +69,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <html lang="ko" className={ttwittunFont.variable}>
       <body>
         <div id="top" />
+        <AppUiFinalPolish />
         {children}
         <ExplorerSelectionAssist />
         <UrgentFacilityNav />
         <MobileBottomNav />
         <NativeAppBridge />
         <RunLegacyEmojiCleanup />
-        <AppUiFinalPolish />
       </body>
     </html>
   );
