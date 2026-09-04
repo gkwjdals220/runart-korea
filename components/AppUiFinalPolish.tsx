@@ -16,10 +16,6 @@ function shareRace(card: HTMLElement) {
   navigator.clipboard?.writeText(link).then(()=>alert("대회 링크를 복사했어요.")).catch(()=>{});
 }
 
-const EXIT_WORDS = /나가기|닫기|뒤로가기|이전 화면|돌아가기/i;
-const SIMPLE_BACK = /^(뒤로|이전|←|‹|<|←\s*(MY|홈)?|<\s*(MY|홈)?)$/i;
-const TOP_ACTION = /^(MY|홈|메뉴|설정)$/i;
-
 function isDetailPage() {
   const path = window.location.pathname;
   return path !== "/" && !path.startsWith("/login") && !path.startsWith("/join");
@@ -54,22 +50,32 @@ function ensureUnifiedDetailHeader() {
   else document.body.prepend(header);
 }
 
-function removeLegacyTopControls() {
+function removeLegacyTopArea() {
   if (!isDetailPage()) return;
-  document.querySelectorAll<HTMLElement>("button,a,[role='button']").forEach((el) => {
+
+  document.querySelectorAll<HTMLElement>("main > header, .wrap > header, .page > header, .screen > header, .detailPage > header, .runPage > header").forEach(header=>{
+    if (!header.classList.contains("ttwittunUnifiedDetailHeader")) header.remove();
+  });
+
+  document.querySelectorAll<HTMLElement>(".historyTop,.detailTop,.runTop,.pageTop,.screenTop,.topActions,.headerActions,.detailActions,.legacyTopActions").forEach(el=>{
+    if (!el.closest(".ttwittunUnifiedDetailHeader")) el.remove();
+  });
+
+  document.querySelectorAll<HTMLElement>("button,a,[role='button']").forEach(el=>{
     if (el.closest(".ttwittunUnifiedDetailHeader")) return;
     const label = (el.textContent || "").replace(/\s+/g," ").trim();
     const aria = (el.getAttribute("aria-label") || "").replace(/\s+/g," ").trim();
     const cls = String(el.className || "").toLowerCase();
     const rect = el.getBoundingClientRect();
-    const nearTop = rect.top < 190;
-    const clearlyLegacy = EXIT_WORDS.test(label) || EXIT_WORDS.test(aria) || SIMPLE_BACK.test(label);
-    const headerAction = nearTop && (TOP_ACTION.test(label) || /exit|close|back|headeraction|topaction|topbutton/.test(cls));
-    if (clearlyLegacy || headerAction) el.remove();
+    const nearTop = rect.top >= 0 && rect.top < 210;
+    const legacyLabel = /^(RUN|MY|나가기|닫기|뒤로|이전|홈|메뉴|설정|←|‹|<)$/i.test(label);
+    const legacyAria = /나가기|뒤로가기|이전 화면|닫기|run|my/i.test(aria);
+    const legacyClass = /exit|close|back|headeraction|topaction|topbutton|runaction|mybutton/.test(cls);
+    if (nearTop && (legacyLabel || legacyAria || legacyClass)) el.remove();
   });
 
   document.querySelectorAll<HTMLElement>(".brand,.brandLogo,.topBrand,.pageBrand,.detailBrand").forEach(el=>{
-    if (!el.closest(".ttwittunUnifiedDetailHeader")) el.style.display="none";
+    if (!el.closest(".ttwittunUnifiedDetailHeader")) el.remove();
   });
 }
 
@@ -84,8 +90,8 @@ function removeButtonDuckIcons() {
 export default function AppUiFinalPolish(){
   useEffect(()=>{
     const clean=()=>{
+      removeLegacyTopArea();
       ensureUnifiedDetailHeader();
-      removeLegacyTopControls();
       removeButtonDuckIcons();
 
       document.querySelectorAll<HTMLElement>(".raceLiveCard").forEach(card=>{
