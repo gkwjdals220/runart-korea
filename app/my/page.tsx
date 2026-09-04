@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Brand from "@/components/Brand";
+import MyLogoutButton from "@/components/MyLogoutButton";
 import { createClient } from "@/lib/supabase/server";
 
 function pace(sec?: number | null) {
@@ -93,17 +94,6 @@ export default async function MyPage() {
       : null;
   return (
     <main className="wrap hubPage myHubPage">
-      <header className="top compactPageTop">
-        <Brand />
-        <div className="nav">
-          <Link className="btn ghost" href="/my/profile">
-            프로필
-          </Link>
-          <Link className="btn" href="/run/free">
-            RUN
-          </Link>
-        </div>
-      </header>
       <section className="compactPageHero">
         <span className="eyebrow">MY TTWITTUN</span>
         <h1>{profile?.display_name || "러너"}님</h1>
@@ -223,8 +213,7 @@ export default async function MyPage() {
           </div>
           <b>›</b>
         </Link>
-        <Link className="hubTile" href="/my/profile">
-          <span>⚙</span>
+        <Link className="hubTile profileHubTile" href="/my/profile">
           <div>
             <small>PROFILE</small>
             <h2>프로필</h2>
@@ -241,23 +230,15 @@ export default async function MyPage() {
           </div>
           <b>›</b>
         </Link>
-        <Link className="hubTile primaryHubTile runStartTile" href="/run/free">
-          <span className="hubPlayIcon" aria-hidden="true"><i /></span>
-          <div>
-            <small>START</small>
-            <h2>RUN 시작</h2>
-            <p>바로 GPS 기록 시작</p>
-          </div>
-          <b>›</b>
-        </Link>
       </section>
-      <div className="pageBottomActions">
-        <Link className="btn ghost" href="/privacy">
+      <div className="pageBottomActions myPageBottomActions">
+        <Link className="btn ghost myUtilityButton" href="/privacy">
           개인정보 처리방침
         </Link>
-        <Link className="btn ghost" href="/support">
+        <Link className="btn ghost myUtilityButton" href="/support">
           고객지원
         </Link>
+        <MyLogoutButton />
       </div>
     </main>
   );
