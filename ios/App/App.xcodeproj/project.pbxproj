@@ -12,6 +12,7 @@
 		504EC3081FED79650016851F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504EC3071FED79650016851F /* AppDelegate.swift */; };
 		7A1100012CA0000000000001 /* RunActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1100032CA0000000000001 /* RunActivityAttributes.swift */; };
 		7A1100022CA0000000000001 /* TTWITTUNRunPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1100042CA0000000000001 /* TTWITTUNRunPlugin.swift */; };
+		7A1100052CA0000000000001 /* TTWITTUNBridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1100062CA0000000000001 /* TTWITTUNBridgeViewController.swift */; };
 		7A1200012CA0000000000001 /* TTWITTUNRunActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1200032CA0000000000001 /* TTWITTUNRunActivity.swift */; };
 		7A1200022CA0000000000001 /* RunActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1100032CA0000000000001 /* RunActivityAttributes.swift */; };
 		7A1200102CA0000000000001 /* TTWITTUNRunActivity.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A1200042CA0000000000001 /* TTWITTUNRunActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -29,6 +30,7 @@
 		504EC3071FED79650016851F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A1100032CA0000000000001 /* RunActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunActivityAttributes.swift; sourceTree = "<group>"; };
 		7A1100042CA0000000000001 /* TTWITTUNRunPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTWITTUNRunPlugin.swift; sourceTree = "<group>"; };
+		7A1100062CA0000000000001 /* TTWITTUNBridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTWITTUNBridgeViewController.swift; sourceTree = "<group>"; };
 		7A1200032CA0000000000001 /* TTWITTUNRunActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTWITTUNRunActivity.swift; sourceTree = "<group>"; };
 		7A1200042CA0000000000001 /* TTWITTUNRunActivity.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TTWITTUNRunActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A1200052CA0000000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				504EC3071FED79650016851F /* AppDelegate.swift */,
 				7A1100032CA0000000000001 /* RunActivityAttributes.swift */,
 				7A1100042CA0000000000001 /* TTWITTUNRunPlugin.swift */,
+				7A1100062CA0000000000001 /* TTWITTUNBridgeViewController.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
 				504EC30E1FED79650016851F /* Assets.xcassets */,
 				504EC3101FED79650016851F /* LaunchScreen.storyboard */,
@@ -266,6 +269,7 @@
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 				7A1100012CA0000000000001 /* RunActivityAttributes.swift in Sources */,
 				7A1100022CA0000000000001 /* TTWITTUNRunPlugin.swift in Sources */,
+				7A1100052CA0000000000001 /* TTWITTUNBridgeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
