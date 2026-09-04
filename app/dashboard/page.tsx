@@ -1,8 +1,16 @@
 import Link from "next/link";
 import {redirect} from "next/navigation";
-import Brand from "@/components/Brand";
-import LogoutButton from "@/components/LogoutButton";
+import HubIcon from "@/components/HubIcon";
 import {createClient} from "@/lib/supabase/server";
+
+type CrewIcon="addRun"|"activity"|"completed"|"crewRace"|"manage"|"course"|"gps";
+function CrewCard({href,icon,label,title,description,primary=false}:{href:string;icon:CrewIcon;label:string;title:string;description:string;primary?:boolean}){
+ return <Link className={`hubTile crewHubTile${primary?" primaryHubTile":""}`} href={href}>
+  <HubIcon name={icon}/>
+  <div className="hubTileCopy"><small>{label}</small><h2>{title}</h2><p>{description}</p></div>
+  <b className="hubTileChevron">›</b>
+ </Link>;
+}
 
 export default async function Dashboard(){
  const sb=await createClient();
@@ -26,5 +34,17 @@ export default async function Dashboard(){
  const profiles=profilesResult.data,parts=partsResult.data;
  const names=new Map((profiles||[]).map((p:any)=>[p.user_id,p.display_name]));const myName=names.get(user.id)||user.email?.split("@")[0]||"러너";
  const myLogIds=new Set((parts||[]).filter((p:any)=>p.user_id===user.id).map((p:any)=>p.log_id));const myLogs=(logs||[]).filter((l:any)=>myLogIds.has(l.id)),myKm=myLogs.reduce((s:number,l:any)=>s+Number(l.actual_distance_km||l.runart_courses?.distance_km||0),0),myDone=new Set(myLogs.map((l:any)=>l.course_id));
- return <main className="wrap hubPage crewHubPage"><header className="top compactPageTop"><Brand/><div className="nav"><Link className="btn ghost" href="/my">MY</Link><LogoutButton/></div></header><section className="compactPageHero"><span className="eyebrow">CREW</span><h1>{owned?.name||"러닝 크루"}</h1><p className="muted">{myName} · {role} · 크루원 {(memberRows||[]).length}명</p></section><section className="myHubSummary"><div><small>내 참여</small><b>{myLogs.length}<em>회</em></b></div><div><small>완주 코스</small><b>{myDone.size}<em>개</em></b></div><div><small>내 거리</small><b>{myKm.toFixed(1)}<em>km</em></b></div><div><small>크루 기록</small><b>{(logs||[]).length}<em>회</em></b></div></section><section className="pageHubGrid"><Link className="hubTile primaryHubTile" href="/dashboard/add"><span>＋</span><div><small>ADD RUN</small><h2>기록 추가</h2><p>참가자와 실제 거리 입력</p></div><b>›</b></Link><Link className="hubTile" href="/dashboard/activity"><span>👟</span><div><small>ACTIVITY</small><h2>최근 러닝</h2><p>크루 활동·참여 현황</p></div><b>›</b></Link><Link className="hubTile" href="/dashboard/completed"><span>✓</span><div><small>COMPLETED</small><h2>완주 코스</h2><p>내가 참여한 크루런 코스</p></div><b>›</b></Link><Link className="hubTile" href="/races/crew"><span>🏁</span><div><small>CREW RACE</small><h2>크루 대회</h2><p>멤버 참가 일정·현황</p></div><b>›</b></Link>{canManage&&<Link className="hubTile" href="/manage"><span>⚙</span><div><small>ADMIN</small><h2>크루 관리</h2><p>멤버·신청·코스 승인</p></div><b>›</b></Link>}<Link className="hubTile" href="/explore"><span>⌕</span><div><small>COURSE</small><h2>코스 찾기</h2><p>다음 크루런 코스 탐색</p></div><b>›</b></Link><Link className="hubTile" href="/my/history"><span>●</span><div><small>MY RUN</small><h2>내 GPS 기록</h2><p>개인 러닝 히스토리</p></div><b>›</b></Link></section></main>
+ return <main className="wrap hubPage crewHubPage">
+  <section className="compactPageHero"><span className="eyebrow">CREW</span><h1>{owned?.name||"러닝 크루"}</h1><p className="muted">{myName} · {role} · 크루원 {(memberRows||[]).length}명</p></section>
+  <section className="myHubSummary"><div><small>내 참여</small><b>{myLogs.length}<em>회</em></b></div><div><small>완주 코스</small><b>{myDone.size}<em>개</em></b></div><div><small>내 거리</small><b>{myKm.toFixed(1)}<em>km</em></b></div><div><small>크루 기록</small><b>{(logs||[]).length}<em>회</em></b></div></section>
+  <section className="pageHubGrid crewHubGrid">
+   <CrewCard href="/dashboard/add" icon="addRun" label="ADD RUN" title="기록 추가" description="참가자와 실제 거리 입력" primary/>
+   <CrewCard href="/dashboard/activity" icon="activity" label="ACTIVITY" title="최근 러닝" description="크루 활동·참여 현황"/>
+   <CrewCard href="/dashboard/completed" icon="completed" label="COMPLETED" title="완주 코스" description="내가 참여한 크루런 코스"/>
+   <CrewCard href="/races/crew" icon="crewRace" label="CREW RACE" title="크루 대회" description="멤버 참가 일정·현황"/>
+   {canManage&&<CrewCard href="/manage" icon="manage" label="ADMIN" title="크루 관리" description="멤버·신청·코스 승인"/>}
+   <CrewCard href="/explore" icon="course" label="COURSE" title="코스 찾기" description="다음 크루런 코스 탐색"/>
+   <CrewCard href="/my/history" icon="gps" label="MY RUN" title="내 GPS 기록" description="개인 러닝 히스토리"/>
+  </section>
+ </main>;
 }
