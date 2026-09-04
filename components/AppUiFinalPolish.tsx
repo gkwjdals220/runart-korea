@@ -16,57 +16,77 @@ function shareRace(card: HTMLElement) {
   navigator.clipboard?.writeText(link).then(()=>alert("대회 링크를 복사했어요.")).catch(()=>{});
 }
 
-const EXIT_LABEL = /^(나가기|닫기|뒤로|이전|←\s*(MY|홈)?|<\s*(MY|홈)?)$/i;
+const EXIT_WORDS = /나가기|닫기|뒤로가기|이전 화면|돌아가기/i;
+const SIMPLE_BACK = /^(뒤로|이전|←|‹|<|←\s*(MY|홈)?|<\s*(MY|홈)?)$/i;
+const TOP_ACTION = /^(MY|홈|메뉴|설정)$/i;
 
-function ensureGlobalBackButton() {
+function isDetailPage() {
   const path = window.location.pathname;
-  const shouldShow = path !== "/" && !path.startsWith("/login") && !path.startsWith("/join");
-  const existing = document.querySelector<HTMLElement>(".unifiedBackButton[data-global-back='1']");
-  if (!shouldShow) {
+  return path !== "/" && !path.startsWith("/login") && !path.startsWith("/join");
+}
+
+function ensureUnifiedDetailHeader() {
+  const active = isDetailPage();
+  document.body.classList.toggle("ttwittunUnifiedDetailHeaderActive", active);
+  const existing = document.querySelector<HTMLElement>(".ttwittunUnifiedDetailHeader");
+  if (!active) {
     existing?.remove();
     return;
   }
   if (existing) return;
 
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "unifiedBackButton";
-  button.dataset.globalBack = "1";
-  button.textContent = "<";
-  button.setAttribute("aria-label", "이전 화면으로");
-  button.addEventListener("click", () => {
+  const header = document.createElement("header");
+  header.className = "ttwittunUnifiedDetailHeader";
+  header.innerHTML = `
+    <button type="button" class="ttwittunUnifiedBack" aria-label="이전 화면으로"><span aria-hidden="true">‹</span></button>
+    <div class="ttwittunUnifiedWordmark" aria-label="TTWITTUN RUNNING CREW">
+      <strong>TTWITTUN</strong>
+      <small>RUNNING CREW</small>
+    </div>
+    <div class="ttwittunUnifiedHeaderSpacer" aria-hidden="true"></div>
+  `;
+  header.querySelector<HTMLButtonElement>(".ttwittunUnifiedBack")?.addEventListener("click", () => {
     if (window.history.length > 1) window.history.back();
     else window.location.assign("/");
   });
-  document.body.appendChild(button);
+  const anchor = document.getElementById("top");
+  if (anchor?.parentElement) anchor.insertAdjacentElement("afterend", header);
+  else document.body.prepend(header);
 }
 
-function removeLegacyExitControls() {
-  document.querySelectorAll<HTMLElement>("button,a").forEach((el) => {
-    if (el.matches(".unifiedBackButton")) return;
+function removeLegacyTopControls() {
+  if (!isDetailPage()) return;
+  document.querySelectorAll<HTMLElement>("button,a,[role='button']").forEach((el) => {
+    if (el.closest(".ttwittunUnifiedDetailHeader")) return;
     const label = (el.textContent || "").replace(/\s+/g," ").trim();
-    const aria = (el.getAttribute("aria-label") || "").trim();
-    const isExit = EXIT_LABEL.test(label) || /나가기|뒤로가기|이전 화면|닫기/.test(aria);
-    if (!isExit) return;
-    el.remove();
+    const aria = (el.getAttribute("aria-label") || "").replace(/\s+/g," ").trim();
+    const cls = String(el.className || "").toLowerCase();
+    const rect = el.getBoundingClientRect();
+    const nearTop = rect.top < 190;
+    const clearlyLegacy = EXIT_WORDS.test(label) || EXIT_WORDS.test(aria) || SIMPLE_BACK.test(label);
+    const headerAction = nearTop && (TOP_ACTION.test(label) || /exit|close|back|headeraction|topaction|topbutton/.test(cls));
+    if (clearlyLegacy || headerAction) el.remove();
+  });
+
+  document.querySelectorAll<HTMLElement>(".brand,.brandLogo,.topBrand,.pageBrand,.detailBrand").forEach(el=>{
+    if (!el.closest(".ttwittunUnifiedDetailHeader")) el.style.display="none";
   });
 }
 
 function removeButtonDuckIcons() {
   document.querySelectorAll<HTMLElement>(".ttwittunButtonIcon").forEach(el=>el.remove());
   document.querySelectorAll<HTMLImageElement>("button img, a.btn img, [role='button'] img").forEach(img=>{
-    const descriptor = `${img.alt || ""} ${img.title || ""} ${img.className || ""}`.toLowerCase();
-    if (/오리|duck|ttwittun|buttonicon/.test(descriptor)) img.remove();
+    const descriptor = `${img.alt || ""} ${img.title || ""} ${img.className || ""} ${img.src || ""}`.toLowerCase();
+    if (/오리|duck|ttwittun|buttonicon|button-icons/.test(descriptor)) img.remove();
   });
 }
 
 export default function AppUiFinalPolish(){
   useEffect(()=>{
     const clean=()=>{
+      ensureUnifiedDetailHeader();
+      removeLegacyTopControls();
       removeButtonDuckIcons();
-      document.querySelectorAll<HTMLElement>(".brandLogo").forEach(el=>{el.style.display="none";el.setAttribute("aria-hidden","true")});
-      removeLegacyExitControls();
-      ensureGlobalBackButton();
 
       document.querySelectorAll<HTMLElement>(".raceLiveCard").forEach(card=>{
         const actions=card.querySelector<HTMLElement>(".raceCardActions");
