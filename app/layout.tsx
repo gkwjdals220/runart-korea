@@ -35,6 +35,7 @@ import "./final-ui-polish.css";
 import "./race-layout-fixes.css";
 import "./header-reset.css";
 import "./race-card-mobile-refine.css";
+import "./race-list-v2.css";
 import { Noto_Sans_KR } from "next/font/google";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import UrgentFacilityNav from "@/components/UrgentFacilityNav";
