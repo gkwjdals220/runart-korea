@@ -93,6 +93,98 @@ video {
 
 /* Selected course: a real mobile bottom sheet instead of a clipped card. */
 @media (max-width: 700px) {
+  /* Compact headers: reserve independent space for branding and actions. */
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    min-height: 58px !important;
+    padding: 7px 9px !important;
+    overflow: hidden !important;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) > .brand {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    gap: 8px !important;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .brandLogo {
+    width: 42px !important;
+    height: 42px !important;
+    flex-basis: 42px !important;
+    border-radius: 12px !important;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .brand b {
+    font-size: clamp(16px, 4.4vw, 19px) !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .brand span {
+    max-width: 132px !important;
+    margin-top: 3px !important;
+    font-size: 8px !important;
+    letter-spacing: .055em !important;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) > .nav {
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+    width: auto !important;
+    max-width: 56vw !important;
+    padding: 3px !important;
+    overflow: visible !important;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .nav .btn {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    min-height: 38px !important;
+    padding: 7px 10px !important;
+    gap: 5px !important;
+    font-size: 10px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Mascot artwork floats directly in the button without an extra tile. */
+  .ttwittunButtonIcon,
+  .ttwittunButtonIcon.compact {
+    width: 24px !important;
+    height: 24px !important;
+    flex-basis: 24px !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+  }
+
+  .ttwittunButtonIcon img {
+    object-fit: contain !important;
+    transform: none !important;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .22));
+  }
+
+  .compactPageTop .btn:not(:has(.ttwittunButtonIcon))::before,
+  .pageBottomActions .btn:not(:has(.ttwittunButtonIcon))::before,
+  .raceSubmitForm > .btn:not(:has(.ttwittunButtonIcon))::before,
+  .shoeMileageManager .btn:not(:has(.ttwittunButtonIcon))::before,
+  .accountPage .btn:not(:has(.ttwittunButtonIcon))::before {
+    width: 24px !important;
+    height: 24px !important;
+    flex-basis: 24px !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+    background-size: contain !important;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .22));
+  }
+
   html.courseSheetOpen .explorerMapPanel .mapCourseInfo.sheet-full {
     position: fixed !important;
     top: max(54px, env(safe-area-inset-top)) !important;
@@ -222,5 +314,28 @@ video {
     background: #eef8e8 !important;
     color: #487a3c !important;
     font-size: 22px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .brand span {
+    display: none !important;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) > .nav {
+    max-width: 60vw !important;
+  }
+}
+
+@media (max-width: 360px) {
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .brandLogo {
+    width: 38px !important;
+    height: 38px !important;
+    flex-basis: 38px !important;
+  }
+
+  :is(.top, .simpleTop, .compactPageTop, .detailTop, .myTop, .dashboardTop) .nav .btn {
+    padding-inline: 8px !important;
+    font-size: 9px !important;
   }
 }
