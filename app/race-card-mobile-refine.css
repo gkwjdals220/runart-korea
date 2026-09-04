@@ -1,0 +1,76 @@
+/* Mobile race card refinements: prevent date overlap and compact participation controls */
+@media(max-width:700px){
+  .raceLiveCard{
+    grid-template-columns:76px minmax(0,1fr)!important;
+    gap:12px!important;
+    align-items:start!important;
+  }
+  .raceLiveCard .raceDateBox{
+    width:76px!important;
+    min-width:76px!important;
+    max-width:76px!important;
+    min-height:76px!important;
+    margin:0!important;
+    align-self:start!important;
+    box-sizing:border-box!important;
+    overflow:hidden!important;
+  }
+  .raceLiveBody,.raceLiveTitle,.raceLiveTitle>div{min-width:0!important}
+  .raceLiveTitle{gap:8px!important}
+  .raceLiveTitle h3{min-width:0!important;margin-right:0!important;overflow-wrap:anywhere!important;word-break:keep-all!important}
+
+  .raceCardActionsRefined{
+    display:grid!important;
+    grid-template-columns:48px 48px minmax(0,1fr)!important;
+    grid-auto-rows:auto!important;
+    gap:8px 10px!important;
+    align-items:center!important;
+    justify-items:start!important;
+  }
+  .raceCardActionsRefined .raceIconAction:nth-of-type(1){grid-column:1;grid-row:1}
+  .raceCardActionsRefined .raceIconAction:nth-of-type(2){grid-column:2;grid-row:1}
+
+  .raceCardActionsRefined .raceCheckAction{
+    width:max-content!important;
+    min-width:0!important;
+    height:30px!important;
+    min-height:30px!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    justify-content:flex-start!important;
+    gap:7px!important;
+    color:#c5ced8!important;
+    font-size:12px!important;
+    font-weight:800!important;
+  }
+  .raceCardActionsRefined .raceCheckAction:nth-of-type(3){grid-column:1;grid-row:2}
+  .raceCardActionsRefined .raceCheckAction:nth-of-type(4){grid-column:2/4;grid-row:2}
+  .raceCardActionsRefined .raceCheckAction.on{
+    border:0!important;
+    background:transparent!important;
+    color:#f8fafc!important;
+  }
+  .raceCardActionsRefined .raceCheckBox{
+    width:19px!important;
+    height:19px!important;
+    min-width:19px!important;
+    border-radius:5px!important;
+  }
+  .raceCardActionsRefined .raceGoogleForm,
+  .raceCardActionsRefined .raceInfoAction{
+    grid-column:1/-1!important;
+    width:100%!important;
+    margin-top:3px!important;
+  }
+}
+
+@media(max-width:390px){
+  .raceLiveCard{grid-template-columns:68px minmax(0,1fr)!important;gap:10px!important}
+  .raceLiveCard .raceDateBox{width:68px!important;min-width:68px!important;max-width:68px!important;min-height:68px!important}
+  .raceCardActionsRefined{grid-template-columns:44px 44px minmax(0,1fr)!important;gap:8px!important}
+  .raceCardActionsRefined .raceCheckAction{font-size:11.5px!important}
+  .raceCardActionsRefined .raceCheckBox{width:18px!important;height:18px!important;min-width:18px!important}
+}
