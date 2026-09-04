@@ -1,29 +1,35 @@
 /* Race input/layout stabilization */
 .racePage,.publicRaceBrowser,.raceSubmitPage{min-width:0!important;max-width:100%!important;overflow-x:hidden!important}
-.racePage .card,.publicRaceBrowser .card,.raceSubmitPage .card{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
-.racePage label,.raceSubmitForm label{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
-.racePage input,.racePage select,.racePage textarea,.raceSubmitForm input,.raceSubmitForm select,.raceSubmitForm textarea,.raceFinderBar input,.raceFinderBar select,.raceDistanceSelect select{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
-.racePage input,.racePage select,.raceSubmitForm input,.raceSubmitForm select,.raceFinderBar input,.raceFinderBar select,.raceDistanceSelect select{height:52px!important;min-height:52px!important;padding:0 16px!important;border-radius:16px!important}
-.racePage input[type="date"],.raceSubmitForm input[type="date"]{-webkit-appearance:none!important;appearance:none!important;min-width:0!important;width:100%!important;max-width:100%!important;padding-right:14px!important}
+.racePage .stack,.racePage .stack>*{min-width:0!important;max-width:100%!important;width:100%!important;box-sizing:border-box!important}
+.racePage .card,.publicRaceBrowser .card,.raceSubmitPage .card{min-width:0!important;max-width:100%!important;width:100%!important;box-sizing:border-box!important}
+.racePage label,.raceSubmitForm label{display:block!important;min-width:0!important;max-width:100%!important;width:100%!important;box-sizing:border-box!important}
+.racePage input,.racePage select,.racePage textarea,.raceSubmitForm input,.raceSubmitForm select,.raceSubmitForm textarea,.raceFinderBar input,.raceFinderBar select,.raceDistanceSelect select{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;box-sizing:border-box!important;margin:0!important}
+.racePage input,.racePage select,.raceSubmitForm input,.raceSubmitForm select,.raceFinderBar input,.raceFinderBar select,.raceDistanceSelect select{height:52px!important;min-height:52px!important;padding:0 16px!important;border-radius:16px!important;line-height:1.2!important}
+.racePage input[type="date"],.raceSubmitForm input[type="date"]{-webkit-appearance:none!important;appearance:none!important;min-width:0!important;width:100%!important;max-width:100%!important;padding-right:14px!important;overflow:hidden!important}
+.racePage input[type="date"]::-webkit-date-and-time-value,.raceSubmitForm input[type="date"]::-webkit-date-and-time-value{text-align:left!important;min-width:0!important}
 .racePage textarea,.raceSubmitForm textarea{min-height:104px!important;padding:14px 16px!important;border-radius:16px!important;resize:vertical!important}
-.racePage .formgrid,.raceSubmitGrid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important;width:100%!important;min-width:0!important}
-.racePage .formgrid>*,.raceSubmitGrid>*{min-width:0!important;width:100%!important}
-.raceFinderBar{display:grid!important;grid-template-columns:minmax(0,1.5fr) minmax(0,.72fr) minmax(0,.9fr)!important;gap:10px!important;min-width:0!important;width:100%!important;box-sizing:border-box!important}
+.racePage .formgrid,.raceSubmitGrid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important;width:100%!important;min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
+.racePage .formgrid>*,.raceSubmitGrid>*{min-width:0!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important}
+.racePage .formgrid+label,.racePage .formgrid+label+label{width:100%!important;max-width:100%!important}
+.raceFinderBar{display:grid!important;grid-template-columns:minmax(0,1.5fr) minmax(0,.72fr) minmax(0,.9fr)!important;gap:10px!important;min-width:0!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important}
 .raceFinderBar>*{min-width:0!important;max-width:100%!important}
-.raceLiveList{min-width:0!important;width:100%!important}
-.raceLiveCard{min-width:0!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important;overflow:hidden!important}
-.raceLiveCard.savedRace{border-color:rgba(148,163,184,.22)!important;outline:0!important;box-shadow:none!important}
-.raceLiveCard.savedRace::before,.raceLiveCard.savedRace::after{content:none!important;display:none!important}
-.raceLiveCard.savedRace .raceDateBox{box-shadow:inset 0 0 0 1px rgba(216,255,50,.16)!important}
+.raceLiveList{min-width:0!important;width:100%!important;max-width:100%!important}
+.raceLiveCard{position:relative!important;min-width:0!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important;overflow:hidden!important;border:1px solid rgba(148,163,184,.22)!important;outline:0!important;box-shadow:none!important}
+.raceLiveCard.savedRace,.raceLiveCard.savedRace:hover,.raceLiveCard.savedRace:focus,.raceLiveCard.savedRace:focus-within{border:1px solid rgba(148,163,184,.22)!important;outline:0!important;box-shadow:none!important}
+.raceLiveCard.savedRace::before,.raceLiveCard.savedRace::after,.raceLiveCard::before,.raceLiveCard::after{content:none!important;display:none!important}
+.raceLiveCard.savedRace .raceDateBox{box-shadow:none!important;border-color:rgba(148,163,184,.14)!important}
 .raceLiveBody,.raceLiveTitle,.raceTags,.raceCardActions,.racePersonalRow{min-width:0!important;max-width:100%!important}
 .raceRegistrationText,.raceLiveTitle h3,.raceLiveTitle p{overflow-wrap:anywhere!important;word-break:keep-all!important}
 @media(max-width:700px){
+ .racePage{padding-left:14px!important;padding-right:14px!important}
+ .racePage .stack,.racePage .stack>*{width:100%!important;max-width:100%!important}
  .racePage .formgrid,.raceSubmitGrid{grid-template-columns:1fr!important;gap:12px!important}
  .racePage input,.racePage select,.raceSubmitForm input,.raceSubmitForm select,.raceFinderBar input,.raceFinderBar select,.raceDistanceSelect select{height:50px!important;min-height:50px!important;font-size:16px!important}
+ .racePage .card{padding-left:14px!important;padding-right:14px!important}
  .raceFinderBar{grid-template-columns:1fr 1fr!important;gap:10px!important}
  .raceFinderBar>input:first-child{grid-column:1/-1!important}
  .raceFinderBar>.chip{width:100%!important;min-width:0!important}
- .raceLiveCard{padding:14px!important}
+ .raceLiveCard{padding:14px!important;border-radius:18px!important}
  .raceLiveCard .raceDateBox{min-width:72px!important;max-width:72px!important}
 }
 @media(max-width:390px){.raceFinderBar{grid-template-columns:1fr!important}.raceFinderBar>input:first-child{grid-column:auto!important}}
