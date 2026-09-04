@@ -24,6 +24,26 @@ function cleanElement(element: Element) {
   nodes.forEach(stripEmojiFromTextNode);
 }
 
+function collapseEmptyIconSlots() {
+  const iconSelectors = [
+    ".hubTile > span",
+    ".homeDirectList > a > span",
+    ".interactiveTile .tileIcon",
+    ".interactiveTile .runnerToken",
+    ".boardCurrent > span",
+  ].join(",");
+
+  document.querySelectorAll<HTMLElement>(iconSelectors).forEach((element) => {
+    const hasText = (element.textContent || "").trim().length > 0;
+    const hasMedia = !!element.querySelector("img,svg,picture,video,canvas,.ttwittunButtonIcon,.hubPlayIcon");
+    if (!hasText && !hasMedia) {
+      element.style.display = "none";
+      element.setAttribute("aria-hidden", "true");
+      element.parentElement?.classList.add("emojiSlotCollapsed");
+    }
+  });
+}
+
 const APP_SCREEN_ROOTS = [
   ".runModePage",
   ".startFlowCompact",
@@ -61,6 +81,7 @@ export default function RunLegacyEmojiCleanup() {
     const clean = () => {
       document.querySelectorAll(APP_SCREEN_ROOTS).forEach(cleanElement);
       document.querySelectorAll(INTERACTIVE_FALLBACK).forEach(cleanElement);
+      collapseEmptyIconSlots();
 
       document.querySelectorAll<HTMLElement>(".runMapControl").forEach((element) => {
         const label = (element.textContent || "").trim();
