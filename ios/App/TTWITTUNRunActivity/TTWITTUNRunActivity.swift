@@ -17,10 +17,30 @@ struct TTWITTUNRunActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: RunActivityAttributes.self) { context in
             HStack(spacing: 14) {
-                ZStack { Circle().fill(Color(red: 0.84, green: 1, blue: 0.18)); Image(systemName: context.state.paused ? "pause.fill" : "figure.run").foregroundStyle(.black) }.frame(width: 44, height: 44)
-                VStack(alignment: .leading, spacing: 3) { Text(context.attributes.runName).font(.caption).foregroundStyle(.secondary).lineLimit(1); Text("\(context.state.distanceKm, specifier: "%.2f") km").font(.title3.bold()) }
+                ZStack {
+                    Circle().fill(Color(red: 0.84, green: 1, blue: 0.18))
+                    Image(systemName: context.state.paused ? "pause.fill" : "figure.run")
+                        .foregroundStyle(.black)
+                }
+                .frame(width: 44, height: 44)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(context.attributes.runName)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.white.opacity(0.72))
+                        .lineLimit(1)
+                    Text("\(context.state.distanceKm, specifier: "%.2f") km")
+                        .font(.title3.bold())
+                        .foregroundStyle(.white)
+                }
                 Spacer()
-                VStack(alignment: .trailing, spacing: 3) { Text(elapsedText(context.state.elapsedSeconds)).font(.headline.monospacedDigit()); Text("\(paceText(context.state.paceSecondsPerKm))/km").font(.caption).foregroundStyle(.secondary) }
+                VStack(alignment: .trailing, spacing: 3) {
+                    Text(elapsedText(context.state.elapsedSeconds))
+                        .font(.headline.monospacedDigit())
+                        .foregroundStyle(.white)
+                    Text("\(paceText(context.state.paceSecondsPerKm))/km")
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(Color(red: 0.84, green: 1, blue: 0.18))
+                }
             }
             .padding(14)
             .activityBackgroundTint(Color(red: 0.055, green: 0.075, blue: 0.09))
