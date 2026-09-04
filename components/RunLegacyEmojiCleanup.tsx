@@ -2,47 +2,71 @@
 
 import { useEffect } from "react";
 
-const LEADING_EMOJI = /^[\s\p{Extended_Pictographic}\uFE0F\u200D\u20E3\u2640-\u2642\u2600-\u27BF]+\s*/u;
-const LEADING_SYMBOL = /^\s*[▶⏸■↻]\s*/u;
+const EMOJI = /[\p{Extended_Pictographic}\uFE0F\u200D]/gu;
 
-function cleanTextNode(node: ChildNode) {
-  if (node.nodeType !== Node.TEXT_NODE) return;
-  const text = node.textContent || "";
-  const cleaned = text.replace(LEADING_EMOJI, "").replace(LEADING_SYMBOL, "");
-  if (cleaned !== text) node.textContent = cleaned;
+function stripEmojiFromTextNode(node: Text) {
+  const before = node.nodeValue || "";
+  const after = before
+    .replace(EMOJI, "")
+    .replace(/\s{2,}/g, " ")
+    .replace(/^\s+|\s+$/g, "");
+  if (after !== before) node.nodeValue = after;
 }
 
-function cleanControl(element: Element) {
-  element.childNodes.forEach(cleanTextNode);
-
-  // Some legacy controls contain the emoji in a nested text-only span.
-  element.querySelectorAll("span,b,strong").forEach((child) => {
-    if (child.children.length === 0) child.childNodes.forEach(cleanTextNode);
-  });
+function cleanElement(element: Element) {
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+  const nodes: Text[] = [];
+  let current = walker.nextNode();
+  while (current) {
+    nodes.push(current as Text);
+    current = walker.nextNode();
+  }
+  nodes.forEach(stripEmojiFromTextNode);
 }
+
+const UI_SELECTORS = [
+  "button",
+  ".btn",
+  ".runModeTop h1",
+  ".runStatusCard h3",
+  ".runGuideCard b",
+  ".runControlDock a",
+  ".runControlDock button",
+  ".startFlowHead h2",
+  ".startStepTitle h3",
+  ".afterRunHint a",
+  ".hubTile > span",
+  ".homeDirectList > a > span",
+  ".interactiveTile .tileIcon",
+  ".interactiveTile .runnerToken",
+  ".boardCurrent > span",
+  ".boardDiceButton",
+  ".raceLiveCard .btn",
+  ".mobileListCard .btn",
+  ".quickStartGrid a",
+  ".quickStartGrid button",
+  ".homeQuickGrid a",
+  ".homeQuickGrid button",
+].join(",");
 
 export default function RunLegacyEmojiCleanup() {
   useEffect(() => {
     const clean = () => {
-      document
-        .querySelectorAll(
-          "button, a.btn, .runModePage a, .runModePage button, .trackStudioPage a, .trackStudioPage button, .homeDirectList a, .pageHubGrid a",
-        )
-        .forEach(cleanControl);
-
-      document
-        .querySelectorAll(".runModeTop h1, .runStatusCard h3, .runGuideCard b")
-        .forEach(cleanControl);
+      document.querySelectorAll(UI_SELECTORS).forEach(cleanElement);
 
       document.querySelectorAll<HTMLElement>(".runMapControl").forEach((element) => {
-        cleanControl(element);
-        if ((element.textContent || "").trim() === "지도") element.textContent = "지도 보기";
+        const label = (element.textContent || "").trim();
+        if (label === "지도") element.textContent = "지도 보기";
       });
     };
 
     clean();
     const observer = new MutationObserver(clean);
-    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
     return () => observer.disconnect();
   }, []);
 
