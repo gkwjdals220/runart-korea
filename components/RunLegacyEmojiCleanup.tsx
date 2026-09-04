@@ -24,35 +24,43 @@ function cleanElement(element: Element) {
   nodes.forEach(stripEmojiFromTextNode);
 }
 
-const UI_SELECTORS = [
+const APP_SCREEN_ROOTS = [
+  ".runModePage",
+  ".startFlowCompact",
+  ".hubPage",
+  ".racePage",
+  ".shoePage",
+  ".shoeGuidePage",
+  ".treadmillPage",
+  ".trackStudioPage",
+  ".homeActionSection",
+  ".interactiveBoardWrap",
+  ".mobileSubPage",
+  ".courseSubmitPage",
+  ".artCollectionPage",
+  ".authJoinPage",
+  ".quickStartGrid",
+  ".homeQuickGrid",
+].join(",");
+
+const INTERACTIVE_FALLBACK = [
   "button",
   ".btn",
-  ".runModeTop h1",
-  ".runStatusCard h3",
-  ".runGuideCard b",
   ".runControlDock a",
   ".runControlDock button",
-  ".startFlowHead h2",
-  ".startStepTitle h3",
-  ".afterRunHint a",
   ".hubTile > span",
   ".homeDirectList > a > span",
   ".interactiveTile .tileIcon",
   ".interactiveTile .runnerToken",
   ".boardCurrent > span",
   ".boardDiceButton",
-  ".raceLiveCard .btn",
-  ".mobileListCard .btn",
-  ".quickStartGrid a",
-  ".quickStartGrid button",
-  ".homeQuickGrid a",
-  ".homeQuickGrid button",
 ].join(",");
 
 export default function RunLegacyEmojiCleanup() {
   useEffect(() => {
     const clean = () => {
-      document.querySelectorAll(UI_SELECTORS).forEach(cleanElement);
+      document.querySelectorAll(APP_SCREEN_ROOTS).forEach(cleanElement);
+      document.querySelectorAll(INTERACTIVE_FALLBACK).forEach(cleanElement);
 
       document.querySelectorAll<HTMLElement>(".runMapControl").forEach((element) => {
         const label = (element.textContent || "").trim();
