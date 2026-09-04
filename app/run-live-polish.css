@@ -1,0 +1,93 @@
+/* Live-run visual cleanup: remove legacy emoji styling and make secondary map action intentional. */
+.runModeTop h1,
+.runStatusCard h3,
+.runMapControl,
+.runControlDock .runPrimaryControl {
+  font-family: var(--font-ttwittun), system-ui, sans-serif;
+}
+
+.runStatusGrid .runStatusCard h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.runStatusGrid .runStatusCard h3::before,
+.runMapControl::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  background: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.runStatusGrid .runStatusCard:first-child h3::before {
+  color: var(--app-lime, #d6ff2f);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M4 20h3V10H4v10Zm6 0h3V4h-3v16Zm6 0h3v-7h-3v7Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M4 20h3V10H4v10Zm6 0h3V4h-3v16Zm6 0h3v-7h-3v7Z'/%3E%3C/svg%3E");
+}
+
+.runStatusGrid .runStatusCard:nth-child(2) h3::before,
+.runMapControl::before {
+  color: var(--app-lime, #d6ff2f);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z'/%3E%3C/svg%3E");
+}
+
+.runControlDock .runMapControl {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 9px !important;
+  width: 100% !important;
+  min-height: 52px !important;
+  padding: 12px 16px !important;
+  border: 1px solid #35404a !important;
+  border-radius: 16px !important;
+  background: #151b20 !important;
+  color: #f4f7f8 !important;
+  text-decoration: none !important;
+  font-weight: 850 !important;
+  box-shadow: none !important;
+}
+
+.runControlDock .runMapControl::before {
+  width: 22px;
+  height: 22px;
+  flex-basis: 22px;
+}
+
+@media (max-width: 700px) {
+  .runControlDock {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+    padding: 10px !important;
+  }
+
+  .runControlDock > * {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .runControlDock .runPrimaryControl {
+    min-height: 54px !important;
+    border-radius: 16px !important;
+  }
+
+  .runControlDock .runMapControl {
+    min-height: 50px !important;
+    border-radius: 15px !important;
+  }
+
+  .runModeTop h1 {
+    display: block !important;
+  }
+}
