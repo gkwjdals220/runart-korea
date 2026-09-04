@@ -1,0 +1,57 @@
+/* Unified TTWITTUN detail header: keep one top header and suppress legacy top controls. */
+.ttwittunUnifiedDetailHeaderActive .ttwittunUnifiedDetailHeader{
+  position:sticky!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+  z-index:5000!important;
+  width:100%!important;
+  margin:0!important;
+  flex:none!important;
+}
+
+.ttwittunUnifiedDetailHeaderActive .runTop,
+.ttwittunUnifiedDetailHeaderActive .runModeTop,
+.ttwittunUnifiedDetailHeaderActive .runModeUtilityBar,
+.ttwittunUnifiedDetailHeaderActive .runHeader,
+.ttwittunUnifiedDetailHeaderActive .runHeaderActions,
+.ttwittunUnifiedDetailHeaderActive .detailTop,
+.ttwittunUnifiedDetailHeaderActive .pageTop,
+.ttwittunUnifiedDetailHeaderActive .screenTop,
+.ttwittunUnifiedDetailHeaderActive .historyTop,
+.ttwittunUnifiedDetailHeaderActive .topActions,
+.ttwittunUnifiedDetailHeaderActive .headerActions,
+.ttwittunUnifiedDetailHeaderActive .pageHeaderActions,
+.ttwittunUnifiedDetailHeaderActive .detailActions,
+.ttwittunUnifiedDetailHeaderActive .legacyTopActions,
+.ttwittunUnifiedDetailHeaderActive .topUtilityBar,
+.ttwittunUnifiedDetailHeaderActive .utilityBar,
+.ttwittunUnifiedDetailHeaderActive .unifiedBackButton,
+.ttwittunUnifiedDetailHeaderActive .legacyBackButton,
+.ttwittunUnifiedDetailHeaderActive .exitButton,
+.ttwittunUnifiedDetailHeaderActive .closeButton,
+.ttwittunUnifiedDetailHeaderActive .topButton,
+.ttwittunUnifiedDetailHeaderActive .brand,
+.ttwittunUnifiedDetailHeaderActive .brandLogo,
+.ttwittunUnifiedDetailHeaderActive .topBrand,
+.ttwittunUnifiedDetailHeaderActive .pageBrand,
+.ttwittunUnifiedDetailHeaderActive .detailBrand{
+  display:none!important;
+}
+
+/* Never let a legacy back control survive alongside the unified header. */
+.ttwittunUnifiedDetailHeaderActive button.backButton:not(.ttwittunUnifiedBack),
+.ttwittunUnifiedDetailHeaderActive a.backButton,
+.ttwittunUnifiedDetailHeaderActive [data-role="exit"],
+.ttwittunUnifiedDetailHeaderActive [data-role="back"],
+.ttwittunUnifiedDetailHeaderActive [data-action="exit"],
+.ttwittunUnifiedDetailHeaderActive [data-action="back"]{
+  display:none!important;
+}
+
+@media(max-width:700px){
+  .ttwittunUnifiedDetailHeaderActive .ttwittunUnifiedDetailHeader{
+    top:0!important;
+    margin:0!important;
+  }
+}
