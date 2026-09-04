@@ -28,6 +28,7 @@ public class TTWITTUNRunPlugin: CAPPlugin, CAPBridgedPlugin, CLLocationManagerDe
     private var running = false
     private var paused = false
     private var activity: Any?
+    private var liveActivityError: String?
 
     public override func load() {
         manager.delegate = self
@@ -141,6 +142,7 @@ public class TTWITTUNRunPlugin: CAPPlugin, CAPBridgedPlugin, CLLocationManagerDe
     private func snapshot(includeTrack: Bool = false) -> [String: Any] {
         var value: [String: Any] = [
             "available": true,
+            "nativePlugin": true,
             "running": running,
             "paused": paused,
             "distanceM": distanceMeters,
@@ -149,6 +151,22 @@ public class TTWITTUNRunPlugin: CAPPlugin, CAPBridgedPlugin, CLLocationManagerDe
             "startedAt": Int((startedAt ?? Date()).timeIntervalSince1970 * 1000),
             "pausedDuration": pausedDuration
         ]
+        #if canImport(ActivityKit)
+        if #available(iOS 16.1, *) {
+            value["liveActivitySupported"] = true
+            value["liveActivityEnabled"] = ActivityAuthorizationInfo().areActivitiesEnabled
+            value["liveActivityActive"] = !Activity<RunActivityAttributes>.activities.isEmpty
+        } else {
+            value["liveActivitySupported"] = false
+            value["liveActivityEnabled"] = false
+            value["liveActivityActive"] = false
+        }
+        #else
+        value["liveActivitySupported"] = false
+        value["liveActivityEnabled"] = false
+        value["liveActivityActive"] = false
+        #endif
+        if let liveActivityError { value["liveActivityError"] = liveActivityError }
         if let pace = pace() { value["paceSecPerKm"] = pace }
         if let accuracy = lastLocation?.horizontalAccuracy { value["accuracy"] = accuracy }
         if let location = lastLocation {
@@ -165,6 +183,7 @@ public class TTWITTUNRunPlugin: CAPPlugin, CAPBridgedPlugin, CLLocationManagerDe
     private func reset() {
         startedAt = nil; pausedAt = nil; pausedDuration = 0; distanceMeters = 0
         lastLocation = nil; locations = []; running = false; paused = false
+        liveActivityError = nil
     }
 
     private func persistState() {
@@ -206,11 +225,29 @@ public class TTWITTUNRunPlugin: CAPPlugin, CAPBridgedPlugin, CLLocationManagerDe
 
     private func startLiveActivity() {
         #if canImport(ActivityKit)
-        guard #available(iOS 16.1, *), ActivityAuthorizationInfo().areActivitiesEnabled, let startedAt else { return }
+        guard #available(iOS 16.1, *) else {
+            liveActivityError = "Live Activity는 iOS 16.1 이상에서 사용할 수 있습니다."
+            return
+        }
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
+            liveActivityError = "iPhone 설정에서 실시간 현황이 허용되지 않았습니다."
+            return
+        }
+        guard let startedAt else {
+            liveActivityError = "러닝 시작 시간이 생성되지 않았습니다."
+            return
+        }
         let attributes = RunActivityAttributes(runName: runName, startedAt: startedAt)
         let state = RunActivityAttributes.ContentState(distanceKm: 0, elapsedSeconds: 0, paceSecondsPerKm: nil, paused: false)
-        do { activity = try Activity.request(attributes: attributes, contentState: state, pushType: nil) }
-        catch { notifyListeners("runError", data: ["message": "Live Activity를 시작하지 못했습니다."]) }
+        do {
+            activity = try Activity.request(attributes: attributes, contentState: state, pushType: nil)
+            liveActivityError = nil
+        } catch {
+            liveActivityError = error.localizedDescription
+            notifyListeners("runError", data: ["message": "Live Activity 오류: \(error.localizedDescription)"])
+        }
+        #else
+        liveActivityError = "이 빌드에는 ActivityKit이 포함되지 않았습니다."
         #endif
     }
 
