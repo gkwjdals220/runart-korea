@@ -1,4 +1,60 @@
 /* Final home-shell polish: compact bottom navigation and calmer Quick Start cards. */
+
+/* Keep the refreshed TTWITTUN mascot treatment consistent on web and native.
+   Earlier passes only removed the rounded icon tile inside the mobile breakpoint,
+   which made desktop/mobile web look like an older build. */
+.ttwittunButtonIcon,
+.ttwittunButtonIcon.compact {
+  overflow: visible !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+.ttwittunButtonIcon img {
+  object-fit: contain !important;
+  transform: none !important;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,.22));
+}
+.compactPageTop .btn:not(:has(.ttwittunButtonIcon))::before,
+.pageBottomActions .btn:not(:has(.ttwittunButtonIcon))::before,
+.raceSubmitForm > .btn:not(:has(.ttwittunButtonIcon))::before,
+.shoeMileageManager .btn:not(:has(.ttwittunButtonIcon))::before,
+.accountPage .btn:not(:has(.ttwittunButtonIcon))::before,
+.raceCardActions > :is(a,button)::before,
+.raceNoteEditor .btn::before {
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  background-size: contain !important;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,.22));
+}
+
+/* Use the refreshed transparent hero-decor artwork on the web too.
+   iOS already used these files, while wider web layouts were still showing the
+   older quick-start artwork from app-theme.css. */
+:is(.mobileSubPage,.hubPage,.racePage,.shoeGuidePage,.authJoinPage,.courseSubmitPage,.artCollectionPage) > .compactPageHero::after {
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  background-image: url('/hero-decor/run-duck.png') !important;
+  background-position: right bottom !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+  filter: drop-shadow(0 14px 18px rgba(0,0,0,.32)) !important;
+}
+.racePage > .compactPageHero::after { background-image: url('/hero-decor/race-duck.png') !important; }
+.shoeGuidePage > .compactPageHero::after,
+.shoePage > .compactPageHero::after { background-image: url('/hero-decor/shoes-duck.png') !important; }
+.myHubPage > .compactPageHero::after,
+.profilePage > .compactPageHero::after { background-image: url('/hero-decor/history-duck.png') !important; }
+.mobileSubPage:has(.pbPageGrid) > .compactPageHero::after { background-image: url('/hero-decor/pb-duck.png') !important; }
+.freeRunHero::after {
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  background-image: url('/hero-decor/run-duck.png') !important;
+  background-position: right bottom !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+  filter: drop-shadow(0 14px 18px rgba(0,0,0,.32)) !important;
+}
+
 @media (max-width: 700px) {
   /* Quick Start should feel tappable without looking like a raised game tile. */
   .homeQuickGrid {
