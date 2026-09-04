@@ -22,16 +22,15 @@
 .raceRegistrationText,.raceLiveTitle h3,.raceLiveTitle p{overflow-wrap:anywhere!important;word-break:keep-all!important}
 
 /* Refined race card controls */
-.raceCardActionsRefined{display:grid!important;grid-template-columns:48px 48px minmax(128px,.8fr) minmax(120px,.8fr)!important;gap:10px!important;align-items:center!important;margin-top:14px!important}
+.raceCardActionsRefined{display:grid!important;grid-template-columns:48px 48px minmax(128px,.8fr) minmax(128px,.8fr)!important;gap:10px!important;align-items:center!important;margin-top:14px!important}
 .raceCardActionsRefined .raceIconAction{width:48px!important;height:48px!important;min-width:48px!important;padding:0!important;display:grid!important;place-items:center!important;border-radius:14px!important;border:1px solid rgba(148,163,184,.22)!important;background:#141a20!important;color:#c5ced8!important;box-sizing:border-box!important}
 .raceCardActionsRefined .raceIconAction svg{width:22px!important;height:22px!important;display:block!important}
 .raceCardActionsRefined .raceIconAction.on{color:#d8ff32!important;border-color:rgba(216,255,50,.46)!important;background:rgba(216,255,50,.08)!important}
-.raceCheckAction{height:48px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;padding:0 14px!important;border:1px solid rgba(148,163,184,.22)!important;border-radius:14px!important;background:#141a20!important;color:#eef2f6!important;font-size:14px!important;font-weight:800!important;box-sizing:border-box!important;cursor:pointer!important}
-.raceCheckAction input{appearance:none!important;-webkit-appearance:none!important;width:20px!important;height:20px!important;min-width:20px!important;min-height:20px!important;max-width:20px!important;padding:0!important;border:1.5px solid #718091!important;border-radius:6px!important;background:#0d1217!important;display:grid!important;place-content:center!important}
-.raceCheckAction input:checked{background:#d8ff32!important;border-color:#d8ff32!important}
-.raceCheckAction input:checked::after{content:"✓"!important;color:#0c0f12!important;font-size:15px!important;font-weight:950!important;line-height:1!important}
-.raceCheckAction.on{border-color:rgba(216,255,50,.4)!important;background:rgba(216,255,50,.06)!important}
-.raceGoingAction{height:48px!important;border-radius:14px!important;border:1px solid rgba(148,163,184,.22)!important;background:#141a20!important;color:#eef2f6!important;font-weight:800!important;padding:0 14px!important}.raceGoingAction.on{border-color:#d8ff32!important;background:#d8ff32!important;color:#0c0f12!important}
+.raceCheckAction{height:48px!important;min-width:0!important;width:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;padding:0 14px!important;border:1px solid rgba(148,163,184,.22)!important;border-radius:14px!important;background:#141a20!important;color:#eef2f6!important;font-family:inherit!important;font-size:14px!important;font-weight:800!important;line-height:1!important;box-sizing:border-box!important;cursor:pointer!important;white-space:nowrap!important}
+.raceCheckBox{width:20px!important;height:20px!important;min-width:20px!important;display:grid!important;place-items:center!important;border:1.5px solid #718091!important;border-radius:6px!important;background:#0d1217!important;color:#0c0f12!important;font-size:14px!important;font-weight:950!important;line-height:1!important;box-sizing:border-box!important}
+.raceCheckAction.on{border-color:rgba(216,255,50,.4)!important;background:rgba(216,255,50,.06)!important;color:#f8fafc!important}
+.raceCheckAction.on .raceCheckBox{background:#d8ff32!important;border-color:#d8ff32!important;color:#0c0f12!important}
+.raceCheckAction:disabled{opacity:.62!important;cursor:default!important}
 .raceCardActionsRefined .raceGoogleForm,.raceCardActionsRefined .raceInfoAction{grid-column:1/-1!important;width:100%!important;min-height:48px!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;border:1px solid rgba(148,163,184,.22)!important;border-radius:14px!important;background:#141a20!important;color:#eef2f6!important;font-size:14px!important;font-weight:800!important;text-decoration:none!important;box-sizing:border-box!important}
 .raceCardActionsRefined .raceLoginLink{display:none!important}
 .raceCardActionsRefined .raceGoogleForm{border-color:rgba(216,255,50,.35)!important}
@@ -54,11 +53,11 @@
  .raceLiveCard{padding:14px!important;border-radius:18px!important}
  .raceLiveCard .raceDateBox{min-width:72px!important;max-width:72px!important}
  .raceCardActionsRefined{grid-template-columns:48px 48px minmax(0,1fr)!important;gap:9px!important}
- .raceCardActionsRefined .raceGoingAction{grid-column:1/-1!important;width:100%!important}
+ .raceCardActionsRefined .raceCheckAction:nth-of-type(4){grid-column:1/-1!important}
  .racePersonalRowRefined{grid-template-columns:1fr 44px 44px!important;gap:9px!important;align-items:end!important}
  .racePersonalRowRefined .raceDistanceSelect{grid-template-columns:1fr!important;gap:6px!important}
  .racePersonalRowRefined .raceDistanceSelect span{font-size:11px!important}
  .raceMiniAction{width:44px!important;height:44px!important;padding:0!important}.raceMiniAction span{display:none!important}.raceMiniAction svg{width:19px!important;height:19px!important}
 }
-@media(max-width:390px){.raceFinderBar{grid-template-columns:1fr!important}.raceFinderBar>input:first-child{grid-column:auto!important}.raceCardActionsRefined{grid-template-columns:44px 44px minmax(0,1fr)!important}.raceCardActionsRefined .raceIconAction{width:44px!important;height:44px!important;min-width:44px!important}.raceCheckAction{height:44px!important;padding:0 10px!important;font-size:13px!important}}
+@media(max-width:390px){.raceFinderBar{grid-template-columns:1fr!important}.raceFinderBar>input:first-child{grid-column:auto!important}.raceCardActionsRefined{grid-template-columns:44px 44px minmax(0,1fr)!important}.raceCardActionsRefined .raceIconAction{width:44px!important;height:44px!important;min-width:44px!important}.raceCheckAction{height:44px!important;padding:0 10px!important;font-size:13px!important}.raceCheckBox{width:18px!important;height:18px!important;min-width:18px!important;font-size:12px!important}}
 /* loaded after final-ui-polish.css */
