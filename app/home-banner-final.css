@@ -1,0 +1,34 @@
+/* Final home promo/banner polish. Scoped to home promo and RUN nav only. */
+.homePromoCarousel{overflow:visible!important}
+.homePromoRail{align-items:stretch!important}
+.homePromoImageCard{
+  position:relative!important;
+  overflow:hidden!important;
+  border:1px solid #303943!important;
+  border-radius:24px!important;
+  background:#151b20!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.22)!important;
+  isolation:isolate!important;
+}
+.homePromoImageCard img{
+  object-fit:cover!important;
+  object-position:center!important;
+  transform:scale(1.045)!important;
+  transform-origin:center!important;
+  border-radius:inherit!important;
+}
+.homePromoImageCard::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius:inherit;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);
+}
+
+@media(max-width:700px){
+  .homePromoImageCard{border-radius:20px!important}
+  .homePromoImageCard img{transform:scale(1.06)!important}
+  .mobileBottomNavV3>a.runPrimary .mobileNavIcon{width:40px!important;height:37px!important}
+  .mobileBottomNavV3>a.runPrimary .mobileNavIcon svg{width:36px!important;height:36px!important;overflow:visible!important}
+}
