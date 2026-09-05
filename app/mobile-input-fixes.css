@@ -1,14 +1,35 @@
-/* iOS zooms the whole WebView when a focused form control renders below 16px. */
+/* Prevent iOS Safari / WKWebView from auto-zooming focused form controls.
+   iOS zooms controls that render below 16px and may keep that zoom after blur. */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 @media (max-width: 900px) {
+  input,
+  select,
+  textarea,
+  .racePage input,
+  .racePage select,
+  .racePage textarea,
+  .liveRacePage input,
+  .liveRacePage select,
+  .liveRacePage textarea {
+    font-size: 16px !important;
+    line-height: 1.25 !important;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    font-size: 16px !important;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
   input,
   select,
   textarea {
     font-size: 16px !important;
-    line-height: 1.25;
   }
-}
-
-html {
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
 }
