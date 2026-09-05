@@ -1,7 +1,7 @@
 type HubIconName =
   | "history" | "pb" | "shoe" | "shoeGuide" | "treadmill" | "saved" | "race"
   | "raceSearch" | "crew" | "profile" | "account" | "addRun" | "activity" | "completed"
-  | "crewRace" | "manage" | "course" | "gps";
+  | "crewRace" | "manage" | "course" | "gps" | "place" | "plan" | "discover";
 
 export default function HubIcon({name}:{name:HubIconName}){
   const common={width:28,height:28,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:1.8,strokeLinecap:"round" as const,strokeLinejoin:"round" as const,"aria-hidden":true};
@@ -23,7 +23,10 @@ export default function HubIcon({name}:{name:HubIconName}){
     crewRace:<><path d="M4 20V4M5 5h9l-1.5 2.5L14 10H5"/><circle cx="17" cy="15" r="2"/><path d="M13.5 20c.5-2.3 1.7-3.5 3.5-3.5s3 1.2 3.5 3.5"/></>,
     manage:<><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5L9.2 6a7 7 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.5a7 7 0 0 0 0 2.1l-2 1.5 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.3 3h5l.3-3a7 7 0 0 0 1.7-1l2.4 1 2-3.4-2-1.5c.1-.3.1-.7.1-1Z"/></>,
     course:<><path d="M5 19c1.5-3.8 3.4-5.7 5.8-5.7 3.2 0 3.4-3.7 7.2-7.3"/><circle cx="5" cy="19" r="1.5"/><circle cx="18" cy="6" r="1.5"/></>,
-    gps:<><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></>
+    gps:<><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></>,
+    place:<><path d="M12 21s6-5.3 6-11A6 6 0 0 0 6 10c0 5.7 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></>,
+    plan:<><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 9h16M8 13h3M8 16h6"/></>,
+    discover:<><circle cx="11" cy="11" r="6"/><path d="m15.5 15.5 4 4"/><path d="M8.5 11h5M11 8.5v5"/></>
   };
   return <span className="hubIconBox"><svg {...common}>{paths[name]}</svg></span>;
 }
