@@ -1,0 +1,25 @@
+/* Saved hub follows the same icon/card language as MY and CREW. */
+.savedHubPage{max-width:980px}
+.savedHubPage .compactPageHero{margin-bottom:16px}
+.savedHubGrid{display:grid!important;gap:12px!important}
+.savedHubTile{display:grid!important;grid-template-columns:58px minmax(0,1fr) auto!important;align-items:center!important;column-gap:16px!important;min-height:112px!important;padding:18px!important;box-sizing:border-box!important;border:1px solid var(--app-line,#303943)!important;border-radius:22px!important;background:linear-gradient(145deg,#171e23,#11161a)!important;text-decoration:none!important;color:inherit!important}
+.savedHubTile .hubIconBox{width:52px!important;height:52px!important;min-width:52px!important;border-radius:16px!important;display:grid!important;place-items:center!important;background:#202830!important;border:1px solid rgba(148,163,184,.1)!important;color:#d8ff32!important}
+.savedHubTile .hubIconBox svg{width:27px!important;height:27px!important}
+.savedHubTile .hubTileCopy{min-width:0!important;text-align:left!important}
+.savedHubTile .hubTileCopy small{display:block!important;margin:0 0 7px!important;font-size:11px!important;line-height:1!important;letter-spacing:.15em!important;color:#d8ff32!important;white-space:nowrap!important}
+.savedHubTile .hubTileCopy h2{margin:0!important;font-size:20px!important;line-height:1.15!important;text-align:left!important;word-break:keep-all!important}
+.savedHubTile .hubTileCopy p{margin:7px 0 0!important;font-size:12px!important;line-height:1.35!important;color:#9aa5b2!important;text-align:left!important;word-break:keep-all!important}
+.savedHubTile .hubTileChevron{justify-self:end!important;color:#d8ff32!important;font-size:18px!important;line-height:1!important;white-space:nowrap!important;text-align:right!important}
+.savedHubTile:active{transform:scale(.985)}
+
+@media(max-width:700px){
+ .savedHubPage{padding-left:10px!important;padding-right:10px!important;padding-bottom:96px!important}
+ .savedHubGrid{gap:8px!important}
+ .savedHubTile{grid-template-columns:52px minmax(0,1fr) auto!important;column-gap:13px!important;min-height:104px!important;padding:16px!important;border-radius:17px!important}
+ .savedHubTile .hubIconBox{width:48px!important;height:48px!important;min-width:48px!important;border-radius:15px!important}
+ .savedHubTile .hubIconBox svg{width:25px!important;height:25px!important}
+ .savedHubTile .hubTileCopy small{font-size:10px!important;margin-bottom:6px!important}
+ .savedHubTile .hubTileCopy h2{font-size:18px!important}
+ .savedHubTile .hubTileCopy p{font-size:11.5px!important;margin-top:6px!important}
+ .savedHubTile .hubTileChevron{font-size:16px!important}
+}
