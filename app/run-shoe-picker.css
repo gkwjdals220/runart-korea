@@ -1,3 +1,17 @@
-.runShoePicker{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
-.runShoePicker h3{margin:3px 0}
+.runShoePicker{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:18px;margin-bottom:18px;padding:22px 20px}
+.runShoePicker>div{min-width:0;display:grid;gap:5px}
+.runShoePicker .eyebrow{margin-bottom:5px}
+.runShoePicker h3{margin:3px 0;line-height:1.25}
 .runShoePicker select{max-width:52%;padding:11px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink)}
+
+/* Recovery card: keep description and actions visually separated. */
+.runRecoveryCard,.runResumeCard,.recoveryCard{padding:22px 20px!important}
+.runRecoveryCard p,.runResumeCard p,.recoveryCard p{margin:12px 0 20px!important;line-height:1.5!important}
+.runRecoveryCard .actions,.runResumeCard .actions,.recoveryCard .actions{margin-top:18px!important;gap:10px!important}
+
+@media(max-width:700px){
+ .runShoePicker{display:grid;grid-template-columns:minmax(0,1fr) minmax(148px,46%);align-items:center;gap:18px;margin-top:20px;margin-bottom:20px;padding:22px 18px}
+ .runShoePicker select{width:100%;max-width:none;margin:0;min-height:52px}
+ .runRecoveryCard,.runResumeCard,.recoveryCard{padding:22px 18px!important}
+ .runRecoveryCard p,.runResumeCard p,.recoveryCard p{margin-bottom:22px!important}
+}
