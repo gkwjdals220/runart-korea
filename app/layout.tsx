@@ -44,6 +44,7 @@ import MobileBottomNav from "@/components/MobileBottomNav";
 import UrgentFacilityNav from "@/components/UrgentFacilityNav";
 import ExplorerSelectionAssist from "@/components/ExplorerSelectionAssist";
 import NativeAppBridge from "@/components/NativeAppBridge";
+import WatchRunSyncBridge from "@/components/WatchRunSyncBridge";
 import RunLegacyEmojiCleanup from "@/components/RunLegacyEmojiCleanup";
 import AppUiFinalPolish from "@/components/AppUiFinalPolish";
 import RunCalorieEnhancer from "@/components/RunCalorieEnhancer";
@@ -63,5 +64,5 @@ export const metadata = {
 export const viewport = {width: "device-width",initialScale: 1,viewportFit: "cover",themeColor: "#0c0f12"};
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <html lang="ko" className={ttwittunFont.variable}><body><div id="top" /><AppUiFinalPolish /><AppRouteWarmup />{children}<RunCalorieEnhancer /><RunVoiceCoach /><ExplorerSelectionAssist /><UrgentFacilityNav /><MobileBottomNav /><NativeAppBridge /><RunLegacyEmojiCleanup /></body></html>;
+  return <html lang="ko" className={ttwittunFont.variable}><body><div id="top" /><AppUiFinalPolish /><AppRouteWarmup />{children}<RunCalorieEnhancer /><RunVoiceCoach /><WatchRunSyncBridge /><ExplorerSelectionAssist /><UrgentFacilityNav /><MobileBottomNav /><NativeAppBridge /><RunLegacyEmojiCleanup /></body></html>;
 }
