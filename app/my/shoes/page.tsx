@@ -1,6 +1,4 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import Brand from "@/components/Brand";
 import ShoeMileageManager from "@/components/ShoeMileageManager";
 import { createClient } from "@/lib/supabase/server";
 export default async function ShoesPage({ searchParams }: { searchParams: Promise<{ brand?: string; model?: string; target?: string }> }) {
@@ -33,17 +31,6 @@ export default async function ShoesPage({ searchParams }: { searchParams: Promis
   }));
   return (
     <main className="wrap shoePage">
-      <header className="top compactPageTop">
-        <Brand />
-        <div className="nav">
-          <Link className="btn ghost" href="/my">
-            ← MY
-          </Link>
-          <Link className="btn" href="/shoes">
-            신발 가이드
-          </Link>
-        </div>
-      </header>
       <ShoeMileageManager userId={user.id} initial={rows} preset={preset} />
     </main>
   );
