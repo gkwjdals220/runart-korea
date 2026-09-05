@@ -13,7 +13,7 @@
     "mobile:ios": "npx cap open ios",
     "mobile:android": "npx cap open android",
     "mobile:doctor": "npx cap doctor",
-    "mobile:watch:setup": "npx cap sync ios && node scripts/setup-watch.mjs",
+    "mobile:watch:setup": "npx cap sync ios && node scripts/setup-watch.mjs && node scripts/setup-watch-assets.mjs",
     "mobile:watch": "npm run mobile:watch:setup && npx cap open ios"
   },
   "dependencies": {
