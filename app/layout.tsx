@@ -45,43 +45,20 @@ import NativeAppBridge from "@/components/NativeAppBridge";
 import RunLegacyEmojiCleanup from "@/components/RunLegacyEmojiCleanup";
 import AppUiFinalPolish from "@/components/AppUiFinalPolish";
 import RunCalorieEnhancer from "@/components/RunCalorieEnhancer";
+import AppRouteWarmup from "@/components/AppRouteWarmup";
 
 const ttwittunFont = Noto_Sans_KR({ subsets: ["latin"], variable: "--font-ttwittun", display: "swap" });
 
 export const metadata = {
   title: "TTWITTUN · 러닝 코스 & 개인 기록",
-  description:
-    "대한민국 러닝 코스 탐색 · GPS 러닝 · 개인 기록 · 크루 러닝 플랫폼",
+  description: "대한민국 러닝 코스 탐색 · GPS 러닝 · 개인 기록 · 크루 러닝 플랫폼",
   applicationName: "TTWITTUN",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "TTWITTUN",
-  },
+  appleWebApp: {capable: true,statusBarStyle: "black-translucent",title: "TTWITTUN"},
   formatDetection: { telephone: false },
 };
 
-export const viewport = {
-  width: "device-width",
-  initialScale: 1,
-  viewportFit: "cover",
-  themeColor: "#0c0f12",
-};
+export const viewport = {width: "device-width",initialScale: 1,viewportFit: "cover",themeColor: "#0c0f12"};
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="ko" className={ttwittunFont.variable}>
-      <body>
-        <div id="top" />
-        <AppUiFinalPolish />
-        {children}
-        <RunCalorieEnhancer />
-        <ExplorerSelectionAssist />
-        <UrgentFacilityNav />
-        <MobileBottomNav />
-        <NativeAppBridge />
-        <RunLegacyEmojiCleanup />
-      </body>
-    </html>
-  );
+  return <html lang="ko" className={ttwittunFont.variable}><body><div id="top" /><AppUiFinalPolish /><AppRouteWarmup />{children}<RunCalorieEnhancer /><ExplorerSelectionAssist /><UrgentFacilityNav /><MobileBottomNav /><NativeAppBridge /><RunLegacyEmojiCleanup /></body></html>;
 }
