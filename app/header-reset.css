@@ -10,6 +10,14 @@
   flex:none!important;
 }
 
+/* All legacy page-level top headers are replaced by the unified header. */
+.ttwittunUnifiedDetailHeaderActive main > header.top,
+.ttwittunUnifiedDetailHeaderActive main > .top.compactPageTop,
+.ttwittunUnifiedDetailHeaderActive .mobileSubPage > header.top,
+.ttwittunUnifiedDetailHeaderActive .wrap > header.top:not(.ttwittunUnifiedDetailHeader){
+  display:none!important;
+}
+
 .ttwittunUnifiedDetailHeaderActive .runTop,
 .ttwittunUnifiedDetailHeaderActive .runModeTop,
 .ttwittunUnifiedDetailHeaderActive .runModeUtilityBar,
@@ -36,6 +44,14 @@
 .ttwittunUnifiedDetailHeaderActive .topBrand,
 .ttwittunUnifiedDetailHeaderActive .pageBrand,
 .ttwittunUnifiedDetailHeaderActive .detailBrand{
+  display:none!important;
+}
+
+/* Also suppress legacy navigation clusters that survived outside old headers. */
+.ttwittunUnifiedDetailHeaderActive main > .nav,
+.ttwittunUnifiedDetailHeaderActive main > .top + .nav,
+.ttwittunUnifiedDetailHeaderActive .compactPageTop .nav,
+.ttwittunUnifiedDetailHeaderActive .legacyTopNav{
   display:none!important;
 }
 
