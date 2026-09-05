@@ -51,7 +51,7 @@ function normalizeDistance(distance:string|null|undefined){return distance?.trim
 function monthKey(date:string){return date?.slice(0,7)||"미정"}
 function monthLabel(key:string){const [y,m]=key.split("-");return y&&m?`${y}년 ${Number(m)}월`:"일정 미정"}
 function weekday(date:string){return new Intl.DateTimeFormat("ko-KR",{weekday:"short",timeZone:"Asia/Seoul"}).format(new Date(`${date}T00:00:00+09:00`))}
-function dayOfMonth(date:string){return Number(date?.slice(8,10)||0)}
+function monthDay(date:string){const parts=date?.split("-")||[];return parts.length===3?`${Number(parts[1])}/${Number(parts[2])}`:"-"}
 
 function distanceMatches(r:Race,filter:DistanceFilter):boolean{
   if(filter==="전체") return true;
@@ -180,7 +180,7 @@ export default function PublicRaceBrowser({userId,initialSaved,initialMineOnly=f
             const me=savedFor(r),editing=noteOpen===r.source_key;
             const personalDistances=Array.from(new Set((r.distance_options||[]).map(d=>normalizeDistance(d)).filter(Boolean)));
             return <article className={`raceListItem ${me?"savedRace":""}`} key={r.source_key}>
-              <div className="raceListDate"><b>{dayOfMonth(r.race_date)}</b><span>{weekday(r.race_date)}</span><small>{dday(r.race_date)}</small></div>
+              <div className="raceListDate"><b>{monthDay(r.race_date)}</b><span>{weekday(r.race_date)}</span><small>{dday(r.race_date)}</small></div>
               <div className="raceListContent">
                 <div className="raceListTitleRow"><div><p>{r.region||"지역 미정"}</p><h3>{r.name}</h3></div><span className={`raceRegStatus ${r.registration_status}`}>{REG[r.registration_status]||"확인"}</span></div>
                 <div className="raceListDistances">{(r.distance_options||[]).map(d=><span key={d}>{normalizeDistance(d)}</span>)}</div>
