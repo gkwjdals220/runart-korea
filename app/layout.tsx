@@ -37,6 +37,7 @@ import "./race-list-v2.css";
 import "./run-calories.css";
 import "./mobile-input-fixes.css";
 import "./header-reset.css";
+import "./home-banner-final.css";
 import { Noto_Sans_KR } from "next/font/google";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import UrgentFacilityNav from "@/components/UrgentFacilityNav";
