@@ -13,7 +13,8 @@ if(!src.includes('7A1300072CB0000000000001 /* Assets.xcassets in Resources */'))
 
 const marker='CODE_SIGN_ENTITLEMENTS = TTWITTUNWatch/TTWITTUNWatch.entitlements;';
 const withIcon='CODE_SIGN_ENTITLEMENTS = TTWITTUNWatch/TTWITTUNWatch.entitlements;\n\t\t\t\tASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;';
-if(!src.includes('ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;\n\t\t\t\tCODE_SIGN_ENTITLEMENTS = TTWITTUNWatch')){
+const iconSettingCount=(src.match(/ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;/g)||[]).length;
+if(iconSettingCount<4){
  const pieces=src.split(marker);
  if(pieces.length>=3)src=pieces.join(withIcon);
 }
