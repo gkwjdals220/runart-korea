@@ -1,6 +1,25 @@
 /* Final mobile shell contract. Keep this import last in app/layout.tsx. */
 :root{--z-header:900;--z-run-dock:1200;--z-sheet-mask:1210;--z-sheet:1250;--z-bottom-nav:1300;--z-urgent-mask:1390;--z-urgent:1400}
 
+/* Course explorer V3: list first, map/detail only after a course is selected. */
+.explorerLayout:not(:has(.mapCourseInfo)){
+  grid-template-columns:minmax(0,1fr)!important;
+}
+.explorerLayout:not(:has(.mapCourseInfo)) .explorerMapPanel{
+  display:none!important;
+}
+.explorerLayout:not(:has(.mapCourseInfo)) .explorerCourseList{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+.explorerLayout:has(.mapCourseInfo) .explorerMapPanel{
+  display:block!important;
+}
+
 @media(max-width:700px){
   html,body{max-width:100%;overflow-x:hidden}
   body{padding-bottom:76px!important}
@@ -12,6 +31,40 @@
   body:has(input:focus,textarea:focus,select:focus) .mobileBottomNavV3{
     transform:translateY(calc(100% + env(safe-area-inset-bottom)))!important;
     opacity:0!important;pointer-events:none!important
+  }
+
+  /* Default course finding screen is a full list. Selecting a course switches to map + detail. */
+  .explorerLayout:not(:has(.mapCourseInfo)) .explorerCourseList{
+    display:block!important;
+    margin-top:8px!important;
+    padding-bottom:8px!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  .explorerLayout:not(:has(.mapCourseInfo)) .explorerCourseList::before{
+    content:none!important;
+    display:none!important;
+  }
+  .explorerLayout:not(:has(.mapCourseInfo)) .explorerCourseList .listHead{
+    position:relative!important;
+    top:auto!important;
+    width:100%!important;
+    margin:0 0 8px!important;
+  }
+  .explorerLayout:not(:has(.mapCourseInfo)) .explorerCourseCard{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    margin:0 0 9px!important;
+    scroll-snap-align:none!important;
+  }
+  .explorerLayout:not(:has(.mapCourseInfo)) .explorerCourseCard:last-child{
+    margin-bottom:0!important;
+  }
+  .explorerLayout:has(.mapCourseInfo) .explorerCourseList{
+    display:none!important;
   }
 
   .explorerLayout.view-map .explorerMapPanel{display:block!important}
@@ -28,6 +81,17 @@
   .explorerV2:has(.explorerSearchRow input:not(:placeholder-shown)) .explorerLayout.view-map .explorerMapPanel .courseMap{
     height:clamp(225px,31dvh,295px)!important;min-height:225px!important;max-height:295px!important
   }
+
+  /* Re-assert list-first contract after legacy view-map rules above. */
+  .explorerLayout.view-map:not(:has(.mapCourseInfo)) .explorerMapPanel{display:none!important}
+  .explorerLayout.view-map:not(:has(.mapCourseInfo)) .explorerCourseList{
+    display:block!important;height:auto!important;min-height:0!important;max-height:none!important;
+    overflow:visible!important;margin-top:8px!important
+  }
+  .explorerLayout.view-map:not(:has(.mapCourseInfo)) .explorerCourseCard{
+    width:100%!important;max-width:none!important;min-width:0!important;margin:0 0 9px!important
+  }
+  .explorerLayout.view-map:has(.mapCourseInfo) .explorerCourseList{display:none!important}
 
   .explorerMapPanel:has(.mapCourseInfo)::after{z-index:var(--z-sheet-mask)!important}
   .explorerMapPanel .mapCourseInfo{
