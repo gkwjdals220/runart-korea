@@ -36,6 +36,7 @@ import "./race-layout-fixes.css";
 import "./header-reset.css";
 import "./race-card-mobile-refine.css";
 import "./race-list-v2.css";
+import "./run-calories.css";
 import { Noto_Sans_KR } from "next/font/google";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import UrgentFacilityNav from "@/components/UrgentFacilityNav";
@@ -43,6 +44,7 @@ import ExplorerSelectionAssist from "@/components/ExplorerSelectionAssist";
 import NativeAppBridge from "@/components/NativeAppBridge";
 import RunLegacyEmojiCleanup from "@/components/RunLegacyEmojiCleanup";
 import AppUiFinalPolish from "@/components/AppUiFinalPolish";
+import RunCalorieEnhancer from "@/components/RunCalorieEnhancer";
 
 const ttwittunFont = Noto_Sans_KR({ subsets: ["latin"], variable: "--font-ttwittun", display: "swap" });
 
@@ -73,6 +75,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div id="top" />
         <AppUiFinalPolish />
         {children}
+        <RunCalorieEnhancer />
         <ExplorerSelectionAssist />
         <UrgentFacilityNav />
         <MobileBottomNav />
