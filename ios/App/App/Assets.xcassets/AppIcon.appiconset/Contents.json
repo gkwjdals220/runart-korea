@@ -5,6 +5,12 @@
       "size": "1024x1024",
       "filename": "AppIcon-512@2x.png",
       "platform": "ios"
+    },
+    {
+      "idiom": "universal",
+      "size": "1024x1024",
+      "filename": "AppIcon-512@2x.png",
+      "platform": "watchos"
     }
   ],
   "info": {
