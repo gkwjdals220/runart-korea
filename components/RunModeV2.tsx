@@ -135,6 +135,68 @@ function normalizeSplits(raw: any[], lapDistanceM: number): Split[] {
     paceSecPerKm: Number(s.paceSecPerKm || s.lapSeconds || 0),
   }));
 }
+function buildDistanceSplits(
+  points: Pt[],
+  totalDistanceM: number,
+  totalElapsed: number,
+  lapDistanceM: number,
+): Split[] {
+  if (points.length < 2 || totalDistanceM < lapDistanceM || totalElapsed <= 0)
+    return [];
+  const segments: { d: number; dt: number }[] = [];
+  let rawDistance = 0,
+    activeSeconds = 0;
+  for (let i = 1; i < points.length; i++) {
+    const a = points[i - 1],
+      b = points[i],
+      dt = (b.ts - a.ts) / 1000;
+    if (!Number.isFinite(dt) || dt <= 0 || dt > 30) continue;
+    const raw = haversineM(a, b),
+      d = raw >= 1 && raw < 120 ? raw : 0;
+    segments.push({ d, dt });
+    activeSeconds += dt;
+    rawDistance += d;
+  }
+  if (rawDistance <= 0 || activeSeconds <= 0) return [];
+  const distanceScale = totalDistanceM / rawDistance,
+    timeScale = totalElapsed / activeSeconds,
+    expectedLaps = Math.floor(totalDistanceM / lapDistanceM),
+    result: Split[] = [];
+  let cumDistance = 0,
+    cumActive = 0,
+    previousCrossElapsed = 0,
+    nextThreshold = lapDistanceM;
+  for (const segment of segments) {
+    const scaledDistance = segment.d * distanceScale,
+      activeBefore = cumActive;
+    while (
+      scaledDistance > 0 &&
+      result.length < expectedLaps &&
+      cumDistance + scaledDistance >= nextThreshold
+    ) {
+      const fraction = Math.max(
+          0,
+          Math.min(1, (nextThreshold - cumDistance) / scaledDistance),
+        ),
+        crossElapsed = (activeBefore + segment.dt * fraction) * timeScale,
+        lapSeconds = Math.max(1, Math.round(crossElapsed - previousCrossElapsed)),
+        lap = result.length + 1;
+      result.push({
+        lap,
+        distanceM: lapDistanceM,
+        km: Number(((lap * lapDistanceM) / 1000).toFixed(1)),
+        elapsed: Math.round(crossElapsed),
+        lapSeconds,
+        paceSecPerKm: Math.round(lapSeconds / (lapDistanceM / 1000)),
+      });
+      previousCrossElapsed = crossElapsed;
+      nextThreshold = (lap + 1) * lapDistanceM;
+    }
+    cumDistance += scaledDistance;
+    cumActive += segment.dt;
+  }
+  return result;
+}
 
 export default function RunModeV2({
   courseId = null,
@@ -200,6 +262,23 @@ export default function RunModeV2({
     wake = useRef<any>(null),
     nativeTracking = useRef(false),
     nativePointTs = useRef(0);
+  const syncSplits = useCallback(() => {
+    const expected = Math.floor(distanceRef.current / lapDistanceM);
+    if (expected <= 0 || expected === splitsRef.current.length) return;
+    const rebuilt = buildDistanceSplits(
+      track.current,
+      distanceRef.current,
+      elapsedRef.current,
+      lapDistanceM,
+    );
+    if (!rebuilt.length && expected > 0) return;
+    splitsRef.current = rebuilt;
+    setSplits(rebuilt);
+    lastLapElapsed.current = rebuilt.length
+      ? rebuilt[rebuilt.length - 1].elapsed
+      : 0;
+    nextLap.current = rebuilt.length + 1;
+  }, [lapDistanceM]);
   const applyNativeSnapshot = useCallback((value: NativeRunSnapshot) => {
     if (!value?.available) return;
     nativeTracking.current = value.running;
@@ -216,6 +295,7 @@ export default function RunModeV2({
       if (track.current.length > 6000) track.current = track.current.slice(-6000);
     }
     if (value.track?.length) track.current = value.track as Pt[];
+    syncSplits();
     if (value.running && value.nativePlugin) {
       if (value.liveActivityError) setNativeDiagnostic(`Live Activity 오류: ${value.liveActivityError}`);
       else if (value.liveActivityActive) setNativeDiagnostic("백그라운드 GPS · Live Activity 실행 중");
@@ -223,7 +303,7 @@ export default function RunModeV2({
       else if (value.liveActivityEnabled === false) setNativeDiagnostic("설정에서 TTWITTUN의 실시간 현황을 켜주세요.");
       else setNativeDiagnostic("네이티브 GPS 실행 중 · Live Activity 생성 확인 필요");
     }
-  }, []);
+  }, [syncSplits]);
   useEffect(() => {
     if (!canUseNativeRun()) return;
     let active = true;
@@ -379,23 +459,7 @@ export default function RunModeV2({
                 setCurrentPace(cp);
                 setBestPace((v) => (v == null || cp < v ? cp : v));
               }
-              const nowElapsed = elapsedRef.current;
-              while (distanceRef.current >= nextLap.current * lapDistanceM) {
-                const lapNo = nextLap.current,
-                  lapSec = Math.max(1, nowElapsed - lastLapElapsed.current),
-                  entry: Split = {
-                    lap: lapNo,
-                    distanceM: lapDistanceM,
-                    km: Number(((lapNo * lapDistanceM) / 1000).toFixed(1)),
-                    elapsed: nowElapsed,
-                    lapSeconds: lapSec,
-                    paceSecPerKm: Math.round(lapSec / (lapDistanceM / 1000)),
-                  };
-                splitsRef.current = [...splitsRef.current, entry];
-                setSplits(splitsRef.current);
-                lastLapElapsed.current = nowElapsed;
-                nextLap.current += 1;
-              }
+              syncSplits();
             }
           } else {
             track.current.push(p);
@@ -500,6 +564,7 @@ export default function RunModeV2({
     }
   }
   async function saveRun(finalElapsed: number, finalDistance: number) {
+    syncSplits();
     const oneK = bestSegmentSeconds(track.current, 1000),
       threeK = bestSegmentSeconds(track.current, 3000),
       fiveK = bestSegmentSeconds(track.current, 5000),
@@ -563,9 +628,9 @@ export default function RunModeV2({
         .insert({
           user_id: userId,
           course_id: mode === "course" ? courseId : null,
-        crew_id: mode === "course" ? crewId || null : null,
-        shoe_id: shoeId || null,
-        run_mode: mode,
+          crew_id: mode === "course" ? crewId || null : null,
+          shoe_id: shoeId || null,
+          run_mode: mode,
           started_at: new Date(startedAt.current || Date.now()).toISOString(),
           finished_at: new Date().toISOString(),
           elapsed_seconds: finalElapsed,
