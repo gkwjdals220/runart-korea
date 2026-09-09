@@ -40,6 +40,7 @@ import "./mobile-input-fixes.css";
 import "./header-reset.css";
 import "./home-banner-final.css";
 import "./manage-hub-polish.css";
+import "./pb-icon-fix.css";
 import { Noto_Sans_KR } from "next/font/google";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import UrgentFacilityNav from "@/components/UrgentFacilityNav";
