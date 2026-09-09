@@ -3,7 +3,7 @@ import {redirect} from "next/navigation";
 import HubIcon from "@/components/HubIcon";
 import {createClient} from "@/lib/supabase/server";
 
-type CrewIcon="addRun"|"activity"|"completed"|"crewRace"|"manage"|"course"|"gps";
+type CrewIcon="addRun"|"activity"|"completed"|"crewRace"|"manage"|"course"|"gps"|"crew";
 function CrewCard({href,icon,label,title,description,primary=false}:{href:string;icon:CrewIcon;label:string;title:string;description:string;primary?:boolean}){
  return <Link className={`hubTile crewHubTile${primary?" primaryHubTile":""}`} href={href}>
   <HubIcon name={icon}/>
@@ -40,6 +40,7 @@ export default async function Dashboard(){
   <section className="pageHubGrid crewHubGrid">
    <CrewCard href="/dashboard/add" icon="addRun" label="ADD RUN" title="기록 추가" description="참가자와 실제 거리 입력" primary/>
    <CrewCard href="/dashboard/activity" icon="activity" label="ACTIVITY" title="최근 러닝" description="크루 활동·참여 현황"/>
+   <CrewCard href="/manage/members" icon="crew" label="MEMBERS" title="크루원 보기" description="크루원 프로필·활동·PB 현황"/>
    <CrewCard href="/dashboard/completed" icon="completed" label="COMPLETED" title="완주 코스" description="내가 참여한 크루런 코스"/>
    <CrewCard href="/races/crew" icon="crewRace" label="CREW RACE" title="크루 대회" description="멤버 참가 일정·현황"/>
    {canManage&&<CrewCard href="/manage" icon="manage" label="ADMIN" title="크루 관리" description="멤버·신청·코스 승인"/>}
