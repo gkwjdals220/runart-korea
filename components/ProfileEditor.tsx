@@ -12,12 +12,15 @@ export default function ProfileEditor({userId,initialName,initialAvatarPath=null
  useEffect(()=>{let cancelled=false;async function load(){if(!avatarPath){setAvatarUrl("");return}const {data}=await sb.storage.from("runart-media").createSignedUrl(avatarPath,3600);if(!cancelled)setAvatarUrl(data?.signedUrl||"")}load();return()=>{cancelled=true}},[avatarPath,sb]);
 
  async function ensureSession(){
-  const {data:{session},error}=await sb.auth.getSession();
+  let {data:{session},error}=await sb.auth.getSession();
   if(error)throw error;
-  if(session)return session;
-  const {data,error:refreshError}=await sb.auth.refreshSession();
-  if(refreshError||!data.session)throw refreshError||new Error("로그인 세션을 확인할 수 없습니다. 앱을 다시 열어주세요.");
-  return data.session;
+  if(!session){
+   const refreshed=await sb.auth.refreshSession();
+   if(refreshed.error||!refreshed.data.session)throw refreshed.error||new Error("로그인 세션을 확인할 수 없습니다. 앱을 다시 열어주세요.");
+   session=refreshed.data.session;
+  }
+  if(session.user.id!==userId)throw new Error("현재 로그인 계정과 프로필 정보가 일치하지 않습니다. 다시 로그인해주세요.");
+  return session;
  }
 
  async function save(){
@@ -34,14 +37,19 @@ export default function ProfileEditor({userId,initialName,initialAvatarPath=null
   setUploading(true);setMsg("");
   const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
   const nextPath=`avatars/${userId}/profile-${Date.now()}.${ext}`;
+  let uploaded=false;
   try{
    await ensureSession();
-   const {error:uploadError}=await sb.storage.from("runart-media").upload(nextPath,file,{cacheControl:"3600",upsert:false,contentType:file.type||"image/jpeg"});if(uploadError)throw uploadError;
+   const {error:uploadError}=await sb.storage.from("runart-media").upload(nextPath,file,{cacheControl:"3600",upsert:false,contentType:file.type||"image/jpeg"});if(uploadError)throw uploadError;uploaded=true;
+   await ensureSession();
    const {error:profileError}=await sb.from("runart_profiles").upsert({user_id:userId,display_name:name.trim()||savedName||"러너",avatar_path:nextPath,updated_at:new Date().toISOString()});if(profileError)throw profileError;
    const {data:signed}=await sb.storage.from("runart-media").createSignedUrl(nextPath,3600);
    const previous=avatarPath;setAvatarPath(nextPath);setAvatarUrl(signed?.signedUrl||"");setMsg("프로필 사진을 저장했습니다.");
    if(previous&&previous!==nextPath)void sb.storage.from("runart-media").remove([previous]);
-  }catch(e:any){setMsg(e?.message||"프로필 사진 저장 중 오류가 발생했습니다.")}finally{
+  }catch(e:any){
+   if(uploaded)void sb.storage.from("runart-media").remove([nextPath]);
+   setMsg(e?.message||"프로필 사진 저장 중 오류가 발생했습니다.");
+  }finally{
    setUploading(false);
    if(libraryRef.current)libraryRef.current.value="";
    if(cameraRef.current)cameraRef.current.value="";
