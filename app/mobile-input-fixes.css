@@ -14,22 +14,34 @@ html {
   .racePage textarea,
   .liveRacePage input,
   .liveRacePage select,
-  .liveRacePage textarea {
+  .liveRacePage textarea,
+  .raceFinderBar input,
+  .raceFinderBar select {
     font-size: 16px !important;
     line-height: 1.25 !important;
   }
 
   input:focus,
   select:focus,
-  textarea:focus {
+  textarea:focus,
+  .raceFinderBar input:focus,
+  .raceFinderBar select:focus {
     font-size: 16px !important;
+  }
+
+  .raceFinderBar input,
+  .raceFinderBar select {
+    min-height: 44px;
+    touch-action: manipulation;
   }
 }
 
 @supports (-webkit-touch-callout: none) {
   input,
   select,
-  textarea {
+  textarea,
+  .raceFinderBar input,
+  .raceFinderBar select {
     font-size: 16px !important;
   }
 }
