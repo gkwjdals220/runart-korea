@@ -50,6 +50,7 @@ import RunLegacyEmojiCleanup from "@/components/RunLegacyEmojiCleanup";
 import AppUiFinalPolish from "@/components/AppUiFinalPolish";
 import RunCalorieEnhancer from "@/components/RunCalorieEnhancer";
 import RunVoiceCoach from "@/components/RunVoiceCoach";
+import RunSaveNameEditor from "@/components/RunSaveNameEditor";
 import AppRouteWarmup from "@/components/AppRouteWarmup";
 
 const ttwittunFont = Noto_Sans_KR({ subsets: ["latin"], variable: "--font-ttwittun", display: "swap" });
@@ -65,5 +66,5 @@ export const metadata = {
 export const viewport = {width: "device-width",initialScale: 1,viewportFit: "cover",themeColor: "#0c0f12"};
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <html lang="ko" className={ttwittunFont.variable}><body><div id="top" /><AppUiFinalPolish /><AppRouteWarmup />{children}<RunCalorieEnhancer /><RunVoiceCoach /><WatchRunSyncBridge /><ExplorerSelectionAssist /><UrgentFacilityNav /><MobileBottomNav /><NativeAppBridge /><RunLegacyEmojiCleanup /></body></html>;
+  return <html lang="ko" className={ttwittunFont.variable}><body><div id="top" /><AppUiFinalPolish /><AppRouteWarmup />{children}<RunCalorieEnhancer /><RunVoiceCoach /><RunSaveNameEditor /><WatchRunSyncBridge /><ExplorerSelectionAssist /><UrgentFacilityNav /><MobileBottomNav /><NativeAppBridge /><RunLegacyEmojiCleanup /></body></html>;
 }
