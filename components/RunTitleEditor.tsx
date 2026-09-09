@@ -1,9 +1,11 @@
 "use client";
 
+import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {createClient} from "@/lib/supabase/client";
 
 export default function RunTitleEditor({runId,initialTitle}:{runId:string;initialTitle:string}){
+  const router=useRouter();
   const [name,setName]=useState(initialTitle);
   const [saved,setSaved]=useState(initialTitle);
   const [saving,setSaving]=useState(false);
@@ -13,10 +15,28 @@ export default function RunTitleEditor({runId,initialTitle}:{runId:string;initia
     if(!trimmed){setMessage("기록 이름을 입력해주세요.");return}
     if(trimmed.length>60){setMessage("기록 이름은 60자 이하로 입력해주세요.");return}
     setSaving(true);setMessage("");
-    const {error}=await createClient().from("runart_live_runs").update({run_title:trimmed}).eq("id",runId);
-    if(error)setMessage(error.message||"이름 저장 중 오류가 발생했습니다.");
-    else{setSaved(trimmed);setName(trimmed);setMessage("기록 이름을 변경했습니다.")}
-    setSaving(false);
+    try{
+      const sb=createClient();
+      const {data:{user},error:userError}=await sb.auth.getUser();
+      if(userError||!user)throw userError||new Error("로그인 정보를 확인할 수 없습니다.");
+      const {data,error}=await sb
+        .from("runart_live_runs")
+        .update({run_title:trimmed})
+        .eq("id",runId)
+        .eq("user_id",user.id)
+        .select("id,run_title")
+        .maybeSingle();
+      if(error)throw error;
+      if(!data?.id)throw new Error("기록 이름이 실제 저장되지 않았습니다. 다시 시도해주세요.");
+      const confirmed=(data.run_title||"").trim();
+      if(confirmed!==trimmed)throw new Error("저장된 기록 이름을 확인하지 못했습니다. 다시 시도해주세요.");
+      setSaved(confirmed);setName(confirmed);setMessage("기록 이름을 변경했습니다.");
+      router.refresh();
+    }catch(error:any){
+      setMessage(error?.message||"이름 저장 중 오류가 발생했습니다.");
+    }finally{
+      setSaving(false);
+    }
   }
   return <section className="section"><div className="card" style={{display:"grid",gap:9}}>
     <div><span className="eyebrow">RUN NAME</span><h3 style={{margin:"4px 0 0"}}>기록 이름 편집</h3></div>
