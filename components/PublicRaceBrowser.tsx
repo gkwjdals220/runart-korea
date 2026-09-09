@@ -20,13 +20,32 @@ export default function PublicRaceBrowser({userId,initialSaved,initialMineOnly=f
  const[races,setRaces]=useState<Race[]>([]),[saved,setSaved]=useState(new Map(initialSaved.map(x=>[x.source_key,x]))),[loading,setLoading]=useState(true),[error,setError]=useState(""),[q,setQ]=useState(""),[region,setRegion]=useState(""),[status,setStatus]=useState(""),[mineOnly,setMineOnly]=useState(initialMineOnly),[distanceFilter,setDistanceFilter]=useState<DistanceFilter>("전체"),[selectedMonth,setSelectedMonth]=useState("");
  async function load(force=false){setLoading(true);setError("");try{const key="ttwittun:races:live:v4";if(!force){const raw=sessionStorage.getItem(key);if(raw){const c=JSON.parse(raw);if(Date.now()-c.at<600000){setRaces(c.races||[]);setLoading(false);return}}}const res=await fetch("/api/races/live",{cache:"force-cache"}),j=await res.json();if(!res.ok)throw new Error("대회 정보를 불러오지 못했습니다.");const next=j.races||[];setRaces(next);sessionStorage.setItem(key,JSON.stringify({at:Date.now(),races:next}))}catch(e:any){setError(e?.message||"대회 정보를 불러오지 못했습니다.")}finally{setLoading(false)}}
  useEffect(()=>{load()},[]);
+ useEffect(()=>{
+  if(typeof window==="undefined")return;
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  if(!isIOS)return;
+  const root=document.querySelector(".raceFinderBar");
+  if(!root)return;
+  const restoreZoom=()=>{
+   const vv=window.visualViewport;
+   if(!vv||vv.scale<=1.01)return;
+   const meta=document.querySelector('meta[name="viewport"]') as HTMLMetaElement|null;
+   if(!meta)return;
+   const original=meta.content;
+   meta.content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover";
+   requestAnimationFrame(()=>requestAnimationFrame(()=>{meta.content=original;window.scrollTo({top:window.scrollY,left:0,behavior:"auto"})}));
+  };
+  const onFocusOut=()=>window.setTimeout(restoreZoom,80);
+  root.addEventListener("focusout",onFocusOut);
+  return()=>root.removeEventListener("focusout",onFocusOut);
+ },[]);
  const months=useMemo(()=>Array.from(new Set(races.map(r=>monthKey(r.race_date)).filter(Boolean))).sort(),[races]);
  useEffect(()=>{if(selectedMonth||!months.length)return;const now=new Date(),cur=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;setSelectedMonth(months.includes(cur)?cur:(months.find(m=>m>=cur)||months[0]))},[months,selectedMonth]);
  const monthIndex=months.indexOf(selectedMonth),regions=useMemo(()=>Array.from(new Set(races.map(r=>r.region).filter(Boolean) as string[])).sort(),[races]);
  const filtered=useMemo(()=>races.filter(r=>{if(selectedMonth&&monthKey(r.race_date)!==selectedMonth)return false;if(q&&!`${r.name} ${r.region||""} ${(r.distance_options||[]).join(" ")}`.toLowerCase().includes(q.toLowerCase()))return false;if(region&&r.region!==region)return false;if(status&&r.registration_status!==status)return false;if(mineOnly&&!saved.has(r.source_key))return false;if(!distanceMatches(r,distanceFilter))return false;return true}).sort((a,b)=>a.race_date.localeCompare(b.race_date)),[races,selectedMonth,q,region,status,mineOnly,distanceFilter,saved]);
  async function setParticipation(r:Race,nextStatus:string){if(!userId)return;const sb=createClient(),prev=saved.get(r.source_key);const payload={user_id:userId,source_key:r.source_key,race_name:r.name,race_date:r.race_date,region:r.region,official_url:r.official_url||r.registration_url||null,status:nextStatus,distance:prev?.distance||null,note:prev?.note||null,updated_at:new Date().toISOString()};const{error}=await sb.from("runart_public_race_participation").upsert(payload,{onConflict:"user_id,source_key"});if(!error){const next=new Map(saved);next.set(r.source_key,payload as Saved);setSaved(next)}}
  return <div className="publicRaceBrowser raceListV2">
-  <div className="raceFinderBar"><input value={q} onChange={e=>setQ(e.target.value)} placeholder="대회명·지역·거리 검색"/><select value={region} onChange={e=>setRegion(e.target.value)}><option value="">전국</option>{regions.map(x=><option key={x}>{x}</option>)}</select><select value={status} onChange={e=>setStatus(e.target.value)}><option value="">접수상태 전체</option><option value="open">접수중</option><option value="upcoming">접수예정</option><option value="closed">접수마감</option><option value="unknown">확인필요</option></select>{userId&&<button type="button" className={`chip ${mineOnly?"on":""}`} onClick={()=>setMineOnly(v=>!v)}>내 대회</button>}</div>
+  <div className="raceFinderBar"><input value={q} onChange={e=>setQ(e.target.value)} placeholder="대회명·지역·거리 검색" autoComplete="off"/><select value={region} onChange={e=>setRegion(e.target.value)}><option value="">전국</option>{regions.map(x=><option key={x}>{x}</option>)}</select><select value={status} onChange={e=>setStatus(e.target.value)}><option value="">접수상태 전체</option><option value="open">접수중</option><option value="upcoming">접수예정</option><option value="closed">접수마감</option><option value="unknown">확인필요</option></select>{userId&&<button type="button" className={`chip ${mineOnly?"on":""}`} onClick={()=>setMineOnly(v=>!v)}>내 대회</button>}</div>
   <div className="raceDistanceTabs">{DISTANCE_FILTERS.map(item=><button key={item} type="button" className={distanceFilter===item?"active":""} onClick={()=>setDistanceFilter(item)}>{item}</button>)}</div>
   <div className="raceMonthNavigator"><button type="button" disabled={monthIndex<=0} onClick={()=>setSelectedMonth(months[monthIndex-1])}>‹</button><div><small>{selectedMonth?.slice(0,4)||new Date().getFullYear()}년</small><strong>{selectedMonth?Number(selectedMonth.slice(5,7)):new Date().getMonth()+1}월</strong></div><button type="button" disabled={monthIndex<0||monthIndex>=months.length-1} onClick={()=>setSelectedMonth(months[monthIndex+1])}>›</button></div>
   <div className="raceSourceRow"><span>{loading?"대회 정보를 업데이트하는 중…":`${filtered.length}개 일정`}</span><div><Link className="textReset" href={userId?"/races/my":"/login"} prefetch>{userId?"내 일정":"로그인"}</Link><button className="textReset" type="button" onClick={()=>load(true)}>새로고침</button></div></div>
