@@ -97,7 +97,9 @@
     flex-basis: 23px !important;
   }
 
-  /* Explorer UI typography: reduce the magnified feel while keeping tap targets usable. */
+  /* Explorer UI typography: keep controls compact, but never shrink form fields below
+     16px on iOS. Safari/WKWebView auto-zooms smaller focused controls and can keep
+     that scale after the keyboard is dismissed. */
   .standaloneExplorePage .explorerV2 :is(h2, h3) {
     letter-spacing: -.025em;
   }
@@ -114,13 +116,20 @@
     line-height: 1.45 !important;
   }
 
-  .standaloneExplorePage .explorerV2 :is(.chip, button, input, select, a) {
+  .standaloneExplorePage .explorerV2 :is(.chip, button, a) {
     font-size: 10.5px !important;
+  }
+
+  .standaloneExplorePage .explorerV2 :is(input, select, textarea) {
+    font-size: 16px !important;
+    line-height: 1.25 !important;
+    touch-action: manipulation;
   }
 
   .standaloneExplorePage .explorerV2 .explorerSearchRow input {
     min-height: 42px !important;
     padding: 9px 12px !important;
+    font-size: 16px !important;
   }
 
   .standaloneExplorePage .explorerV2 .explorerQuickChips .chip {
