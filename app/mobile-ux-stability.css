@@ -200,11 +200,46 @@
   }
   .urgentRunDock,.urgentRunPanel{z-index:var(--z-urgent)!important}
   .urgentRunPanel{max-height:min(56dvh,520px)!important;overscroll-behavior:contain}
+
+  /* Keep SOS visually distinct and clear of the live pause/stop control dock. */
+  .urgentRunDock{
+    position:fixed!important;
+    right:16px!important;
+    bottom:calc(188px + env(safe-area-inset-bottom))!important;
+    left:auto!important;
+    top:auto!important;
+  }
+  .urgentRunFab{
+    width:58px!important;
+    height:58px!important;
+    min-width:58px!important;
+    padding:0!important;
+    border:1px solid rgba(255,255,255,.18)!important;
+    border-radius:18px!important;
+    background:#ff5a5f!important;
+    color:#fff!important;
+    font-size:14px!important;
+    font-weight:950!important;
+    letter-spacing:.06em!important;
+    box-shadow:0 10px 28px rgba(255,90,95,.32),0 2px 8px rgba(0,0,0,.28)!important;
+  }
+  .urgentRunFab.active,
+  .urgentRunFab:active{
+    background:#ff3f46!important;
+    color:#fff!important;
+    transform:scale(.96)!important;
+  }
+  .urgentRunMenu{
+    right:0!important;
+    bottom:68px!important;
+    left:auto!important;
+  }
 }
 @media(max-width:390px){
   .explorerLayout.view-map .explorerMapPanel .courseMap{
     height:clamp(270px,39dvh,350px)!important;min-height:270px!important;max-height:350px!important
   }
+  .urgentRunDock{right:12px!important;bottom:calc(182px + env(safe-area-inset-bottom))!important}
 }
 @media(prefers-reduced-motion:reduce){
   .mobileBottomNavV3,.explorerMapPanel .mapCourseInfo{transition:none!important}
