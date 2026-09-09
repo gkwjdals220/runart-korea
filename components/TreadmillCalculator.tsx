@@ -30,6 +30,9 @@ function timeText(min: number) {
     ? `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`
     : `${m}:${String(s).padStart(2, "0")}`;
 }
+function clamp(n: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, n));
+}
 
 export default function TreadmillCalculator({ userId }: { userId?: string | null }) {
   const router = useRouter();
@@ -40,10 +43,42 @@ export default function TreadmillCalculator({ userId }: { userId?: string | null
     [shoeId, setShoeId] = useState(""),
     [saving, setSaving] = useState(false),
     [saveMessage, setSaveMessage] = useState("");
-  const speed = useMemo(() => 60 / (pace / 60), [pace]),
+  const [paceMinuteInput, setPaceMinuteInput] = useState("6");
+  const [paceSecondInput, setPaceSecondInput] = useState("00");
+  const [speedInput, setSpeedInput] = useState("10.0");
+
+  const speed = useMemo(() => 3600 / Math.max(1, pace), [pace]),
     distance = (speed * minutes) / 60,
     elapsedSeconds = Math.round(minutes * 60);
-  const setSpeed = (v: number) => setPace(Math.round(3600 / Math.max(1, v)));
+
+  useEffect(() => {
+    setPaceMinuteInput(String(Math.floor(pace / 60)));
+    setPaceSecondInput(String(pace % 60).padStart(2, "0"));
+    setSpeedInput(speed.toFixed(1));
+  }, [pace, speed]);
+
+  function commitPaceInputs() {
+    const m = clamp(Number(paceMinuteInput || Math.floor(pace / 60)), 3, 15);
+    const s = clamp(Number(paceSecondInput || 0), 0, 59);
+    const next = Math.round(m * 60 + s);
+    setPace(next);
+    setPaceMinuteInput(String(m));
+    setPaceSecondInput(String(s).padStart(2, "0"));
+  }
+
+  function commitSpeedInput() {
+    const parsed = Number(speedInput.replace(",", "."));
+    const nextSpeed = clamp(Number.isFinite(parsed) ? parsed : speed, 4, 24);
+    setPace(Math.round(3600 / nextSpeed));
+    setSpeedInput(nextSpeed.toFixed(1));
+  }
+
+  function submitOnEnter(e: React.KeyboardEvent<HTMLInputElement>, commit: () => void) {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    commit();
+    e.currentTarget.blur();
+  }
 
   useEffect(() => {
     if (!userId) return;
@@ -67,7 +102,7 @@ export default function TreadmillCalculator({ userId }: { userId?: string | null
       return;
     }
     if (!Number.isFinite(distance) || distance <= 0 || elapsedSeconds <= 0) {
-      setSaveMessage("거리와 시간을 확인해주세요.");
+      setSaveMessage("거리와 시간을 확인해 주세요.");
       return;
     }
     setSaving(true);
@@ -101,7 +136,7 @@ export default function TreadmillCalculator({ userId }: { userId?: string | null
       setSaveMessage(`트레드밀 ${km.toFixed(2)}km 기록을 저장했어요. 경사도 ${incline}%`);
       router.refresh();
     } catch (error: any) {
-      setSaveMessage(error?.message || "트레드밀 기록 저장 중 오류가 발생했습니다.");
+      setSaveMessage(error?.message || "트레드밀 기록을 저장하는 중 오류가 발생했습니다.");
     } finally {
       setSaving(false);
     }
@@ -121,25 +156,45 @@ export default function TreadmillCalculator({ userId }: { userId?: string | null
         <div className="paceInputs">
           <label>
             분
-            <input inputMode="numeric" type="number" min="3" max="15" value={Math.floor(pace / 60)} onChange={(e) => setPace(Math.max(180, Number(e.target.value || 0) * 60 + (pace % 60)))} />
+            <input
+              inputMode="numeric"
+              type="text"
+              pattern="[0-9]*"
+              aria-label="목표 페이스 분"
+              value={paceMinuteInput}
+              onFocus={(e) => e.currentTarget.select()}
+              onChange={(e) => setPaceMinuteInput(e.target.value.replace(/\D/g, "").slice(0, 2))}
+              onBlur={commitPaceInputs}
+              onKeyDown={(e) => submitOnEnter(e, commitPaceInputs)}
+            />
           </label>
           <b>:</b>
           <label>
             초
-            <input inputMode="numeric" type="number" min="0" max="59" value={pace % 60} onChange={(e) => setPace(Math.floor(pace / 60) * 60 + Math.min(59, Number(e.target.value || 0)))} />
+            <input
+              inputMode="numeric"
+              type="text"
+              pattern="[0-9]*"
+              aria-label="목표 페이스 초"
+              value={paceSecondInput}
+              onFocus={(e) => e.currentTarget.select()}
+              onChange={(e) => setPaceSecondInput(e.target.value.replace(/\D/g, "").slice(0, 2))}
+              onBlur={commitPaceInputs}
+              onKeyDown={(e) => submitOnEnter(e, commitPaceInputs)}
+            />
           </label>
           <span>/km</span>
         </div>
-        <div className="presetRow">
+        <div className="presetRow" aria-label="추천 페이스">
           {presets.map((p) => (
-            <button key={p.label} className={pace === p.pace ? "active" : ""} onClick={() => setPace(p.pace)}>
-              {p.label}<small>{paceText(p.pace)}</small>
+            <button key={p.label} type="button" className={pace === p.pace ? "active" : ""} onClick={() => setPace(p.pace)}>
+              {p.label}<small>{paceText(p.pace)}/km</small>
             </button>
           ))}
         </div>
       </section>
       <section className="card treadmillResult">
-        <div><small>속도 설정</small><strong>{speed.toFixed(1)}<em>km/h</em></strong></div>
+        <div><small>설정 속도</small><strong>{speed.toFixed(1)}<em>km/h</em></strong></div>
         <div><small>예상 거리</small><strong>{distance.toFixed(2)}<em>km</em></strong></div>
         <div><small>예상 시간</small><strong>{timeText(minutes)}<em>분:초</em></strong></div>
       </section>
@@ -153,14 +208,24 @@ export default function TreadmillCalculator({ userId }: { userId?: string | null
           <span>경사도 <b>{incline}%</b></span>
           <input type="range" min="0" max="5" step="0.5" value={incline} onChange={(e) => setIncline(Number(e.target.value))} />
         </label>
-        <p className="muted">0%는 회복주, 0.5%는 자연스러운 주행감, 1%는 야외와 비슷한 체감 강도를 원하는 러너에게 권장해요.</p>
+        <p className="muted">0%는 회복 주행, 0.5%는 자연스러운 주행감, 1%는 야외와 비슷한 체감 강도를 원하는 러너에게 권장해요.</p>
       </section>
       <section className="card treadmillCard">
         <h2>속도로 역계산</h2>
         <div className="speedInput">
-          <input type="number" inputMode="decimal" min="4" max="24" step="0.1" value={speed.toFixed(1)} onChange={(e) => setSpeed(Number(e.target.value))} />
+          <input
+            type="text"
+            inputMode="decimal"
+            aria-label="트레드밀 속도"
+            value={speedInput}
+            onFocus={(e) => e.currentTarget.select()}
+            onChange={(e) => setSpeedInput(e.target.value.replace(/[^0-9.,]/g, "").slice(0, 5))}
+            onBlur={commitSpeedInput}
+            onKeyDown={(e) => submitOnEnter(e, commitSpeedInput)}
+          />
           <span>km/h</span><b>→ {paceText(pace)}/km</b>
         </div>
+        <p className="muted treadmillInputHint">속도를 직접 입력한 뒤 키보드의 완료를 누르거나 입력창 밖을 누르면 페이스가 계산됩니다.</p>
       </section>
       {userId && (
         <section className="card treadmillCard treadmillSaveCard">
@@ -180,7 +245,7 @@ export default function TreadmillCalculator({ userId }: { userId?: string | null
           <div className="treadmillSaveSummary">
             <span><small>시간</small><b>{timeText(minutes)}</b></span>
             <span><small>페이스</small><b>{paceText(Math.round(elapsedSeconds / distance))}/km</b></span>
-            <span><small>경사</small><b>{incline}%</b></span>
+            <span><small>경사도</small><b>{incline}%</b></span>
           </div>
           <button className="btn treadmillSaveButton" type="button" disabled={saving} onClick={saveWorkout}>{saving ? "저장 중…" : "운동 기록 저장"}</button>
           {saveMessage && <p className="muted formStatus" role="status">{saveMessage}</p>}
