@@ -2,6 +2,9 @@ import Link from "next/link";
 import {redirect} from "next/navigation";
 import {createClient} from "@/lib/supabase/server";
 
+export const dynamic="force-dynamic";
+export const revalidate=0;
+
 function fmt(sec:number){const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=Math.floor(sec%60);return h?`${h}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`:`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}
 function pace(sec?:number|null){return sec?`${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}`:"--:--"}
 
