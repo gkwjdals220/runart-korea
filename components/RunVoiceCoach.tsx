@@ -26,31 +26,49 @@ function paceSpeech(text:string){
 }
 
 export default function RunVoiceCoach(){
-  const lastSplitCount=useRef(0);
+  const lastAnnouncedLap=useRef(0);
+  const wasOnRunPage=useRef(false);
   useEffect(()=>{
     const onClick=(event:MouseEvent)=>{
       const target=(event.target as HTMLElement|null)?.closest("button,a") as HTMLElement|null;
       if(!target||!target.closest(".runModePage"))return;
       const text=(target.textContent||"").replace(/\s+/g," ").trim();
-      if(text.includes("러닝 시작"))speak("러닝을 시작합니다. 안전하게 달려볼까요?");
+      if(text.includes("러닝 시작")){lastAnnouncedLap.current=0;speak("러닝을 시작합니다. 안전하게 달려볼까요?");}
       else if(text.includes("일시정지"))speak("러닝 기록을 일시정지합니다.");
       else if(text.includes("다시 시작"))speak("러닝 기록을 다시 시작합니다.");
       else if(text.includes("종료")||text.includes("러닝 완료"))speak("러닝을 종료합니다. 오늘도 수고하셨습니다.");
     };
     document.addEventListener("click",onClick,true);
 
-    const observer=new MutationObserver(()=>{
-      const rows=document.querySelectorAll(".runModePage .runSplitRow");
-      if(!rows.length){lastSplitCount.current=0;return;}
-      if(rows.length<=lastSplitCount.current)return;
-      lastSplitCount.current=rows.length;
-      const row=rows[rows.length-1] as HTMLElement;
-      const pieces=(row.textContent||"").replace(/\s+/g," ").trim().split(" ");
-      const label=pieces[0]||`${rows.length}번째 랩`;
-      const pace=(row.querySelector("strong")?.textContent||"").replace("/km","");
-      speak(`${label} 완료. 페이스 ${paceSpeech(pace)}입니다.`);
-    });
+    const inspect=()=>{
+      const page=document.querySelector(".runModePage");
+      if(!page){
+        if(wasOnRunPage.current)lastAnnouncedLap.current=0;
+        wasOnRunPage.current=false;
+        return;
+      }
+      wasOnRunPage.current=true;
+      const rows=Array.from(page.querySelectorAll(".runSplitRow")) as HTMLElement[];
+      if(!rows.length)return;
+      const valid=rows.map((row,index)=>{
+        const label=(row.querySelector("b")?.textContent||"").trim();
+        const pace=(row.querySelector("strong")?.textContent||"").replace("/km","").trim();
+        const lapMatch=label.match(/(?:L)?(\d+(?:\.\d+)?)/i);
+        const lap=lapMatch?Math.round(Number(lapMatch[1])):index+1;
+        const paceMatch=pace.match(/(\d+):(\d+)/);
+        const paceSeconds=paceMatch?Number(paceMatch[1])*60+Number(paceMatch[2]):0;
+        return {row,label,pace,lap,paceSeconds};
+      }).filter(x=>x.lap>0&&x.paceSeconds>=90&&x.paceSeconds<=1800);
+      if(!valid.length)return;
+      const newest=valid[valid.length-1];
+      if(newest.lap<=lastAnnouncedLap.current)return;
+      // On page restore, do not read every historical split. Announce only the newest completed boundary.
+      lastAnnouncedLap.current=newest.lap;
+      speak(`${newest.label||`${newest.lap}번째 랩`} 완료. 페이스 ${paceSpeech(newest.pace)}입니다.`);
+    };
+    const observer=new MutationObserver(inspect);
     observer.observe(document.body,{subtree:true,childList:true,characterData:true});
+    inspect();
     return()=>{document.removeEventListener("click",onClick,true);observer.disconnect();try{window.speechSynthesis?.cancel()}catch{}};
   },[]);
   return null;
