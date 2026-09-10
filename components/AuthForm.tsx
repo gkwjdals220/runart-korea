@@ -2,6 +2,7 @@
 import {useEffect,useState} from "react";
 import {useRouter,useSearchParams} from "next/navigation";
 import {createClient} from "@/lib/supabase/client";
+import {createClient as createSupabaseClient} from "@supabase/supabase-js";
 
 const AUTH_BASE_URL="https://runart-korea.vercel.app";
 
@@ -51,11 +52,18 @@ export default function AuthForm(){
   const target=resetEmail.trim();
   if(!target)return setMsg("비밀번호를 재설정할 이메일 주소를 입력해주세요.");
   setBusy(true);setMsg("");
-  const sb=createClient();
-  const redirectTo=`${AUTH_BASE_URL}/auth/callback?next=/reset-password`;
-  const {error}=await sb.auth.resetPasswordForEmail(target,{redirectTo});
+  // @supabase/ssr uses PKCE by default. Recovery links may be opened in a
+  // different browser from the app that requested them, so use the implicit
+  // flow for password recovery only. Supabase then redirects with recovery
+  // tokens in the URL fragment and does not depend on a locally stored PKCE verifier.
+  const recoveryClient=createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    {auth:{flowType:"implicit",detectSessionInUrl:true,persistSession:true}}
+  );
+  const {error}=await recoveryClient.auth.resetPasswordForEmail(target,{redirectTo:`${AUTH_BASE_URL}/reset-password`});
   setBusy(false);
-  setMsg(error?error.message:"비밀번호 재설정 메일을 보냈습니다. 메일의 링크를 눌러 새 비밀번호를 설정해주세요.");
+  setMsg(error?error.message:"비밀번호 재설정 메일을 보냈습니다. 가장 최근 메일의 Reset password 링크를 눌러주세요.");
  }
  function openReset(){setResetEmail(email.trim());setShowReset(true);setMsg("")}
  return <div className="stack">
