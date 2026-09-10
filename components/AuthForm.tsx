@@ -13,6 +13,7 @@ export default function AuthForm(){
    if(params.get("confirmed")==="1")setMsg("이메일 인증이 완료되었습니다. 이제 로그인해주세요.");
    if(params.get("reset")==="1")setMsg("비밀번호가 변경되었습니다. 새 비밀번호로 로그인해주세요.");
    if(params.get("error")==="confirmation_failed")setMsg("인증 링크 처리에 실패했습니다. 인증 메일을 다시 보내주세요.");
+   if(params.get("error")==="recovery_link_invalid")setMsg("비밀번호 재설정 링크를 확인할 수 없습니다. 비밀번호 찾기에서 새 메일을 다시 받아주세요.");
  },[params]);
  async function login(){
   if(!email.trim()||!password)return setMsg("이메일과 비밀번호를 입력해주세요.");
