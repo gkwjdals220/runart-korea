@@ -35,8 +35,7 @@ export default function CourseShareButton({courseId,courseName,distanceKm,region
     }
   }
 
-  return <button className="btn ghost courseShareButton" type="button" onClick={share} aria-label={`${courseName} 코스 공유`} title="코스 공유">
+  return <button className={`courseShareButton courseShareIconButton${copied?" copied":""}`} type="button" onClick={share} aria-label={copied?"코스 링크 복사됨":`${courseName} 코스 공유`} title={copied?"링크 복사됨":"코스 공유"}>
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4M6.5 11H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1.5"/></svg>
-    <span>{copied?"링크 복사됨":"공유"}</span>
   </button>;
 }
