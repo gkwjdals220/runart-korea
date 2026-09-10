@@ -45,7 +45,12 @@ export default function FavoriteReview({
 
  return <div className="card favoriteReviewCard">
    <div className="favoriteReviewHead"><div><span className="eyebrow">RUNNER NOTE</span><h3>코스 후기</h3></div>
-     <button type="button" disabled={!!busy} aria-pressed={fav} className={`btn ${fav?"pink":""}`} onClick={toggleFavorite}><TtwittunButtonIcon name="favorite" compact/>{busy==="favorite"?"변경 중…":fav?"저장됨":"즐겨찾기"}</button>
+     <button type="button" disabled={!!busy} aria-pressed={fav} className="btn ghost favoriteToggleButton" onClick={toggleFavorite}>
+       <span className={`favoriteHeartIcon${fav?" active":""}`} aria-hidden="true">
+         <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9.4-9.1C1 7.6 3.2 4.5 6.6 4.5c2 0 3.6 1 4.5 2.3.9-1.3 2.5-2.3 4.5-2.3 3.4 0 5.6 3.1 4 6.9-1.9 4.5-9.6 9.1-9.6 9.1Z"/></svg>
+       </span>
+       {busy==="favorite"?"변경 중…":fav?"저장됨":"즐겨찾기"}
+     </button>
    </div>
    <div className="favoriteReviewFields"><label>별점
      <select value={rating} onChange={e=>setRating(Number(e.target.value))}>
