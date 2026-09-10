@@ -2,6 +2,9 @@
 import {useEffect,useState} from "react";
 import {useRouter,useSearchParams} from "next/navigation";
 import {createClient} from "@/lib/supabase/client";
+
+const AUTH_BASE_URL="https://runart-korea.vercel.app";
+
 export default function AuthForm(){
  const [email,setEmail]=useState(""); const [password,setPassword]=useState(""); const [name,setName]=useState("");
  const [resetEmail,setResetEmail]=useState(""); const [showReset,setShowReset]=useState(false);
@@ -27,7 +30,7 @@ export default function AuthForm(){
   if(!email.trim()||!password)return setMsg("이메일과 비밀번호를 입력해주세요.");
   setBusy(true);setMsg("");
   const sb=createClient();
-  const redirectTo=`${window.location.origin}/auth/callback?next=/login?confirmed=1`;
+  const redirectTo=`${AUTH_BASE_URL}/auth/callback?next=/login?confirmed=1`;
   const {data,error}=await sb.auth.signUp({email:email.trim(),password,options:{emailRedirectTo:redirectTo,data:{display_name:name.trim()||undefined}}});
   if(error){setBusy(false);return setMsg(error.message)}
   if(data.session && data.user && name.trim()){
@@ -39,7 +42,7 @@ export default function AuthForm(){
   if(!email.trim())return setMsg("이메일 주소를 먼저 입력해주세요.");
   setBusy(true);setMsg("");
   const sb=createClient();
-  const redirectTo=`${window.location.origin}/auth/callback?next=/login?confirmed=1`;
+  const redirectTo=`${AUTH_BASE_URL}/auth/callback?next=/login?confirmed=1`;
   const {error}=await sb.auth.resend({type:"signup",email:email.trim(),options:{emailRedirectTo:redirectTo}});
   setBusy(false);setMsg(error?error.message:"인증 메일을 다시 보냈습니다. 가장 최근에 받은 메일의 링크를 사용해주세요.");
  }
@@ -48,7 +51,7 @@ export default function AuthForm(){
   if(!target)return setMsg("비밀번호를 재설정할 이메일 주소를 입력해주세요.");
   setBusy(true);setMsg("");
   const sb=createClient();
-  const redirectTo=`${window.location.origin}/auth/callback?next=/reset-password`;
+  const redirectTo=`${AUTH_BASE_URL}/auth/callback?next=/reset-password`;
   const {error}=await sb.auth.resetPasswordForEmail(target,{redirectTo});
   setBusy(false);
   setMsg(error?error.message:"비밀번호 재설정 메일을 보냈습니다. 메일의 링크를 눌러 새 비밀번호를 설정해주세요.");
