@@ -4,6 +4,7 @@ import {useRouter,useSearchParams} from "next/navigation";
 import {createClient} from "@/lib/supabase/client";
 export default function AuthForm(){
  const [email,setEmail]=useState(""); const [password,setPassword]=useState(""); const [name,setName]=useState("");
+ const [resetEmail,setResetEmail]=useState(""); const [showReset,setShowReset]=useState(false);
  const [msg,setMsg]=useState(""); const [busy,setBusy]=useState(false); const router=useRouter(); const params=useSearchParams();
  useEffect(()=>{
    if(params.get("confirmed")==="1")setMsg("이메일 인증이 완료되었습니다. 이제 로그인해주세요.");
@@ -43,20 +44,27 @@ export default function AuthForm(){
   setBusy(false);setMsg(error?error.message:"인증 메일을 다시 보냈습니다. 가장 최근에 받은 메일의 링크를 사용해주세요.");
  }
  async function resetPassword(){
-  if(!email.trim())return setMsg("비밀번호를 재설정할 이메일 주소를 먼저 입력해주세요.");
+  const target=resetEmail.trim();
+  if(!target)return setMsg("비밀번호를 재설정할 이메일 주소를 입력해주세요.");
   setBusy(true);setMsg("");
   const sb=createClient();
   const redirectTo=`${window.location.origin}/auth/callback?next=/reset-password`;
-  const {error}=await sb.auth.resetPasswordForEmail(email.trim(),{redirectTo});
+  const {error}=await sb.auth.resetPasswordForEmail(target,{redirectTo});
   setBusy(false);
   setMsg(error?error.message:"비밀번호 재설정 메일을 보냈습니다. 메일의 링크를 눌러 새 비밀번호를 설정해주세요.");
  }
+ function openReset(){setResetEmail(email.trim());setShowReset(true);setMsg("")}
  return <div className="stack">
    <label>이름<input value={name} onChange={e=>setName(e.target.value)} placeholder="이름" disabled={busy}/></label>
-   <label>이메일<input value={email} onChange={e=>setEmail(e.target.value)} type="email" autoComplete="email" inputMode="email" disabled={busy}/></label>
+   <label>이메일<input value={email} onChange={e=>setEmail(e.target.value)} type="email" autoComplete="email" inputMode="email" placeholder="example@email.com" disabled={busy}/></label>
    <label>비밀번호<input value={password} onChange={e=>setPassword(e.target.value)} type="password" autoComplete="current-password" disabled={busy}/></label>
    <div className="actions"><button className="btn" onClick={login} disabled={busy}>로그인</button><button className="btn ghost" onClick={signup} disabled={busy}>회원가입</button><button className="btn ghost" onClick={resend} disabled={busy}>인증 메일 재발송</button></div>
-   <button className="btn ghost" type="button" onClick={resetPassword} disabled={busy} style={{width:"100%"}}>비밀번호 찾기</button>
+   {!showReset?<button className="btn ghost" type="button" onClick={openReset} disabled={busy} style={{width:"100%"}}>비밀번호 찾기</button>:
+   <div className="card" style={{display:"grid",gap:10,padding:14,marginTop:2}}>
+    <div><b style={{display:"block",marginBottom:4}}>비밀번호 재설정</b><small className="muted">가입한 이메일 주소로 재설정 링크를 보내드립니다.</small></div>
+    <label>재설정 이메일<input value={resetEmail} onChange={e=>setResetEmail(e.target.value)} type="email" autoComplete="email" inputMode="email" placeholder="가입한 이메일 주소" disabled={busy} style={{fontSize:16}}/></label>
+    <div className="actions"><button className="btn" type="button" onClick={resetPassword} disabled={busy||!resetEmail.trim()}>{busy?"발송 중…":"재설정 메일 보내기"}</button><button className="btn ghost" type="button" onClick={()=>setShowReset(false)} disabled={busy}>취소</button></div>
+   </div>}
    {msg&&<p className="muted" role="status" aria-live="polite">{msg}</p>}
  </div>
 }
