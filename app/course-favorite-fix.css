@@ -1,0 +1,38 @@
+/* Course explorer favorite state: keep the button shell neutral and color only the heart. */
+.explorerV2 .explorerCourseCard .iconHeart,
+.explorerV2 .explorerCourseCard .iconHeart:hover,
+.explorerV2 .explorerCourseCard .iconHeart:focus,
+.explorerV2 .explorerCourseCard .iconHeart:active,
+.explorerV2 .explorerCourseCard .iconHeart.saved,
+.explorerV2 .explorerCourseCard .iconHeart.saved:hover,
+.explorerV2 .explorerCourseCard .iconHeart.saved:focus,
+.explorerV2 .explorerCourseCard .iconHeart.saved:active {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(148,163,184,.26) !important;
+  background: #171d24 !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  font-size: 21px !important;
+  line-height: 1 !important;
+  transform: none !important;
+}
+
+.explorerV2 .explorerCourseCard .iconHeart {
+  color: #9aa5b2 !important;
+}
+
+.explorerV2 .explorerCourseCard .iconHeart.saved {
+  color: #d8ff32 !important;
+}
+
+.explorerV2 .explorerCourseCard .iconHeart:disabled {
+  opacity: .55 !important;
+}
