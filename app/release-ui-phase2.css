@@ -1,0 +1,97 @@
+/* TTWITTUN release polish phase 2: HOME · EXPLORE · RUN · CREW · MY */
+
+/* ---------- HOME ---------- */
+.actionHome{max-width:1080px!important;padding-left:18px!important;padding-right:18px!important}
+.actionHome .homeLogoOnly{margin-bottom:6px!important}
+.actionHome .homeActionSection{margin-top:26px!important}
+.actionHome .homeSectionTitle{display:flex!important;align-items:flex-end!important;justify-content:space-between!important;margin-bottom:12px!important}
+.actionHome .homeSectionTitle small{display:block!important;color:#d6ff2f!important;font-size:10px!important;font-weight:950!important;letter-spacing:.14em!important;margin-bottom:5px!important}
+.actionHome .homeSectionTitle h2{margin:0!important;font-size:24px!important;line-height:1.15!important;letter-spacing:-.03em!important}
+.actionHome .homeQuickGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
+.actionHome .quickImageCard{position:relative!important;aspect-ratio:1.08/1!important;overflow:hidden!important;border:1px solid rgba(255,255,255,.085)!important;border-radius:22px!important;background:linear-gradient(145deg,#171e23,#101519)!important;box-shadow:0 10px 26px rgba(0,0,0,.16)!important;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease!important}
+.actionHome .quickImageCard::after{content:"";position:absolute!important;inset:0!important;border-radius:inherit!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;pointer-events:none!important}
+.actionHome .quickImageCard img{object-fit:cover!important;object-position:center!important;transition:transform .22s ease!important}
+.actionHome .quickImageCard:active{transform:scale(.985)!important}
+.actionHome .quickImageCard.primary{border-color:rgba(214,255,47,.6)!important;box-shadow:0 13px 32px rgba(0,0,0,.22),0 0 0 1px rgba(214,255,47,.1) inset!important}
+.actionHome .quickImageCard.primary::before{content:"RUN";position:absolute!important;z-index:2!important;left:10px!important;top:10px!important;padding:5px 8px!important;border-radius:999px!important;background:#d6ff2f!important;color:#0e1215!important;font-size:9px!important;font-weight:950!important;letter-spacing:.08em!important}
+.actionHome .homeAdSlot{margin-top:28px!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:24px!important;background:linear-gradient(145deg,#151b20,#101519)!important;box-shadow:none!important}
+.actionHome .homeAdSlot>span{border:1px solid rgba(255,255,255,.1)!important;background:#1c2329!important;color:#8995a0!important}
+
+/* ---------- EXPLORE ---------- */
+.standaloneExplorePage{max-width:1180px!important}
+.standaloneExplorePage .explorePageHero{margin:8px 0 18px!important;padding:24px!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:24px!important;background:radial-gradient(circle at 86% 12%,rgba(214,255,47,.13),transparent 30%),linear-gradient(145deg,#182027,#101519)!important;box-shadow:0 12px 30px rgba(0,0,0,.14)!important}
+.standaloneExplorePage .explorePageHero h1{margin:5px 0 8px!important;font-size:31px!important;line-height:1.12!important;letter-spacing:-.035em!important}
+.standaloneExplorePage .explorerFilters{border:1px solid rgba(255,255,255,.08)!important;border-radius:18px!important;background:#11171c!important;box-shadow:0 10px 24px rgba(0,0,0,.12)!important}
+.standaloneExplorePage .explorerSearchRow input{min-height:46px!important;border-radius:14px!important;background:#0c1115!important}
+.standaloneExplorePage .filterToggle,.standaloneExplorePage .chip{min-height:40px!important;border-radius:12px!important;background:#182027!important;border-color:#313b45!important}
+.standaloneExplorePage .chip.on{background:#d6ff2f!important;color:#0e1215!important;border-color:#d6ff2f!important}
+.standaloneExplorePage .explorerMapPanel,.standaloneExplorePage .explorerCourseList{border-color:rgba(255,255,255,.085)!important;background:#11171c!important;border-radius:22px!important;box-shadow:0 10px 26px rgba(0,0,0,.13)!important}
+.standaloneExplorePage .explorerCourseCard{border-color:#2f3942!important;background:#151c21!important;border-radius:18px!important;padding:16px!important}
+.standaloneExplorePage .explorerCourseCard.selected{border-color:rgba(214,255,47,.48)!important;box-shadow:inset 3px 0 0 #d6ff2f!important;background:#171f22!important}
+.standaloneExplorePage .courseListActions button,.standaloneExplorePage .courseListActions a{border-radius:12px!important;min-height:40px!important}
+.standaloneExplorePage .courseListActions a{background:#d6ff2f!important;color:#0e1215!important}
+.standaloneExplorePage .mapCourseInfo{border-color:rgba(255,255,255,.12)!important;background:rgba(18,24,29,.97)!important;color:#f6f8fa!important}
+.standaloneExplorePage .mapCourseTitle small,.standaloneExplorePage .mapCourseTitle p{color:#9ca8b4!important}
+
+/* ---------- RUN ---------- */
+.runModePage{--run-accent:#d6ff2f!important;max-width:980px!important;margin:0 auto!important}
+.runModePage .freeRunHero{border-color:rgba(255,255,255,.09)!important;box-shadow:none!important}
+.runModePage .runMetricPanel{gap:8px!important;padding:12px!important;border-radius:24px!important}
+.runModePage .runMetricPanel>div{padding:16px 10px!important;border-radius:17px!important;background:rgba(255,255,255,.025)!important;border:1px solid rgba(255,255,255,.045)!important}
+.runModePage .runMetricPanel strong{font-size:clamp(24px,6vw,40px)!important;letter-spacing:-.04em!important;font-variant-numeric:tabular-nums!important}
+.runModePage .runMetricPanel small{margin-top:5px!important;font-size:10px!important;letter-spacing:.04em!important}
+.runModePage .runPrimaryControl,.runModePage .runStartButton,.runModePage .runPauseButton,.runModePage .runResumeButton{min-height:60px!important;border-radius:20px!important;font-size:16px!important;font-weight:950!important}
+.runModePage .runMapCard,.runModePage .runSplitsCard,.runModePage .runCoachCard{border-radius:22px!important;border-color:rgba(255,255,255,.08)!important;background:#11171c!important}
+.runModePage .runSplitsCard table{font-variant-numeric:tabular-nums!important}
+
+/* ---------- CREW ---------- */
+.crewHubPage{max-width:1040px!important}
+.crewHubPage .compactPageHero{margin-bottom:14px!important}
+.crewHubPage .myHubSummary{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important;margin:0 0 16px!important}
+.crewHubPage .myHubSummary>div{min-width:0!important;padding:15px!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:18px!important;background:#11171c!important}
+.crewHubPage .myHubSummary small{display:block!important;color:#8f9aa6!important;font-size:10px!important;margin-bottom:7px!important}
+.crewHubPage .myHubSummary b{display:block!important;font-size:22px!important;line-height:1!important;color:#f7f9fb!important;font-variant-numeric:tabular-nums!important}
+.crewHubPage .myHubSummary em{margin-left:4px!important;font-style:normal!important;font-size:10px!important;color:#98a4af!important}
+.crewHubPage .pageHubGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.crewHubPage .crewHubTile{border-radius:22px!important;box-shadow:none!important}
+.crewHubPage .crewHubTile.primaryHubTile{border-color:rgba(214,255,47,.55)!important;background:linear-gradient(145deg,rgba(214,255,47,.1),#11171b)!important}
+.crewHubPage .crewHubTile.primaryHubTile .hubIconBox{background:#d6ff2f!important;color:#0d1114!important}
+
+/* ---------- MY ---------- */
+.myHubPage{max-width:1040px!important}
+.myHubPage .compactPageHero{margin-bottom:14px!important}
+.myHubPage .myHubSummary{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important;margin:0 0 16px!important}
+.myHubPage .myHubSummary>div{min-width:0!important;padding:15px!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:18px!important;background:#11171c!important}
+.myHubPage .myHubSummary small{display:block!important;color:#8f9aa6!important;font-size:10px!important;margin-bottom:7px!important}
+.myHubPage .myHubSummary b{display:block!important;font-size:21px!important;line-height:1.1!important;color:#f7f9fb!important;font-variant-numeric:tabular-nums!important;white-space:nowrap!important}
+.myHubPage .myHubSummary em{display:inline!important;margin-left:4px!important;font-style:normal!important;font-size:10px!important;color:#98a4af!important}
+.myHubPage .pageHubGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.myHubPage .myHubTile{border-radius:22px!important;box-shadow:none!important}
+.myHubPage .myHubTile:active,.crewHubPage .crewHubTile:active{transform:scale(.988)!important}
+.myHubPage .pageBottomActions{margin-top:18px!important;padding-top:16px!important;border-top:1px solid rgba(255,255,255,.07)!important}
+
+/* ---------- SHARED MOBILE ---------- */
+@media(max-width:700px){
+ .actionHome{padding-left:12px!important;padding-right:12px!important}
+ .actionHome .homeQuickGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+ .actionHome .quickImageCard{border-radius:18px!important;aspect-ratio:1.16/1!important}
+ .actionHome .homeActionSection{margin-top:20px!important}
+ .actionHome .homeSectionTitle h2{font-size:21px!important}
+ .standaloneExplorePage .explorePageHero{padding:18px!important;border-radius:20px!important}
+ .standaloneExplorePage .explorePageHero h1{font-size:25px!important}
+ .standaloneExplorePage .explorerFilters{border-radius:16px!important}
+ .standaloneExplorePage .explorerCourseCard{border-radius:16px!important;padding:14px!important}
+ .runModePage .runMetricPanel{grid-template-columns:repeat(2,minmax(0,1fr))!important;border-radius:20px!important}
+ .runModePage .runMetricPanel>div{padding:14px 8px!important}
+ .crewHubPage .myHubSummary,.myHubPage .myHubSummary{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ .crewHubPage .myHubSummary>div,.myHubPage .myHubSummary>div{padding:13px!important;border-radius:16px!important}
+ .crewHubPage .pageHubGrid,.myHubPage .pageHubGrid{grid-template-columns:1fr!important}
+ .crewHubPage .crewHubTile,.myHubPage .myHubTile{border-radius:18px!important}
+ .myHubPage .myHubSummary b,.crewHubPage .myHubSummary b{font-size:19px!important}
+}
+
+@media(min-width:701px){
+ .actionHome .quickImageCard:hover{transform:translateY(-2px)!important;border-color:rgba(255,255,255,.14)!important;box-shadow:0 14px 34px rgba(0,0,0,.19)!important}
+ .actionHome .quickImageCard:hover img{transform:scale(1.015)!important}
+ .myHubPage .myHubTile:hover,.crewHubPage .crewHubTile:hover{border-color:rgba(214,255,47,.3)!important}
+}
