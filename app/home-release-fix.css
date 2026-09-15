@@ -1,18 +1,26 @@
 /* Home release fixes after on-device visual QA. Loaded last. */
 @media(max-width:700px){
-  .actionHome{padding-top:calc(env(safe-area-inset-top) + 8px)!important;padding-bottom:calc(126px + env(safe-area-inset-bottom))!important;overflow-x:hidden!important}
+  .actionHome{padding-top:calc(env(safe-area-inset-top) + 8px)!important;padding-bottom:calc(126px + env(safe-area-inset-bottom))!important;overflow-x:hidden!important;background:#080d11!important}
   .actionHome .homeLogoOnly{min-height:64px!important;padding-top:6px!important;margin-bottom:8px!important}
   .actionHome .homeActionSection{margin-top:18px!important}
   .actionHome .homeSectionTitle{margin:0 2px 10px!important;position:relative!important;z-index:1!important}
-  .actionHome .homeSectionTitle h2{margin:2px 0 0!important;font-size:23px!important;line-height:1.16!important;letter-spacing:-.045em!important}
+  .actionHome .homeSectionTitle small{color:#cfff25!important}
+  .actionHome .homeSectionTitle h2{margin:2px 0 0!important;font-size:23px!important;line-height:1.16!important;letter-spacing:-.045em!important;color:#fff!important}
 
-  /* Mobile QUICK START: four columns x two rows. */
+  /* Mobile QUICK START: four columns x two rows. Dark edge treatment, no white seams. */
   .actionHome .homeQuickGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,auto)!important;gap:7px!important;width:100%!important;margin:0!important;align-items:stretch!important}
-  .actionHome .homeQuickGrid>a.quickImageCard{position:relative!important;width:100%!important;height:auto!important;aspect-ratio:0.68/1!important;min-width:0!important;min-height:0!important;max-height:none!important;overflow:hidden!important;border-radius:14px!important;background:#11171c!important;border:1px solid rgba(145,160,175,.24)!important;box-shadow:none!important}
-  .actionHome .homeQuickGrid>a.quickImageCard.primary{border-color:rgba(216,255,50,.78)!important;box-shadow:inset 0 0 0 1px rgba(216,255,50,.09)!important}
-  .actionHome .homeQuickGrid>a.quickImageCard img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;padding:0!important;object-fit:cover!important;object-position:center!important;transform:none!important;border-radius:0!important;background:#11171c!important}
+  .actionHome .homeQuickGrid>a.quickImageCard{position:relative!important;width:100%!important;height:auto!important;aspect-ratio:0.68/1!important;min-width:0!important;min-height:0!important;max-height:none!important;overflow:hidden!important;border-radius:14px!important;background:#10171c!important;border:1px solid #2a343d!important;box-shadow:0 7px 18px rgba(0,0,0,.28)!important;isolation:isolate!important}
+  .actionHome .homeQuickGrid>a.quickImageCard.primary{border-color:#bfe824!important;box-shadow:0 8px 20px rgba(111,145,16,.16)!important}
+  .actionHome .homeQuickGrid>a.quickImageCard img{position:absolute!important;inset:-2px!important;width:calc(100% + 4px)!important;height:calc(100% + 4px)!important;max-width:none!important;padding:0!important;object-fit:cover!important;object-position:center!important;transform:none!important;border:0!important;border-radius:inherit!important;background:#10171c!important;filter:saturate(1.18) contrast(1.09) brightness(.91)!important}
+  .actionHome .homeQuickGrid>a.quickImageCard.primary img{filter:saturate(1.22) contrast(1.08) brightness(.96)!important}
   .actionHome .homeQuickGrid>a.quickImageCard::before,.actionHome .homeQuickGrid>a.quickImageCard::after{content:none!important;display:none!important}
-  .actionHome .homeAdSlot{margin-bottom:20px!important}
+
+  /* Give existing promo artwork a stronger, less washed-out presentation. */
+  .actionHome :is(.homePromoCarousel,.promoCarousel,.homePromoCard,.promoCard){background:#0c1217!important}
+  .actionHome :is(.homePromoCarousel,.promoCarousel) img{filter:saturate(1.2) contrast(1.1) brightness(.9)!important}
+  .actionHome :is(.homePromoCard,.promoCard){border-color:#2b353e!important;box-shadow:0 12px 28px rgba(0,0,0,.25)!important}
+
+  .actionHome .homeAdSlot{margin-bottom:20px!important;background:#10171c!important;border-color:#27313a!important}
   .actionHome section:last-of-type{margin-bottom:18px!important}
 }
 @media(max-width:390px){
