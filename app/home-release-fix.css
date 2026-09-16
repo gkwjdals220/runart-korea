@@ -1,34 +1,36 @@
 /* Home release fixes after on-device visual QA. Loaded last. */
 @media(max-width:700px){
-  .actionHome{padding-top:calc(env(safe-area-inset-top) + 14px)!important;padding-bottom:calc(126px + env(safe-area-inset-bottom))!important;overflow-x:hidden!important;background:#080d11!important}
+  .actionHome{padding-top:calc(env(safe-area-inset-top) + 14px)!important;padding-bottom:calc(170px + env(safe-area-inset-bottom))!important;overflow-x:hidden!important;background:#080d11!important}
   .actionHome .homeLogoOnly{min-height:74px!important;padding-top:12px!important;margin-bottom:12px!important;align-items:center!important;justify-content:center!important}
   .actionHome .homeLogoOnly strong{line-height:1!important}
-  .actionHome .homeActionSection{margin-top:18px!important}
+  .actionHome .homeActionSection{margin-top:16px!important}
   .actionHome .homeSectionTitle{margin:0 2px 10px!important;position:relative!important;z-index:1!important}
   .actionHome .homeSectionTitle small{color:#cfff25!important}
   .actionHome .homeSectionTitle h2{margin:2px 0 0!important;font-size:23px!important;line-height:1.16!important;letter-spacing:-.045em!important;color:#fff!important}
 
-  /* Promo artwork: show the complete banner instead of zoom/cropping it. */
+  /* Promo: match the artwork's wide aspect ratio so there are no top/bottom letterbox bands. */
   .actionHome .homePromoCarousel{width:100%!important;overflow:visible!important;background:transparent!important}
   .actionHome .homePromoRail{display:flex!important;gap:10px!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;padding:0 4px!important;scroll-padding-inline:4px!important}
-  .actionHome .homePromoCard{position:relative!important;flex:0 0 calc(100% - 8px)!important;width:calc(100% - 8px)!important;aspect-ratio:16/9!important;min-height:0!important;overflow:hidden!important;border-radius:18px!important;background:#0c1217!important;border:1px solid #27323a!important;scroll-snap-align:center!important;box-shadow:0 12px 28px rgba(0,0,0,.25)!important}
-  .actionHome .homePromoCard img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;background:#0c1217!important;filter:none!important}
+  .actionHome .homePromoCard{position:relative!important;flex:0 0 calc(100% - 8px)!important;width:calc(100% - 8px)!important;aspect-ratio:2.55/1!important;min-height:0!important;overflow:hidden!important;border-radius:18px!important;background:#0c1217!important;border:1px solid #27323a!important;scroll-snap-align:center!important;box-shadow:0 10px 24px rgba(0,0,0,.24)!important}
+  .actionHome .homePromoCard img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;background:#0c1217!important;filter:none!important}
   .actionHome .homePromoDots{margin-top:8px!important}
 
-  /* Mobile QUICK START: four columns x two rows, preserve the whole new tile artwork. */
-  .actionHome .homeQuickGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,auto)!important;gap:7px!important;width:100%!important;margin:0!important;align-items:stretch!important}
-  .actionHome .homeQuickGrid>a.quickImageCard{position:relative!important;width:100%!important;height:auto!important;aspect-ratio:.68/1!important;min-width:0!important;min-height:0!important;overflow:hidden!important;border-radius:14px!important;background:#10171c!important;border:1px solid #27323a!important;box-shadow:0 7px 18px rgba(0,0,0,.28)!important;isolation:isolate!important}
-  .actionHome .homeQuickGrid>a.quickImageCard.primary{border-color:#bfe824!important;box-shadow:0 8px 20px rgba(111,145,16,.16)!important}
-  .actionHome .homeQuickGrid>a.quickImageCard img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:100%!important;padding:0!important;object-fit:contain!important;object-position:center!important;transform:none!important;border:0!important;border-radius:inherit!important;background:#10171c!important;filter:none!important}
+  /* QUICK START: image itself is the card; remove the second outer frame. */
+  .actionHome .homeQuickGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,auto)!important;gap:8px!important;width:100%!important;margin:0!important;align-items:stretch!important}
+  .actionHome .homeQuickGrid>a.quickImageCard{position:relative!important;width:100%!important;height:auto!important;aspect-ratio:.68/1!important;min-width:0!important;min-height:0!important;overflow:hidden!important;border-radius:14px!important;background:transparent!important;border:0!important;box-shadow:none!important;isolation:isolate!important}
+  .actionHome .homeQuickGrid>a.quickImageCard.primary{border:1px solid #cfff25!important;box-shadow:0 7px 18px rgba(145,190,18,.14)!important}
+  .actionHome .homeQuickGrid>a.quickImageCard img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:100%!important;padding:0!important;object-fit:cover!important;object-position:center!important;transform:none!important;border:0!important;border-radius:14px!important;background:transparent!important;filter:none!important}
   .actionHome .homeQuickGrid>a.quickImageCard.primary img{background:#cfff25!important;filter:none!important}
   .actionHome .homeQuickGrid>a.quickImageCard::before,.actionHome .homeQuickGrid>a.quickImageCard::after{content:none!important;display:none!important}
 
-  .actionHome .homeAdSlot{margin-bottom:20px!important;background:#10171c!important;border-color:#27313a!important}
-  .actionHome section:last-of-type{margin-bottom:18px!important}
+  /* Keep personalized content comfortably scrollable above the fixed navigation. */
+  .actionHome .homePersonalized,.actionHome .homePersonalizedSection,.actionHome [class*="personalized"]{scroll-margin-bottom:150px!important}
+  .actionHome .homeAdSlot{margin-bottom:42px!important;background:#10171c!important;border-color:#27313a!important}
+  .actionHome section:last-of-type{margin-bottom:54px!important}
 }
 @media(max-width:390px){
-  .actionHome .homeQuickGrid{gap:5px!important}
+  .actionHome .homeQuickGrid{gap:6px!important}
   .actionHome .homeSectionTitle h2{font-size:22px!important}
-  .actionHome .homeQuickGrid>a.quickImageCard{border-radius:12px!important}
+  .actionHome .homeQuickGrid>a.quickImageCard,.actionHome .homeQuickGrid>a.quickImageCard img{border-radius:12px!important}
   .actionHome .homePromoCard{border-radius:16px!important}
 }
