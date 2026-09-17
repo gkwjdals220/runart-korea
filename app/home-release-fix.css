@@ -8,7 +8,6 @@
   .actionHome .homeSectionTitle small{color:#cfff25!important;letter-spacing:.18em!important}
   .actionHome .homeSectionTitle h2{margin:4px 0 0!important;font-size:25px!important;line-height:1.14!important;letter-spacing:-.045em!important;color:#fff!important}
 
-  /* Full-width hero with stable height on iPhone-sized screens. */
   .actionHome .homePromoCarousel{width:100%!important;overflow:hidden!important;background:transparent!important;padding:0 12px!important;box-sizing:border-box!important}
   .actionHome .homePromoRail{display:flex!important;gap:12px!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;padding:0!important;scroll-padding-inline:0!important;scrollbar-width:none!important}
   .actionHome .homePromoRail::-webkit-scrollbar{display:none!important}
@@ -16,12 +15,14 @@
   .actionHome .homePromoCard img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;background:#081015!important;filter:none!important;border-radius:inherit!important}
   .actionHome .homePromoDots{margin-top:9px!important}
 
-  /* Exactly four equal columns. Do not let intrinsic image size alter RUN tile geometry. */
-  .actionHome .homeQuickGrid{display:grid!important;grid-template-columns:repeat(4,1fr)!important;grid-auto-rows:1fr!important;gap:8px!important;width:100%!important;margin:0!important;padding:0 12px!important;box-sizing:border-box!important;align-items:stretch!important}
-  .actionHome .homeQuickGrid>a.quickImageCard{position:relative!important;display:block!important;width:100%!important;height:auto!important;aspect-ratio:3/4!important;min-width:0!important;min-height:0!important;max-width:none!important;overflow:hidden!important;border-radius:14px!important;background:#0b1217!important;border:1px solid #26343e!important;box-shadow:none!important;box-sizing:border-box!important;isolation:isolate!important}
-  .actionHome .homeQuickGrid>a.quickImageCard.primary{width:100%!important;height:auto!important;aspect-ratio:3/4!important;min-width:0!important;max-width:none!important;border:1px solid #cfff25!important;box-shadow:0 8px 20px rgba(145,190,18,.18)!important;background:#cfff25!important}
-  .actionHome .homeQuickGrid>a.quickImageCard img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-width:0!important;max-width:none!important;padding:0!important;margin:0!important;object-fit:contain!important;object-position:center!important;transform:none!important;border:0!important;border-radius:inherit!important;background:#0b1217!important;filter:none!important}
-  .actionHome .homeQuickGrid>a.quickImageCard.primary img{width:100%!important;height:100%!important;object-fit:contain!important;background:#cfff25!important;filter:none!important}
+  /* 4x2 grid. All wrappers share one geometry; images keep their full artwork without stretching. */
+  .actionHome .homeQuickGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-auto-rows:auto!important;gap:8px!important;width:100%!important;margin:0!important;padding:0 12px!important;box-sizing:border-box!important;align-items:start!important}
+  .actionHome .homeQuickGrid>a.quickImageCard,.actionHome .homeQuickGrid>a.quickImageCard.primary{position:relative!important;display:block!important;width:100%!important;height:auto!important;aspect-ratio:246/285!important;min-width:0!important;min-height:0!important;max-width:none!important;overflow:hidden!important;border-radius:14px!important;box-sizing:border-box!important;isolation:isolate!important;margin:0!important;padding:0!important}
+  .actionHome .homeQuickGrid>a.quickImageCard{background:#0b1217!important;border:1px solid #26343e!important;box-shadow:none!important}
+  .actionHome .homeQuickGrid>a.quickImageCard.primary{background:#cfff25!important;border:1px solid #cfff25!important;box-shadow:0 8px 20px rgba(145,190,18,.18)!important}
+  .actionHome .homeQuickGrid>a.quickImageCard img,.actionHome .homeQuickGrid>a.quickImageCard.primary img{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;min-width:100%!important;max-width:100%!important;min-height:100%!important;max-height:100%!important;padding:0!important;margin:0!important;object-fit:contain!important;object-position:center center!important;transform:none!important;border:0!important;border-radius:inherit!important;filter:none!important}
+  .actionHome .homeQuickGrid>a.quickImageCard img{background:#0b1217!important}
+  .actionHome .homeQuickGrid>a.quickImageCard.primary img{background:#cfff25!important}
   .actionHome .homeQuickGrid>a.quickImageCard::before,.actionHome .homeQuickGrid>a.quickImageCard::after{content:none!important;display:none!important}
 
   .actionHome .homePersonalized,.actionHome .homePersonalizedSection,.actionHome [class*="personalized"]{margin-top:30px!important;scroll-margin-bottom:170px!important}
@@ -31,7 +32,7 @@
 @media(max-width:390px){
   .actionHome .homeQuickGrid{gap:6px!important;padding-left:9px!important;padding-right:9px!important}
   .actionHome .homeSectionTitle h2{font-size:23px!important}
-  .actionHome .homeQuickGrid>a.quickImageCard,.actionHome .homeQuickGrid>a.quickImageCard img{border-radius:12px!important}
+  .actionHome .homeQuickGrid>a.quickImageCard,.actionHome .homeQuickGrid>a.quickImageCard.primary,.actionHome .homeQuickGrid>a.quickImageCard img{border-radius:12px!important}
   .actionHome .homePromoCarousel{padding-left:9px!important;padding-right:9px!important}
   .actionHome .homePromoCard{border-radius:16px!important}
 }
