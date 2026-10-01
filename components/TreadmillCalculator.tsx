@@ -57,6 +57,14 @@ export default function TreadmillCalculator({ userId }: { userId?: string | null
     setSpeedInput(speed.toFixed(1));
   }, [pace, speed]);
 
+  function paceFieldBlur(field:"minute"|"second") {
+    const minute = field==="minute" ? paceMinuteInput : String(Math.floor(pace / 60));
+    const second = field==="second" ? paceSecondInput : String(pace % 60);
+    const m = clamp(Number(minute || Math.floor(pace / 60)), 3, 15);
+    const s = clamp(Number(second || 0), 0, 59);
+    setPace(Math.round(m * 60 + s));
+  }
+
   function commitPaceInputs() {
     const m = clamp(Number(paceMinuteInput || Math.floor(pace / 60)), 3, 15);
     const s = clamp(Number(paceSecondInput || 0), 0, 59);
@@ -164,7 +172,7 @@ export default function TreadmillCalculator({ userId }: { userId?: string | null
               value={paceMinuteInput}
               onFocus={(e) => e.currentTarget.select()}
               onChange={(e) => setPaceMinuteInput(e.target.value.replace(/\D/g, "").slice(0, 2))}
-              onBlur={commitPaceInputs}
+              onBlur={() => paceFieldBlur("minute")}
               onKeyDown={(e) => submitOnEnter(e, commitPaceInputs)}
             />
           </label>
@@ -179,7 +187,7 @@ export default function TreadmillCalculator({ userId }: { userId?: string | null
               value={paceSecondInput}
               onFocus={(e) => e.currentTarget.select()}
               onChange={(e) => setPaceSecondInput(e.target.value.replace(/\D/g, "").slice(0, 2))}
-              onBlur={commitPaceInputs}
+              onBlur={() => paceFieldBlur("second")}
               onKeyDown={(e) => submitOnEnter(e, commitPaceInputs)}
             />
           </label>
