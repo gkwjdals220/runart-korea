@@ -25,7 +25,7 @@ export default function ResetPasswordForm(){
   const sb=sbRef.current!;
   async function init(){
    try{
-    const hash=new URLSearchParams(window.location.hash.replace(/^#/,""));
+    const hash=new URLSearchParams(window.location.hash.replace(/^#/,""));\n    const query=new URLSearchParams(window.location.search);\n    const code=query.get("code");
     const accessToken=hash.get("access_token");
     const refreshToken=hash.get("refresh_token");
     const errorDescription=hash.get("error_description");
@@ -33,7 +33,7 @@ export default function ResetPasswordForm(){
      if(!cancelled){setReady(false);setMsg(decodeURIComponent(errorDescription.replace(/\+/g," ")));}
      return;
     }
-    if(accessToken&&refreshToken){
+    if(code){\n     const {error}=await sb.auth.exchangeCodeForSession(code);\n     if(error)throw error;\n     history.replaceState(null,"",window.location.pathname);\n    }else if(accessToken&&refreshToken){
      const {error}=await sb.auth.setSession({access_token:accessToken,refresh_token:refreshToken});
      if(error)throw error;
      history.replaceState(null,"",window.location.pathname+window.location.search);
