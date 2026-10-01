@@ -431,7 +431,7 @@ export default function RunModeV2({
     const p = sec / (d / 1000);
     return p >= 150 && p <= 1200 ? p : null;
   }
-  function startGps() {
+  function stopWebGps() {\n    stopWebGps();\n  }\n  function startGps() {
     if (!navigator.geolocation) {
       setMessage("이 기기에서는 GPS를 사용할 수 없습니다.");
       return;
@@ -478,7 +478,7 @@ export default function RunModeV2({
           last.current = p;
         }
       },
-      () => setMessage("위치 권한을 허용해주세요."),
+      (error) => {\n        stopWebGps();\n        setMessage(error.code === 1 ? "위치 권한을 허용해주세요." : "GPS 연결을 확인할 수 없습니다. 다시 시작해주세요.");\n      },
       { enableHighAccuracy: true, maximumAge: 1000, timeout: 12000 },
     );
   }
