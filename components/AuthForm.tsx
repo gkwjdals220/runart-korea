@@ -4,7 +4,7 @@ import {useRouter,useSearchParams} from "next/navigation";
 import {createClient} from "@/lib/supabase/client";
 import {createClient as createSupabaseClient} from "@supabase/supabase-js";
 
-const AUTH_BASE_URL="https://runart-korea.vercel.app";
+const AUTH_BASE_URL=(process.env.NEXT_PUBLIC_SITE_URL||"https://runart-korea.vercel.app").replace(/\\\/$/,"");
 
 export default function AuthForm(){
  const [email,setEmail]=useState(""); const [password,setPassword]=useState(""); const [name,setName]=useState("");
