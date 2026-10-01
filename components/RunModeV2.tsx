@@ -431,7 +431,12 @@ export default function RunModeV2({
     const p = sec / (d / 1000);
     return p >= 150 && p <= 1200 ? p : null;
   }
-  function stopWebGps() {\n    stopWebGps();\n  }\n  function startGps() {
+  function stopWebGps() {
+    if (watch.current != null) {
+      navigator.geolocation.clearWatch(watch.current);
+      watch.current = null;
+    }
+  }\n  function startGps() {
     if (!navigator.geolocation) {
       setMessage("이 기기에서는 GPS를 사용할 수 없습니다.");
       return;
@@ -558,6 +563,7 @@ export default function RunModeV2({
       setPaused(true);
       setCurrentPace(null);
       persist();
+      if (!nativeTracking.current) stopWebGps();
       if (nativeTracking.current) void TTWITTUNRun.pause().then(applyNativeSnapshot).catch(() => {});
     } else {
       if (pausedAt.current)
