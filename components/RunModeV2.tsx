@@ -436,7 +436,8 @@ export default function RunModeV2({
       navigator.geolocation.clearWatch(watch.current);
       watch.current = null;
     }
-  }\n  function startGps() {
+  }
+  function startGps() {
     if (!navigator.geolocation) {
       setMessage("이 기기에서는 GPS를 사용할 수 없습니다.");
       return;
@@ -483,7 +484,10 @@ export default function RunModeV2({
           last.current = p;
         }
       },
-      (error) => {\n        stopWebGps();\n        setMessage(error.code === 1 ? "위치 권한을 허용해주세요." : "GPS 연결을 확인할 수 없습니다. 다시 시작해주세요.");\n      },
+      (error) => {
+        stopWebGps();
+        setMessage(error.code === 1 ? "위치 권한을 허용해주세요." : "GPS 연결을 확인할 수 없습니다. 다시 시작해주세요.");
+      },
       { enableHighAccuracy: true, maximumAge: 1000, timeout: 12000 },
     );
   }
