@@ -126,14 +126,24 @@ function bestSegmentSeconds(points: Pt[], targetM: number) {
   return Number.isFinite(best) ? Math.round(best) : null;
 }
 function normalizeSplits(raw: any[], lapDistanceM: number): Split[] {
-  return (raw || []).map((s: any, idx: number) => ({
-    lap: Number(s.lap || idx + 1),
-    distanceM: Number(s.distanceM || lapDistanceM),
-    km: Number(s.km || ((idx + 1) * lapDistanceM) / 1000),
-    elapsed: Number(s.elapsed || 0),
-    lapSeconds: Number(s.lapSeconds || 0),
-    paceSecPerKm: Number(s.paceSecPerKm || s.lapSeconds || 0),
-  }));
+  return (raw || []).map((s: any, idx: number) => {
+    const distanceM = Number(s.distanceM || lapDistanceM);
+    const lapSeconds = Number(s.lapSeconds || 0);
+    const storedPace = Number(s.paceSecPerKm || 0);
+    return {
+      lap: Number(s.lap || idx + 1),
+      distanceM,
+      km: Number(s.km || ((idx + 1) * lapDistanceM) / 1000),
+      elapsed: Number(s.elapsed || 0),
+      lapSeconds,
+      paceSecPerKm:
+        storedPace > 0
+          ? storedPace
+          : lapSeconds > 0 && distanceM > 0
+            ? Math.round(lapSeconds / (distanceM / 1000))
+            : 0,
+    };
+  });
 }
 function buildDistanceSplits(
   points: Pt[],
