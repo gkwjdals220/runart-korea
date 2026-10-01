@@ -37,12 +37,12 @@ export default async function MyPage() {
     sb.from("runart_profiles").select("display_name").eq("user_id", user.id).maybeSingle(),
     sb.from("runart_favorites").select("course_id", { count: "exact", head: true }).eq("user_id", user.id),
     sb.from("runart_public_race_participation").select("id", { count: "exact", head: true }).eq("user_id", user.id),
-    sb.from("runart_live_runs").select("distance_km,avg_pace_sec_per_km,finished_at").eq("user_id", user.id).order("finished_at", { ascending: false }).limit(300),
+    sb.from("runart_live_runs").select("distance_km,elapsed_seconds,finished_at").eq("user_id", user.id).order("finished_at", { ascending: false }).limit(1000),
   ]);
   const rows = rowsData || [], now = Date.now(), weekAgo = now - 7 * 86400000, monthAgo = now - 30 * 86400000;
   const week = rows.filter((r:any)=>new Date(r.finished_at).getTime() >= weekAgo), month = rows.filter((r:any)=>new Date(r.finished_at).getTime() >= monthAgo);
   const weekKm = week.reduce((s:number,r:any)=>s+Number(r.distance_km||0),0), monthKm = month.reduce((s:number,r:any)=>s+Number(r.distance_km||0),0), totalKm = rows.reduce((s:number,r:any)=>s+Number(r.distance_km||0),0);
-  const paces = rows.map((r:any)=>Number(r.avg_pace_sec_per_km||0)).filter((v:number)=>v>0), avgPace = paces.length ? Math.round(paces.reduce((a:number,b:number)=>a+b,0)/paces.length) : null;
+  const pacedRows = rows.map((r:any)=>({km:Number(r.distance_km||0),sec:Number(r.elapsed_seconds||0)})).filter((r:any)=>r.km>=0.05&&r.sec>0), pacedKm=pacedRows.reduce((s:number,r:any)=>s+r.km,0), pacedSec=pacedRows.reduce((s:number,r:any)=>s+r.sec,0), avgPace = pacedKm>0 ? Math.round(pacedSec/pacedKm) : null;
 
   return <main className="wrap hubPage myHubPage">
     <section className="compactPageHero">
